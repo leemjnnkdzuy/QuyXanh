@@ -1,0 +1,30 @@
+.loading {
+	position: relative;
+	min-height: 100px;
+	color: transparent;
+	pointer-events: none;
+
+	&::after {
+		content: "";
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		border: 3px solid var(--text-color);
+		border-radius: 50%;
+		border-top-color: transparent;
+		border-left-color: transparent;
+		animation: spin 0.8s ease infinite;
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}

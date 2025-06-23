@@ -1,0 +1,241 @@
+.footer {
+	background: var(--background-color);
+	border-top: 1px solid var(--border-color);
+	padding: 80px 0 0;
+	margin-top: auto;
+
+	.footer-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 24px;
+	}
+
+	.footer-main {
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+		gap: 80px;
+		margin-bottom: 60px;
+
+		@media (max-width: 968px) {
+			grid-template-columns: 1fr;
+			gap: 60px;
+		}
+	}
+
+	.footer-brand {
+		.logo {
+			display: flex;
+			align-items: center;
+			margin-bottom: 24px;
+
+			.logo-icon {
+				font-size: 3.2rem;
+				color: var(--primary-color-2);
+				margin-right: 12px;
+			}
+
+			.logo-text {
+				font-size: 2.8rem;
+				font-weight: 800;
+				color: var(--text-color);
+			}
+		}
+
+		.brand-description {
+			font-size: 1.6rem;
+			color: var(--text-secondary);
+			line-height: 1.6;
+			margin-bottom: 32px;
+		}
+
+		.social-links {
+			display: flex;
+			justify-content: space-between;
+
+			.social-link {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 44px;
+				height: 44px;
+				background: var(--background-secondary);
+				border: 1px solid var(--border-color);
+				border-radius: 12px;
+				color: var(--text-secondary);
+				text-decoration: none;
+				transition: all 0.3s ease;
+				font-size: 1.8rem;
+
+				&:hover {
+					background: var(--primary-color-1);
+					color: white;
+					transform: translateY(-2px);
+					box-shadow: 0 8px 24px rgba(31, 120, 255, 0.3);
+				}
+			}
+		}
+		.language-selector {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-top: 24px;
+			padding: 12px 16px;
+			background: var(--background-secondary);
+			border: 1px solid var(--border-color);
+			border-radius: 12px;
+			color: var(--text-color);
+			font-size: 1.6rem;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			width: 100%;
+			position: relative;
+
+			&:hover {
+				background: var(--background-color);
+				border-color: var(--primary-color-1);
+				transform: translateY(-1px);
+				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+			}
+
+			.language-icon {
+				font-size: 1.8rem;
+				color: var(--primary-color-1);
+			}
+
+			span:first-of-type {
+				margin-right: auto;
+			}
+
+			.language-flag {
+				font-size: 2rem;
+				line-height: 1;
+				margin-left: auto;
+				filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+				transition: all 0.3s ease;
+			}
+
+			&:hover .language-flag {
+				transform: scale(1.15);
+			}
+		}
+	}
+
+	.footer-links {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 40px;
+
+		@media (max-width: 768px) {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 32px;
+		}
+
+		@media (max-width: 480px) {
+			grid-template-columns: 1fr;
+			gap: 32px;
+		}
+	}
+
+	.footer-section {
+		.section-title {
+			font-size: 1.8rem;
+			font-weight: 700;
+			color: var(--text-color);
+			margin-bottom: 24px;
+		}
+
+		.section-links {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+
+			li {
+				margin-bottom: 12px;
+
+				.footer-link {
+					color: var(--text-secondary);
+					text-decoration: none;
+					font-size: 1.5rem;
+					font-weight: 500;
+					transition: all 0.3s ease;
+					background: none;
+					border: none;
+					cursor: pointer;
+					padding: 0;
+					text-align: left;
+
+					&:hover {
+						color: var(--primary-color-1);
+						transform: translateX(4px);
+					}
+				}
+			}
+		}
+
+		.contact-info {
+			.contact-item {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				margin-bottom: 16px;
+				color: var(--text-secondary);
+				font-size: 1.5rem;
+
+				.contact-icon {
+					font-size: 1.6rem;
+					color: var(--primary-color-1);
+				}
+			}
+		}
+	}
+
+	.footer-bottom {
+		border-top: 1px solid var(--border-color);
+		padding: 32px 0;
+
+		.footer-bottom-content {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 24px;
+
+			@media (max-width: 768px) {
+				flex-direction: column;
+				text-align: center;
+			}
+
+			.copyright {
+				color: var(--text-secondary);
+				font-size: 1.4rem;
+			}
+
+			.legal-links {
+				display: flex;
+				gap: 24px;
+				flex-wrap: wrap;
+
+				@media (max-width: 768px) {
+					justify-content: center;
+				}
+
+				.legal-link {
+					color: var(--text-secondary);
+					text-decoration: none;
+					font-size: 1.4rem;
+					font-weight: 500;
+					transition: all 0.3s ease;
+					background: none;
+					border: none;
+					cursor: pointer;
+					padding: 0;
+
+					&:hover {
+						color: var(--primary-color-1);
+					}
+				}
+			}
+		}
+	}
+}

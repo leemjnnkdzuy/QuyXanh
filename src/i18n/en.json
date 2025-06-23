@@ -1,0 +1,48 @@
+{
+	"notfound": {
+		"title": "Page not found",
+		"subtitle": "The page you are looking for does not exist.",
+		"button": "Go back to home"
+	},
+	"footer": {
+		"description": "Vietnam's leading online fundraising platform. Help you achieve your dreams and goals through the power of community.",
+		"copyright": "All rights reserved.",
+		"donate": {
+			"title": "Donate",
+			"categories": "Categories",
+			"crisis": "Crisis Relief",
+			"social": "Social Impact Funds",
+			"supporter": "Supporter Space"
+		},
+		"fundraise": {
+			"title": "Fundraise",
+			"howto": "How to start fundraising",
+			"categories": "Fundraising categories",
+			"team": "Team fundraising",
+			"blog": "Fundraising Blog",
+			"charity": "Charity fundraising"
+		},
+		"about": {
+			"title": "About",
+			"howworks": "How it works",
+			"guarantee": "Guarantee",
+			"pricing": "Pricing",
+			"help": "Help Center",
+			"aboutus": "About us",
+			"careers": "Careers"
+		},
+		"contact": {
+			"title": "Contact"
+		},
+		"legal": {
+			"terms": "Terms",
+			"privacy": "Privacy Policy",
+			"legal": "Legal",
+			"accessibility": "Accessibility",
+			"cookies": "Cookie Policy"
+		},
+		"language": {
+			"selectLanguage": "Select Language"
+		}
+	}
+}

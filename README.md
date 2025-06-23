@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# QuyXanh API Test Examples
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dưới đây là các ví dụ cách test API bằng curl hoặc Postman.
 
-## Available Scripts
+## 1. Health Check
 
-In the project directory, you can run:
+```bash
+curl -X GET http://localhost:3001/health
+```
 
-### `npm start`
+## 2. Đăng ký tài khoản mới
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+curl -X POST http://localhost:3001/api/users/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "test_user",
+    "email": "test@example.com",
+    "password": "Test123456",
+    "fullName": "Test User",
+    "phoneNumber": "0987654321"
+  }'
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 3. Xác thực email (thay 123456 bằng mã nhận được qua email)
 
-### `npm test`
+```bash
+curl -X POST http://localhost:3001/api/users/verify-email \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "code": "123456"
+  }'
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 4. Đăng nhập
 
-### `npm run build`
+```bash
+curl -X POST http://localhost:3001/api/users/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "emailOrUsername": "test@example.com",
+    "password": "Test123456"
+  }'
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 5. Lấy thông tin profile (cần access token từ bước đăng nhập)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+curl -X GET http://localhost:3001/api/users/profile \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 6. Quên mật khẩu
 
-### `npm run eject`
+```bash
+curl -X POST http://localhost:3001/api/users/forgot-password \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com"
+  }'
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 7. Reset mật khẩu (thay 123456 bằng mã nhận được qua email)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+curl -X POST http://localhost:3001/api/users/reset-password \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "code": "123456",
+    "newPassword": "NewPassword123"
+  }'
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 8. Đổi mật khẩu (cần đăng nhập)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+curl -X POST http://localhost:3001/api/users/change-password \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{
+    "currentPassword": "Test123456",
+    "newPassword": "NewPassword123"
+  }'
+```
 
-## Learn More
+## 9. Đăng xuất (cần đăng nhập)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+curl -X POST http://localhost:3001/api/users/logout \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 10. Refresh token
 
-### Code Splitting
+```bash
+curl -X POST http://localhost:3001/api/users/refresh-token \
+  --cookie-jar cookies.txt \
+  --cookie cookies.txt
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Google OAuth
 
-### Analyzing the Bundle Size
+Truy cập trực tiếp qua browser:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+http://localhost:3001/api/users/auth/google
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Postman Collection
 
-### Advanced Configuration
+Bạn có thể import các request trên vào Postman bằng cách:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Mở Postman
+2. Click "Import"
+3. Tạo collection mới
+4. Copy các curl commands trên và paste vào Postman
 
-### Deployment
+### Notes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Thay `YOUR_ACCESS_TOKEN` bằng token thực tế từ response đăng nhập
+- Để test Google OAuth, cần truy cập qua browser
+- Cookies được tự động quản lý bởi browser cho refresh token

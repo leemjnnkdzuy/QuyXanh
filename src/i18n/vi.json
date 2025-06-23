@@ -1,0 +1,48 @@
+{
+	"notfound": {
+		"title": "Không tìm thấy trang",
+		"subtitle": "Trang bạn đang tìm không tồn tại.",
+		"button": "Quay lại trang chủ"
+	},
+	"footer": {
+		"description": "Nền tảng gây quỹ trực tuyến hàng đầu Việt Nam. Giúp bạn thực hiện những ước mơ và mục tiêu của mình thông qua sức mạnh cộng đồng.",
+		"copyright": "Bảo lưu mọi quyền.",
+		"donate": {
+			"title": "Ủng hộ",
+			"categories": "Danh mục",
+			"crisis": "Cứu trợ khẩn cấp",
+			"social": "Quỹ tác động xã hội",
+			"supporter": "Không gian người ủng hộ"
+		},
+		"fundraise": {
+			"title": "Gây quỹ",
+			"howto": "Cách bắt đầu gây quỹ",
+			"categories": "Danh mục gây quỹ",
+			"team": "Gây quỹ nhóm",
+			"blog": "Blog gây quỹ",
+			"charity": "Gây quỹ từ thiện"
+		},
+		"about": {
+			"title": "Giới thiệu",
+			"howworks": "Cách thức hoạt động",
+			"guarantee": "Cam kết bảo đảm",
+			"pricing": "Bảng giá",
+			"help": "Trung tâm trợ giúp",
+			"aboutus": "Về chúng tôi",
+			"careers": "Tuyển dụng"
+		},
+		"contact": {
+			"title": "Liên hệ"
+		},
+		"legal": {
+			"terms": "Điều khoản",
+			"privacy": "Chính sách bảo mật",
+			"legal": "Pháp lý",
+			"accessibility": "Khả năng tiếp cận",
+			"cookies": "Chính sách Cookie"
+		},
+		"language": {
+			"selectLanguage": "Chọn ngôn ngữ"
+		}
+	}
+}
