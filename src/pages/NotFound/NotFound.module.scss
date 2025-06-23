@@ -52,15 +52,6 @@
 
 		.four {
 			opacity: 0.8;
-			animation: fadeInScale 1s ease-out;
-
-			&:first-child {
-				animation-delay: 0.2s;
-			}
-
-			&:last-child {
-				animation-delay: 0.6s;
-			}
 		}
 
 		.zero {
@@ -70,13 +61,11 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			animation: fadeInScale 1s ease-out 0.4s both;
 
 			.tree-icon {
 				font-size: var(--tree-icon-size);
 				color: var(--primary-color-2);
 				filter: drop-shadow(0 0 10px rgba(45, 216, 129, 0.3));
-				animation: treeGrow 2s ease-out 0.8s both;
 			}
 		}
 	}
@@ -148,7 +137,6 @@
 		&:hover {
 			background: var(--primary-color-3);
 			border-color: var(--primary-color-2);
-			transform: translateY(-2px);
 			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 		}
 	}
@@ -179,7 +167,6 @@
 		}
 
 		&:hover {
-			transform: translateY(-2px);
 			box-shadow: 0 8px 25px rgba(31, 120, 255, 0.4);
 
 			&::before {
