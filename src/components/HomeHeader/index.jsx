@@ -9,22 +9,41 @@ import {FaTree} from "react-icons/fa";
 
 const cx = classNames.bind(styles);
 
-function HomeHeader() {
+function HomeHeader({isVisible = true}) {
 	const navigate = useNavigate();
 	const {isAuthenticated, user, logout} = useAuth();
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+	const [isMapSectionVisible, setIsMapSectionVisible] = useState(false);
 	useEffect(() => {
 		const handleScroll = () => {
 			const scrollPosition = window.scrollY;
-			setIsScrolled(scrollPosition > 50);
+			setIsScrolled(scrollPosition > 100);
+
+			const mapSection =
+				document.querySelector(".Home_map-section__") ||
+				document.querySelector('[class*="map-section"]') ||
+				document.querySelector("section:has(.VietnamMap)") ||
+				document
+					.querySelector("section")
+					.parentElement?.querySelector('[class*="map"]');
+
+			if (mapSection) {
+				const mapSectionRect = mapSection.getBoundingClientRect();
+
+				if (mapSectionRect.top <= 100) {
+					setIsMapSectionVisible(true);
+				} else {
+					setIsMapSectionVisible(false);
+				}
+			}
 		};
+
+		handleScroll();
 
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
-
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (isMobileMenuOpen && !event.target.closest(`.${cx("mobile-menu")}`)) {
@@ -63,9 +82,14 @@ function HomeHeader() {
 			navigate("/login");
 		}
 	};
-
 	return (
-		<header className={cx("wrapper", {scrolled: isScrolled})}>
+		<header
+			className={cx("wrapper", {
+				scrolled: isScrolled,
+				"hide-on-map": isMapSectionVisible,
+				hidden: !isVisible,
+			})}
+		>
 			<div className={cx("inner")}>
 				<div className={cx("logo")}>
 					<div onClick={() => navigate("/")} className={cx("logo-link")}>
@@ -131,7 +155,7 @@ function HomeHeader() {
 								}}
 								className={cx("mobile-nav-item")}
 							>
-								Chiến dịch		
+								Chiến dịch
 							</button>
 						</li>
 						<li>

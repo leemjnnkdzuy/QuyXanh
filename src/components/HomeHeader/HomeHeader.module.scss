@@ -21,6 +21,19 @@
 	z-index: 1000;
 	padding: var(--header-padding-desktop);
 	pointer-events: none;
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+
+	&.hide-on-map {
+		transform: translateY(-100%);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	&.hidden {
+		transform: translateY(-100%);
+		opacity: 0;
+		pointer-events: none;
+	}
 
 	@media (max-width: 768px) {
 		padding: var(--header-padding-mobile);

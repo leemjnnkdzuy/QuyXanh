@@ -24,15 +24,26 @@ const getThemeStorage = () => {
 export function ThemeProvider({children}) {
 	const [isDarkMode, setIsDarkMode] = useState(() => {
 		const savedTheme = getThemeStorage();
-		return savedTheme === "dark";
-	});
+		const systemDarkMode = window.matchMedia(
+			"(prefers-color-scheme: dark)"
+		).matches;
+		const initialDarkMode =
+			savedTheme === "dark" || (!savedTheme && systemDarkMode);
 
+		if (initialDarkMode) {
+			document.documentElement.setAttribute("data-theme", "dark");
+		} else {
+			document.documentElement.setAttribute("data-theme", "light");
+		}
+
+		return initialDarkMode;
+	});
 	useEffect(() => {
 		if (isDarkMode) {
-			document.body.setAttribute("data-theme", "dark");
+			document.documentElement.setAttribute("data-theme", "dark");
 			setThemeStorage("dark");
 		} else {
-			document.body.setAttribute("data-theme", "light");
+			document.documentElement.setAttribute("data-theme", "light");
 			setThemeStorage("light");
 		}
 	}, [isDarkMode]);

@@ -5,6 +5,9 @@ import {healthCheck} from "../../utils/request";
 
 import HomeHeader from "../../components/HomeHeader";
 import HomeFooter from "../../components/HomeFooter";
+import VietnamMap from "../../components/VietnamMap";
+import Loading from "../../components/Loading";
+import FloatingThemeToggle from "../../components/FloatingThemeToggle";
 import {
 	FiArrowRight,
 	FiShield,
@@ -28,7 +31,8 @@ const cx = classNames.bind(style);
 
 function Home() {
 	const [healthStatus, setHealthStatus] = useState("checking");
-
+	const [hoveredProvince, setHoveredProvince] = useState(null);
+	const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 	useEffect(() => {
 		const checkHealth = async () => {
 			try {
@@ -42,9 +46,41 @@ function Home() {
 				setHealthStatus("error");
 			}
 		};
-
 		checkHealth();
 	}, []);
+	useEffect(() => {
+		let ticking = false;
+		const updateHeaderVisibility = () => {
+			const mapSection = document.getElementById("map-section");
+			if (mapSection) {
+				const mapSectionTop = mapSection.offsetTop;
+				const scrollY = window.scrollY;
+				const windowHeight = window.innerHeight;
+
+				if (scrollY + windowHeight / 2 >= mapSectionTop) {
+					setIsHeaderVisible(false);
+				} else {
+					setIsHeaderVisible(true);
+				}
+			}
+
+			ticking = false;
+		};
+
+		const onScroll = () => {
+			if (!ticking) {
+				requestAnimationFrame(updateHeaderVisibility);
+				ticking = true;
+			}
+		};
+
+		window.addEventListener("scroll", onScroll);
+		return () => window.removeEventListener("scroll", onScroll);
+	}, []);
+
+	const handleProvinceHover = (provinceData) => {
+		setHoveredProvince(provinceData);
+	};
 	const getTreeColor = () => {
 		switch (healthStatus) {
 			case "healthy":
@@ -68,10 +104,9 @@ function Home() {
 				return "drop-shadow(0 0 20px rgba(113, 113, 122, 0.2))";
 		}
 	};
-
 	return (
 		<div className={cx("wrapper")}>
-			<HomeHeader />
+			<HomeHeader isVisible={isHeaderVisible} />
 			<div className={cx("content")}>
 				<section className={cx("hero")}>
 					{" "}
@@ -107,13 +142,17 @@ function Home() {
 						<div className={cx("hero-image")}>
 							<div className={cx("hero-visual")}>
 								{" "}
-								<FaTree
-									className={cx("main-icon")}
-									style={{
-										color: getTreeColor(),
-										filter: getTreeShadow(),
-									}}
-								/>
+								{healthStatus === "checking" ? (
+									<Loading size='120px' />
+								) : (
+									<FaTree
+										className={cx("main-icon")}
+										style={{
+											color: getTreeColor(),
+											filter: getTreeShadow(),
+										}}
+									/>
+								)}
 								<div className={cx("floating-cards")}>
 									<div className={cx("card", "card-1")}>
 										<FiHeart />
@@ -154,7 +193,7 @@ function Home() {
 							<div className={cx("stat-label")}>Tỉnh thành</div>
 						</div>
 					</div>
-				</section>{" "}
+				</section>
 				<section className={cx("features")}>
 					<div className={cx("section-content")}>
 						<h2 className={cx("section-title")}>
@@ -250,6 +289,56 @@ function Home() {
 									</div>
 								</div>
 								<div className={cx("feature-hover-effect")}></div>
+							</div>
+						</div>
+					</div>{" "}
+				</section>{" "}
+				<section className={cx("map-section")} id='map-section'>
+					{" "}
+					<div className={cx("map-layout")}>
+						<div className={cx("map-container-full")}>
+							<VietnamMap onProvinceHover={handleProvinceHover} />
+						</div>
+						<div className={cx("map-content")}>
+							<h2 className={cx("map-title")}>Chiến dịch gây quỹ trên toàn quốc</h2>
+							<p className={cx("map-description")}>
+								Khám phá các chiến dịch gây quỹ từ khắp 63 tỉnh thành Việt Nam. Hãy hover chuột
+								lên bản đồ để xem thông tin các tỉnh thành.
+							</p>{" "}
+							<div className={cx("map-stats")}>
+								<div className={cx("stat-item")}>
+									<div className={cx("stat-content")}>
+										<div className={cx("stat-number")}>
+											{hoveredProvince ? hoveredProvince.name : "63"}
+										</div>
+										<div className={cx("stat-label")}>
+											{hoveredProvince ? "Tỉnh được chọn" : "Tỉnh thành"}
+										</div>
+									</div>
+									<FaGlobe className={cx("stat-icon")} />
+								</div>
+								<div className={cx("stat-item")}>
+									<div className={cx("stat-content")}>
+										<div className={cx("stat-number")}>
+											{hoveredProvince ? `${hoveredProvince.campaigns}` : "10K+"}
+										</div>
+										<div className={cx("stat-label")}>
+											{hoveredProvince ? "Chiến dịch tại đây" : "Chiến dịch"}
+										</div>
+									</div>
+									<FiTrendingUp className={cx("stat-icon")} />
+								</div>
+								<div className={cx("stat-item")}>
+									<div className={cx("stat-content")}>
+										<div className={cx("stat-number")}>
+											{hoveredProvince ? `${Math.floor(hoveredProvince.campaigns * 2.5)}K+` : "2.5M+"}
+										</div>
+										<div className={cx("stat-label")}>
+											{hoveredProvince ? "Người tham gia" : "Người tham gia"}
+										</div>
+									</div>
+									<FiUsers className={cx("stat-icon")} />
+								</div>
 							</div>
 						</div>
 					</div>
@@ -351,9 +440,10 @@ function Home() {
 							</div>
 						</div>{" "}
 					</div>
-				</section>
+				</section>{" "}
 			</div>
 			<HomeFooter />
+			<FloatingThemeToggle isHeaderVisible={isHeaderVisible} />
 		</div>
 	);
 }

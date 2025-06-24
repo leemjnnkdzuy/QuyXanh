@@ -1,0 +1,227 @@
+.floating-theme-toggle {
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	z-index: 9999;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(20px) scale(0.9);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+	&.visible {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0) scale(1);
+		animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+	}
+
+	&.hidden {
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(20px) scale(0.9);
+		animation: fadeOutDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+	}
+
+	@media (max-width: 768px) {
+		bottom: 20px;
+		right: 20px;
+	}
+
+	@media (max-width: 480px) {
+		bottom: 16px;
+		right: 16px;
+	}
+}
+
+.theme-toggle-btn {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	border: none;
+	background: var(--background-secondary);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	overflow: hidden;
+	border: 2px solid var(--border-color);
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.1);
+		border-color: var(--primary-color-1);
+	}
+
+	&:active {
+		transform: translateY(0);
+		transition: transform 0.1s ease;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(
+			135deg,
+			var(--primary-color-1) 0%,
+			var(--primary-color-2) 100%
+		);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		border-radius: 50%;
+	}
+
+	&:hover::before {
+		opacity: 0.1;
+	}
+
+	&.dark-mode {
+		background: var(--background-secondary);
+		border-color: var(--border-color);
+
+		&:hover {
+			border-color: var(--primary-color-2);
+		}
+
+		&:hover::before {
+			background: linear-gradient(
+				135deg,
+				var(--primary-color-2) 0%,
+				var(--primary-color-1) 100%
+			);
+		}
+	}
+
+	@media (max-width: 768px) {
+		width: 56px;
+		height: 56px;
+	}
+
+	@media (max-width: 480px) {
+		width: 52px;
+		height: 52px;
+	}
+}
+
+.icon-wrapper {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-icon {
+	font-size: 2.4rem;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+	&.sun-icon {
+		color: var(--primary-color-2);
+		filter: drop-shadow(0 0 8px rgba(52, 168, 83, 0.3));
+		animation: sunRotate 8s linear infinite;
+	}
+
+	&.moon-icon {
+		color: var(--primary-color-1);
+		filter: drop-shadow(0 0 8px rgba(66, 133, 244, 0.3));
+		animation: moonFloat 3s ease-in-out infinite;
+	}
+
+	@media (max-width: 768px) {
+		font-size: 2.2rem;
+	}
+
+	@media (max-width: 480px) {
+		font-size: 2rem;
+	}
+}
+
+.theme-toggle-btn:hover .theme-icon {
+	transform: scale(1.1);
+
+	&.sun-icon {
+		filter: drop-shadow(0 0 12px rgba(52, 168, 83, 0.5));
+	}
+
+	&.moon-icon {
+		filter: drop-shadow(0 0 12px rgba(66, 133, 244, 0.5));
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px) scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes fadeOutDown {
+	from {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(20px) scale(0.9);
+	}
+}
+
+@keyframes sunRotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes moonFloat {
+	0%,
+	100% {
+		transform: translateY(0) rotate(0deg);
+	}
+	50% {
+		transform: translateY(-2px) rotate(5deg);
+	}
+}
+
+[data-theme="dark"] {
+	.theme-toggle-btn {
+		background: var(--background-secondary);
+		border-color: var(--border-color);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+
+		&:hover {
+			box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+		}
+	}
+}
+
+.floating-theme-toggle {
+	.theme-toggle-btn {
+		animation: themeSwitch 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+	}
+}
+
+@keyframes themeSwitch {
+	0% {
+		transform: scale(1) rotate(0deg);
+	}
+	50% {
+		transform: scale(0.8) rotate(180deg);
+	}
+	100% {
+		transform: scale(1) rotate(360deg);
+	}
+}

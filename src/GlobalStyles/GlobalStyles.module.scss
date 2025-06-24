@@ -9,10 +9,9 @@
 	--header-height: 64px;
 	--default-layout-header-height: 85px;
 	--default-layout-header-width: 1600px;
-
 	//key colors
-	--primary-color-1: #1f78ff;
-	--primary-color-2: #2dd881;
+	--primary-color-1: #4285f4;
+	--primary-color-2: #34a853;
 	--primary-color-3: #f7f9f9;
 	--primary-color-4: #272727;
 	--primary-color-5: #823329;
@@ -109,70 +108,66 @@
 }
 
 [data-theme="dark"] {
-	// Theme colors - Dark mode
-	--background-color: #18181b;
-	--background-secondary: #27272a;
-	--text-color: #fafafa;
-	--text-secondary: #a1a1aa;
-	--border-color: #3f3f46;
-	--primary-color: #2c39c4;
-	--primary-color-hover: #3f64dd;
+	// Theme colors - Dark mode - Improved harmony
+	--background-color: #0f1115;
+	--background-secondary: #1a1d23;
+	--text-color: #e8eaed;
+	--text-secondary: #9aa0a6;
+	--border-color: #2d3139;
+	--primary-color: #4285f4;
+	--primary-color-hover: #5294ff;
+	//key colors - Harmonized for dark theme
+	--primary-color-1: #4285f4;
+	--primary-color-2: #34a853;
+	--primary-color-3: #1a1d23;
+	--primary-color-4: #131722;
+	--primary-color-5: #ea4335;
+	// Sidebar colors - Dark mode - Improved
+	--sidebar-bg: #1a1d23;
+	--sidebar-hover: #2d3139;
+	--sidebar-active: rgba(66, 133, 244, 0.15);
+	--sidebar-text: #e8eaed;
+	--sidebar-border: #2d3139;
 
-	//key colors
-	--primary-color-1: #1f78ff;
-	--primary-color-2: #2dd881;
-	--primary-color-3: #f7f9f9;
-	--primary-color-4: #272727;
-	--primary-color-5: #823329;
+	// Component colors - Dark mode - Enhanced
+	--dropzone-bg: #1a1d23;
+	--button-bg: #2d3139;
+	--button-hover: #3c4043;
+	--button-text: #e8eaed;
+	--input-bg: #1a1d23;
+	--placeholder-color: #9aa0a6;
+	--loading-bg: #0f1115;
+	--loading-card-bg: #1a1d23;
+	--loading-spinner-color: #2d3139;
+	--first-letter-bg: rgba(45, 49, 57, 0.9);
+	--first-letter-color: #e8eaed;
+	// Status colors in dark mode - Harmonized
+	--status-success-bg: rgba(52, 168, 83, 0.15);
+	--status-success-text: #81c995;
+	--status-pending-bg: rgba(251, 188, 5, 0.15);
+	--status-pending-text: #fdd663;
 
-	// Sidebar colors - Dark mode
-	--sidebar-bg: #27272a;
-	--sidebar-hover: #3f3f46;
-	--sidebar-active: rgba(255, 255, 255, 0.1);
-	--sidebar-text: #ffffff;
-	--sidebar-border: #3f3f46;
-
-	// Component colors - Dark mode
-	--dropzone-bg: #2d2d2d;
-	--button-bg: #444444;
-	--button-hover: #555555;
-	--button-text: #ffffff;
-	--input-bg: #2d2d2d;
-	--placeholder-color: #6b7280;
-	--loading-bg: #000000;
-	--loading-card-bg: #2d2d2d;
-	--loading-spinner-color: #404040;
-	--first-letter-bg: rgba(68, 68, 68, 0.9);
-	--first-letter-color: #ffffff;
-
-	// Status colors in dark mode
-	--status-success-bg: rgba(21, 128, 61, 0.2);
-	--status-success-text: #4ade80;
-	--status-pending-bg: rgba(194, 65, 12, 0.2);
-	--status-pending-text: #fdba74;
-
-	// Attendance status colors in dark mode
-	--attendance-safe: #73d13d;
-	--attendance-warning: #ffc53d;
-	--attendance-danger: #ff7875;
-
-	// Grade colors - Dark mode
-	--grade-a: #4ade80;
-	--grade-b-plus: #38bdf8;
-	--grade-b: #0ea5e9;
-	--grade-b-minus: #06b6d4;
-	--grade-c-plus: #fbbf24;
-	--grade-c: #f59e0b;
-	--grade-c-minus: #d97706;
-	--grade-d-plus: #f87171;
-	--grade-d: #ef4444;
-	--grade-d-minus: #dc2626;
-	--grade-f-plus: #b91c1c;
-	--grade-f: #991b1b;
-	--grade-f-minus: #7f1d1d;
-	--grade-p: #818cf8;
-	--grade-i: #c084fc;
-	--grade-m: #fb7185;
+	// Attendance status colors in dark mode - Improved
+	--attendance-safe: #81c995;
+	--attendance-warning: #fdd663;
+	--attendance-danger: #f28b82;
+	// Grade colors - Dark mode - More harmonious
+	--grade-a: #81c995;
+	--grade-b-plus: #8ab4f8;
+	--grade-b: #669df6;
+	--grade-b-minus: #4285f4;
+	--grade-c-plus: #fdd663;
+	--grade-c: #fbbc04;
+	--grade-c-minus: #f9ab00;
+	--grade-d-plus: #f28b82;
+	--grade-d: #ea4335;
+	--grade-d-minus: #d93025;
+	--grade-f-plus: #d93025;
+	--grade-f: #c5221f;
+	--grade-f-minus: #b52d20;
+	--grade-p: #a78bfa;
+	--grade-i: #c58af9;
+	--grade-m: #f8a5c2;
 	--grade-bg-a: rgba(21, 128, 61, 0.2);
 	--grade-bg-b-plus: rgba(2, 132, 199, 0.2);
 	--grade-bg-b: rgba(3, 105, 161, 0.2);
@@ -189,19 +184,18 @@
 	--grade-bg-p: rgba(67, 56, 202, 0.2);
 	--grade-bg-i: rgba(126, 34, 206, 0.2);
 	--grade-bg-m: rgba(190, 18, 60, 0.2);
+	// Financial status colors - Dark mode - Harmonized
+	--finance-debt-color: #f28b82;
+	--finance-paid-color: #81c995;
+	--finance-remaining-color: #fdd663;
+	--finance-debt-bg: rgba(234, 67, 53, 0.15);
+	--finance-paid-bg: rgba(52, 168, 83, 0.15);
+	--finance-remaining-bg: rgba(251, 188, 5, 0.15);
 
-	// Financial status colors - Dark mode
-	--finance-debt-color: #f87171;
-	--finance-paid-color: #4ade80;
-	--finance-remaining-color: #fbbf24;
-	--finance-debt-bg: rgba(220, 38, 38, 0.2);
-	--finance-paid-bg: rgba(22, 163, 74, 0.2);
-	--finance-remaining-bg: rgba(217, 119, 6, 0.2);
-
-	// Scrollbar colors - Dark mode
-	--scrollbar-track: #27272a;
-	--scrollbar-thumb: rgba(75, 75, 75, 0.8);
-	--scrollbar-thumb-hover: rgba(128, 128, 128, 0.8);
+	// Scrollbar colors - Dark mode - Refined
+	--scrollbar-track: #1a1d23;
+	--scrollbar-thumb: rgba(154, 160, 166, 0.5);
+	--scrollbar-thumb-hover: rgba(154, 160, 166, 0.7);
 }
 
 * {
