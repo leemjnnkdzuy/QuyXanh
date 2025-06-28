@@ -9,22 +9,9 @@ import VietnamMap from "../../components/VietnamMap";
 import FloatingThemeToggle from "../../components/FloatingThemeToggle";
 import HeroSection from "../../components/HeroSection";
 import StatsSection from "../../components/StatsSection";
-import {
-	FiArrowRight,
-	FiShield,
-	FiUsers,
-	FiTrendingUp,
-	FiBookOpen,
-} from "react-icons/fi";
-import {
-	FaHandHoldingHeart,
-	FaGlobe,
-	FaMobile,
-	FaCheck,
-	FaLeaf,
-	FaDumbbell,
-} from "react-icons/fa";
-import {MdHealthAndSafety, MdCorporateFare} from "react-icons/md";
+import FeaturesSection from "../../components/FeaturesSection";
+import {FiArrowRight, FiShield, FiUsers, FiTrendingUp} from "react-icons/fi";
+import {FaGlobe, FaMobile, FaCheck} from "react-icons/fa";
 
 const cx = classNames.bind(style);
 
@@ -113,107 +100,8 @@ function Home() {
 					getTreeShadow={getTreeShadow}
 				/>
 				<StatsSection />
-				<section className={cx("features")}>
-					<div className={cx("section-content")}>
-						<h2 className={cx("section-title")}>
-							Khám phá các chiến dịch gây quỹ được truyền cảm hứng bởi những gì bạn quan tâm
-						</h2>
-						<div className={cx("feature-grid")}>
-							<div className={cx("feature-card")}>
-								<div className={cx("feature-icon-wrapper")}>
-									<MdHealthAndSafety className={cx("feature-icon")} />
-									<div className={cx("icon-bg")}></div>
-									<div className={cx("icon-ring")}></div>
-								</div>
-								<div className={cx("feature-content")}>
-									<h3>Y tế khẩn cấp</h3>
-									<p>Hỗ trợ chi phí điều trị, phẫu thuật và chăm sóc sức khỏe</p>
-									<div className={cx("feature-stats")}>
-										<span>2.5K+ chiến dịch</span>
-									</div>
-								</div>
-								<div className={cx("feature-hover-effect")}></div>
-							</div>
-							<div className={cx("feature-card")}>
-								<div className={cx("feature-icon-wrapper")}>
-									<FiBookOpen className={cx("feature-icon")} />
-									<div className={cx("icon-bg")}></div>
-									<div className={cx("icon-ring")}></div>
-								</div>
-								<div className={cx("feature-content")}>
-									<h3>Giáo dục</h3>
-									<p>Gây quỹ cho học phí, sách vở và thiết bị học tập</p>
-									<div className={cx("feature-stats")}>
-										<span>1.8K+ chiến dịch</span>
-									</div>
-								</div>
-								<div className={cx("feature-hover-effect")}></div>
-							</div>
-							<div className={cx("feature-card")}>
-								<div className={cx("feature-icon-wrapper")}>
-									<FaHandHoldingHeart className={cx("feature-icon")} />
-									<div className={cx("icon-bg")}></div>
-									<div className={cx("icon-ring")}></div>
-								</div>
-								<div className={cx("feature-content")}>
-									<h3>Từ thiện</h3>
-									<p>Ủng hộ các tổ chức phi lợi nhuận và hoạt động cộng đồng</p>
-									<div className={cx("feature-stats")}>
-										<span>3.2K+ chiến dịch</span>
-									</div>
-								</div>
-								<div className={cx("feature-hover-effect")}></div>
-							</div>
-							<div className={cx("feature-card")}>
-								<div className={cx("feature-icon-wrapper")}>
-									<MdCorporateFare className={cx("feature-icon")} />
-									<div className={cx("icon-bg")}></div>
-									<div className={cx("icon-ring")}></div>
-								</div>
-								<div className={cx("feature-content")}>
-									<h3>Kinh doanh</h3>
-									<p>Hỗ trợ khởi nghiệp và phát triển doanh nghiệp</p>
-									<div className={cx("feature-stats")}>
-										<span>1.5K+ chiến dịch</span>
-									</div>
-								</div>
-								<div className={cx("feature-hover-effect")}></div>
-							</div>
-							<div className={cx("feature-card")}>
-								<div className={cx("feature-icon-wrapper")}>
-									<FaLeaf className={cx("feature-icon")} />
-									<div className={cx("icon-bg")}></div>
-									<div className={cx("icon-ring")}></div>
-								</div>
-								<div className={cx("feature-content")}>
-									<h3>Môi trường</h3>
-									<p>Bảo vệ thiên nhiên và phát triển bền vững</p>
-									<div className={cx("feature-stats")}>
-										<span>900+ chiến dịch</span>
-									</div>
-								</div>
-								<div className={cx("feature-hover-effect")}></div>
-							</div>
-							<div className={cx("feature-card")}>
-								<div className={cx("feature-icon-wrapper")}>
-									<FaDumbbell className={cx("feature-icon")} />
-									<div className={cx("icon-bg")}></div>
-									<div className={cx("icon-ring")}></div>
-								</div>
-								<div className={cx("feature-content")}>
-									<h3>Thể thao</h3>
-									<p>Hỗ trợ vận động viên và các hoạt động thể thao</p>
-									<div className={cx("feature-stats")}>
-										<span>1.1K+ chiến dịch</span>
-									</div>
-								</div>
-								<div className={cx("feature-hover-effect")}></div>
-							</div>
-						</div>
-					</div>{" "}
-				</section>{" "}
+				<FeaturesSection />
 				<section className={cx("map-section")} id='map-section'>
-					{" "}
 					<div className={cx("map-layout")}>
 						<div className={cx("map-container-full")}>
 							<VietnamMap onProvinceHover={handleProvinceHover} />
@@ -223,7 +111,7 @@ function Home() {
 							<p className={cx("map-description")}>
 								Khám phá các chiến dịch gây quỹ từ khắp 63 tỉnh thành Việt Nam. Hãy hover chuột
 								lên bản đồ để xem thông tin các tỉnh thành.
-							</p>{" "}
+							</p>
 							<div className={cx("map-stats")}>
 								<div className={cx("stat-item")}>
 									<div className={cx("stat-content")}>
@@ -268,13 +156,13 @@ function Home() {
 							<div className={cx("trust-text")}>
 								<h2>Chúng tôi sẽ hỗ trợ bạn</h2>
 								<p>
-									QuyXanh là một nền tảng gây quỹ trực tuyến đáng tin cậy. Với{" "}
-									<strong>mức phí đơn giản</strong> và đội ngũ chuyên gia{" "}
+									QuyXanh là một nền tảng gây quỹ trực tuyến đáng tin cậy. Với
+									<strong>mức phí đơn giản</strong> và đội ngũ chuyên gia
 									<strong>Tin cậy & An toàn</strong> hỗ trợ bạn, bạn có thể gây quỹ hoặc quyên góp
 									với sự an tâm.
 								</p>
 								<button className={cx("trust-link")}>Đọc Cam kết Bảo đảm QuyXanh</button>
-							</div>{" "}
+							</div>
 							<div className={cx("trust-features")}>
 								<div className={cx("trust-feature")}>
 									<span>Không phí để bắt đầu</span>
@@ -295,7 +183,7 @@ function Home() {
 							</div>
 						</div>
 					</div>
-				</section>{" "}
+				</section>
 				<section className={cx("cta-section")}>
 					<div className={cx("section-content")}>
 						<h2 className={cx("cta-title")}>Sẵn sàng bắt đầu chiến dịch của bạn?</h2>
@@ -357,9 +245,9 @@ function Home() {
 									<FiShield className={cx("step-icon")} />
 								</div>
 							</div>
-						</div>{" "}
+						</div>
 					</div>
-				</section>{" "}
+				</section>
 			</div>
 			<HomeFooter />
 			<FloatingThemeToggle isHeaderVisible={isHeaderVisible} />
