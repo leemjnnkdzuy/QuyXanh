@@ -6,12 +6,14 @@ import "tippy.js/themes/light.css";
 import classNames from "classnames/bind";
 import style from "./VietnamMap.module.scss";
 import Loading from "../Loading";
+import {fetchVietnamMapData} from "../../utils/request";
 import {
 	MdLocationOn,
 	MdLocalFireDepartment,
 	MdBolt,
 	MdShowChart,
 	MdCampaign,
+	MdStar,
 } from "react-icons/md";
 
 const cx = classNames.bind(style);
@@ -81,21 +83,41 @@ const provincesData = {
 	"vn-300": {name: "Thái Nguyên", campaigns: 45},
 };
 
+const islandsData = {
+	"hoang-sa": {
+		name: "Quần đảo Hoàng Sa",
+		campaigns: 12,
+		coordinates: [112.3, 17.5],
+		type: "archipelago",
+	},
+	"truong-sa": {
+		name: "Quần đảo Trường Sa",
+		campaigns: 8,
+		coordinates: [114.2, 13],
+		type: "archipelago",
+	},
+};
+
 const VietnamMap = ({onProvinceHover}) => {
 	const [mapData, setMapData] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
-
 	useEffect(() => {
-		fetch("https://code.highcharts.com/mapdata/countries/vn/vn-all.topo.json")
-			.then((response) => response.json())
-			.then((data) => {
-				setMapData(data);
-				setIsLoading(false);
-			})
-			.catch((error) => {
+		const loadMapData = async () => {
+			try {
+				const response = await fetchVietnamMapData();
+				if (response.success) {
+					setMapData(response.data);
+				} else {
+					console.error("Error loading map data:", response.message);
+				}
+			} catch (error) {
 				console.error("Error loading map data:", error);
+			} finally {
 				setIsLoading(false);
-			});
+			}
+		};
+
+		loadMapData();
 	}, []);
 	const handleProvinceHover = useCallback(
 		(geo) => {
@@ -121,12 +143,12 @@ const VietnamMap = ({onProvinceHover}) => {
 		const provinceKey = geo.properties["hc-key"];
 		const data = provincesData[provinceKey];
 
-		if (!data) return "#e2e8f0";
+		if (!data) return "rgba(226, 232, 240, 0.4)";
 
-		if (data.campaigns > 150) return "var(--primary-color-1)";
-		if (data.campaigns > 80) return "var(--primary-color-2)";
-		if (data.campaigns > 40) return "#f59e0b";
-		return "#94a3b8";
+		if (data.campaigns > 150) return "rgba(59, 130, 246, 0.6)";
+		if (data.campaigns > 80) return "rgba(16, 185, 129, 0.5)";
+		if (data.campaigns > 40) return "rgba(245, 158, 11, 0.5)";
+		return "rgba(148, 163, 184, 0.4)";
 	}, []);
 	const createTooltipContent = useCallback((provinceData) => {
 		const activityLevel =
@@ -148,17 +170,20 @@ const VietnamMap = ({onProvinceHover}) => {
 				? MdBolt
 				: MdShowChart;
 
+		const isArchipelago = provinceData.type === "archipelago";
+		const displayType = isArchipelago ? "Quần đảo" : "Tỉnh/Thành phố";
+
 		return (
 			<div className={cx("modern-tooltip")}>
 				<div className={cx("tooltip-background")}></div>
 				<div className={cx("tooltip-content")}>
 					<div className={cx("province-header")}>
-						<div className={cx("province-icon")}>
-							<MdLocationOn />
+						<div className={cx("province-icon", {"archipelago-icon": isArchipelago})}>
+							{isArchipelago ? <MdStar /> : <MdLocationOn />}
 						</div>
 						<div className={cx("province-info")}>
 							<h3 className={cx("province-name")}>{provinceData.name}</h3>
-							<span className={cx("province-type")}>Tỉnh/Thành phố</span>
+							<span className={cx("province-type")}>{displayType}</span>
 						</div>
 					</div>
 
@@ -226,7 +251,6 @@ const VietnamMap = ({onProvinceHover}) => {
 						height={900}
 						className={cx("map-svg")}
 					>
-						{" "}
 						<Geographies geography={mapData}>
 							{({geographies}) =>
 								geographies.map((geo) => {
@@ -261,24 +285,22 @@ const VietnamMap = ({onProvinceHover}) => {
 												style={{
 													default: {
 														fill: getProvinceColor(geo),
-														stroke: "rgba(71, 85, 105, 0.3)",
+														stroke: "rgba(255, 255, 255, 0.4)",
 														strokeWidth: 0.8,
 														outline: "none",
-														transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+														transition: "all 0.2s ease",
 													},
 													hover: {
-														fill: "var(--primary-color-1)",
-														stroke: "var(--primary-color-2)",
-														strokeWidth: 2,
+														fill: getProvinceColor(geo),
+														stroke: "rgba(255, 255, 255, 0.7)",
+														strokeWidth: 1,
 														outline: "none",
-														filter: "brightness(1.1) saturate(1.2)",
 														cursor: "pointer",
-														transform: "scale(1.002)",
 													},
 													pressed: {
-														fill: "var(--primary-color-2)",
-														stroke: "var(--primary-color-1)",
-														strokeWidth: 2,
+														fill: getProvinceColor(geo),
+														stroke: "rgba(255, 255, 255, 0.8)",
+														strokeWidth: 1,
 														outline: "none",
 													},
 												}}
@@ -287,8 +309,80 @@ const VietnamMap = ({onProvinceHover}) => {
 									);
 								})
 							}
-						</Geographies>
-					</ComposableMap>{" "}
+						</Geographies>{" "}
+						{Object.entries(islandsData).map(([key, island]) => {
+							const [lon, lat] = island.coordinates;
+							const bounds = {
+								minLon: 102.0,
+								maxLon: 115.0,
+								minLat: 8.0,
+								maxLat: 24.0,
+							};
+
+							const mapWidth = 800;
+							const mapHeight = 900;
+							const x = ((lon - bounds.minLon) / (bounds.maxLon - bounds.minLon)) * mapWidth;
+							const y =
+								mapHeight -
+								((lat - bounds.minLat) / (bounds.maxLat - bounds.minLat)) * mapHeight;
+
+							const offsetX = key === "hoang-sa" ? -10 : -10;
+							const offsetY = key === "hoang-sa" ? 10 : 20;
+
+							return (
+								<Tippy
+									key={key}
+									content={createTooltipContent(island)}
+									followCursor={false}
+									delay={[150, 100]}
+									duration={[300, 200]}
+									animation='fade'
+									theme='modern-vietnam-map'
+									placement='top'
+									arrow={true}
+									interactive={false}
+									hideOnClick={false}
+									trigger='mouseenter'
+									offset={[0, 15]}
+									maxWidth={280}
+									zIndex={9999}
+									appendTo={() => document.body}
+								>
+									<g
+										className={cx("island-marker")}
+										transform={`translate(${x + offsetX}, ${y + offsetY})`}
+										onMouseEnter={() => onProvinceHover && onProvinceHover(island)}
+										onMouseLeave={() => onProvinceHover && onProvinceHover(null)}
+									>
+										<circle
+											cx='0'
+											cy='0'
+											r='25'
+											fill='transparent'
+											stroke='none'
+											style={{pointerEvents: "all"}}
+										/>
+										<circle
+											cx='0'
+											cy='0'
+											r='24'
+											fill='rgba(255, 215, 0, 0.3)'
+											stroke='rgba(255, 165, 0, 0.5)'
+											strokeWidth='1.5'
+											className={cx("island-background")}
+										/>
+										<path
+											d='M0 -10l3 6L10 -2l-5 5L6 10L0 6L-6 10L-5 3l-5-5L-3 -2L0 -10z'
+											fill='#FFD700'
+											stroke='#FFA500'
+											strokeWidth='1'
+											className={cx("island-star")}
+										/>
+									</g>
+								</Tippy>
+							);
+						})}
+					</ComposableMap>
 				</div>
 			</div>
 		</div>

@@ -6,18 +6,17 @@ import {healthCheck} from "../../utils/request";
 import HomeHeader from "../../components/HomeHeader";
 import HomeFooter from "../../components/HomeFooter";
 import VietnamMap from "../../components/VietnamMap";
-import Loading from "../../components/Loading";
 import FloatingThemeToggle from "../../components/FloatingThemeToggle";
+import HeroSection from "../../components/HeroSection";
+import StatsSection from "../../components/StatsSection";
 import {
 	FiArrowRight,
 	FiShield,
 	FiUsers,
 	FiTrendingUp,
-	FiHeart,
 	FiBookOpen,
 } from "react-icons/fi";
 import {
-	FaTree,
 	FaHandHoldingHeart,
 	FaGlobe,
 	FaMobile,
@@ -108,92 +107,12 @@ function Home() {
 		<div className={cx("wrapper")}>
 			<HomeHeader isVisible={isHeaderVisible} />
 			<div className={cx("content")}>
-				<section className={cx("hero")}>
-					{" "}
-					<div className={cx("hero-content")}>
-						<div className={cx("hero-text-wrapper")}>
-							<h1 className={cx("hero-title")}>
-								<span className={cx("highlight")}>#1</span> Nền tảng gây quỹ tại Việt Nam
-								<div className={cx("floating-dots")}>
-									<div className={cx("dot", "dot-1")}>
-										<div className={cx("dot-tail")}></div>
-									</div>
-									<div className={cx("dot", "dot-2")}>
-										<div className={cx("dot-tail")}></div>
-									</div>
-									<div className={cx("dot", "dot-3")}>
-										<div className={cx("dot-tail")}></div>
-									</div>
-									<div className={cx("dot", "dot-4")}>
-										<div className={cx("dot-tail")}></div>
-									</div>
-								</div>
-							</h1>
-							<h2 className={cx("hero-subtitle")}>
-								Những chiến dịch gây quỹ thành công bắt đầu từ đây
-							</h2>
-							<div className={cx("hero-cta-wrapper")}>
-								<button className={cx("hero-cta")}>
-									<span>Bắt đầu với QuyXanh</span>
-									<FiArrowRight className={cx("cta-icon")} />
-								</button>
-							</div>
-						</div>{" "}
-						<div className={cx("hero-image")}>
-							<div className={cx("hero-visual")}>
-								{" "}
-								{healthStatus === "checking" ? (
-									<Loading size='120px' />
-								) : (
-									<FaTree
-										className={cx("main-icon")}
-										style={{
-											color: getTreeColor(),
-											filter: getTreeShadow(),
-										}}
-									/>
-								)}
-								<div className={cx("floating-cards")}>
-									<div className={cx("card", "card-1")}>
-										<FiHeart />
-										<span>Giúp đỡ cộng đồng</span>
-									</div>
-									<div className={cx("card", "card-2")}>
-										<FiUsers />
-										<span>Kết nối yêu thương</span>
-									</div>
-									<div className={cx("card", "card-3")}>
-										<FiTrendingUp />
-										<span>Lan tỏa tích cực</span>
-									</div>
-								</div>
-							</div>
-							<p className={cx("hero-description")}>
-								Hơn <strong>500 triệu VNĐ</strong> được quyên góp mỗi tuần trên QuyXanh.*
-							</p>
-						</div>
-					</div>
-				</section>
-				<section className={cx("stats")}>
-					<div className={cx("stats-content")}>
-						<div className={cx("stat-item")}>
-							<div className={cx("stat-number")}>500Tr+</div>
-							<div className={cx("stat-label")}>VNĐ được quyên góp</div>
-						</div>
-						<div className={cx("stat-item")}>
-							<div className={cx("stat-number")}>1K+</div>
-							<div className={cx("stat-label")}>Chiến dịch thành công</div>
-						</div>
-						<div className={cx("stat-item")}>
-							<div className={cx("stat-number")}>100K+</div>
-							<div className={cx("stat-label")}>Người ủng hộ</div>
-						</div>
-						<div className={cx("stat-item")}>
-							<div className={cx("stat-number")}>63</div>
-							<div className={cx("stat-label")}>Tỉnh thành</div>
-						</div>
-					</div>
-				</section>
+				<HeroSection
+					healthStatus={healthStatus}
+					getTreeColor={getTreeColor}
+					getTreeShadow={getTreeShadow}
+				/>
+				<StatsSection />
 				<section className={cx("features")}>
 					<div className={cx("section-content")}>
 						<h2 className={cx("section-title")}>

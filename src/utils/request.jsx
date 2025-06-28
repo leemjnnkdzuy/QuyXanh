@@ -2,7 +2,6 @@ import axios from "axios";
 
 const BASE_API_URL = "http://localhost:3001";
 
-// Cấu hình axios instance
 const apiClient = axios.create({
 	baseURL: BASE_API_URL,
 	headers: {
@@ -10,7 +9,12 @@ const apiClient = axios.create({
 	},
 });
 
-// Interceptor để tự động thêm token vào headers
+const externalApiClient = axios.create({
+	headers: {
+		"Content-Type": "application/json",
+	},
+});
+
 apiClient.interceptors.request.use(
 	(config) => {
 		const token = localStorage.getItem("authToken");
@@ -46,7 +50,6 @@ const makeRequest = async (url, options = {}) => {
 		};
 	} catch (error) {
 		if (error.response) {
-			// Server responded with error status
 			return {
 				success: false,
 				data: error.response.data,
@@ -54,14 +57,12 @@ const makeRequest = async (url, options = {}) => {
 				status: error.response.status,
 			};
 		} else if (error.request) {
-			// Network error
 			return {
 				success: false,
 				message: "Network error occurred",
 				error: error.message,
 			};
 		} else {
-			// Other error
 			return {
 				success: false,
 				message: "An error occurred",
@@ -71,7 +72,50 @@ const makeRequest = async (url, options = {}) => {
 	}
 };
 
-// API Functions
+const makeExternalRequest = async (url, options = {}) => {
+	try {
+		const config = {
+			url,
+			method: options.method || "GET",
+			data: options.body ? JSON.parse(options.body) : undefined,
+			headers: {
+				...options.headers,
+			},
+			withCredentials: options.credentials === "include",
+		};
+
+		const response = await externalApiClient(config);
+
+		return {
+			success: true,
+			data: response.data,
+			message: response.data.message || "Success",
+			status: response.status,
+		};
+	} catch (error) {
+		if (error.response) {
+			return {
+				success: false,
+				data: error.response.data,
+				message: error.response.data?.message || "Server error occurred",
+				status: error.response.status,
+			};
+		} else if (error.request) {
+			return {
+				success: false,
+				message: "Network error occurred",
+				error: error.message,
+			};
+		} else {
+			return {
+				success: false,
+				message: "An error occurred",
+				error: error.message,
+			};
+		}
+	}
+};
+
 export const healthCheck = () => makeRequest("/health", {method: "GET"});
 
 export const register = (userData) => {
@@ -136,3 +180,11 @@ export const refreshToken = () =>
 	});
 
 export const getGoogleAuthUrl = () => `${BASE_API_URL}/api/users/auth/google`;
+
+export const fetchVietnamMapData = () =>
+	makeExternalRequest(
+		"https://code.highcharts.com/mapdata/countries/vn/vn-all.topo.json",
+		{
+			method: "GET",
+		}
+	);
