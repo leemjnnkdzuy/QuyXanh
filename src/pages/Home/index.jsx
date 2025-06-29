@@ -5,12 +5,12 @@ import {healthCheck} from "../../utils/request";
 
 import HomeHeader from "../../components/HomeHeader";
 import HomeFooter from "../../components/HomeFooter";
-import VietnamMap from "../../components/VietnamMap";
 import FloatingThemeToggle from "../../components/FloatingThemeToggle";
 import HeroSection from "../../components/HeroSection";
 import StatsSection from "../../components/StatsSection";
 import FeaturesSection from "../../components/FeaturesSection";
-import {FiArrowRight, FiShield, FiUsers, FiTrendingUp} from "react-icons/fi";
+import MapSection from "../../components/MapSection";
+import {FiArrowRight, FiShield} from "react-icons/fi";
 import {FaGlobe, FaMobile, FaCheck} from "react-icons/fa";
 
 const cx = classNames.bind(style);
@@ -101,55 +101,10 @@ function Home() {
 				/>
 				<StatsSection />
 				<FeaturesSection />
-				<section className={cx("map-section")} id='map-section'>
-					<div className={cx("map-layout")}>
-						<div className={cx("map-container-full")}>
-							<VietnamMap onProvinceHover={handleProvinceHover} />
-						</div>
-						<div className={cx("map-content")}>
-							<h2 className={cx("map-title")}>Chiến dịch gây quỹ trên toàn quốc</h2>
-							<p className={cx("map-description")}>
-								Khám phá các chiến dịch gây quỹ từ khắp 63 tỉnh thành Việt Nam. Hãy hover chuột
-								lên bản đồ để xem thông tin các tỉnh thành.
-							</p>
-							<div className={cx("map-stats")}>
-								<div className={cx("stat-item")}>
-									<div className={cx("stat-content")}>
-										<div className={cx("stat-number")}>
-											{hoveredProvince ? hoveredProvince.name : "63"}
-										</div>
-										<div className={cx("stat-label")}>
-											{hoveredProvince ? "Tỉnh được chọn" : "Tỉnh thành"}
-										</div>
-									</div>
-									<FaGlobe className={cx("stat-icon")} />
-								</div>
-								<div className={cx("stat-item")}>
-									<div className={cx("stat-content")}>
-										<div className={cx("stat-number")}>
-											{hoveredProvince ? `${hoveredProvince.campaigns}` : "10K+"}
-										</div>
-										<div className={cx("stat-label")}>
-											{hoveredProvince ? "Chiến dịch tại đây" : "Chiến dịch"}
-										</div>
-									</div>
-									<FiTrendingUp className={cx("stat-icon")} />
-								</div>
-								<div className={cx("stat-item")}>
-									<div className={cx("stat-content")}>
-										<div className={cx("stat-number")}>
-											{hoveredProvince ? `${Math.floor(hoveredProvince.campaigns * 2.5)}K+` : "2.5M+"}
-										</div>
-										<div className={cx("stat-label")}>
-											{hoveredProvince ? "Người tham gia" : "Người tham gia"}
-										</div>
-									</div>
-									<FiUsers className={cx("stat-icon")} />
-								</div>
-							</div>
-						</div>
-					</div>
-				</section>
+				<MapSection
+					hoveredProvince={hoveredProvince}
+					onProvinceHover={handleProvinceHover}
+				/>
 				<section className={cx("trust")}>
 					<div className={cx("section-content")}>
 						<div className={cx("trust-content")}>
