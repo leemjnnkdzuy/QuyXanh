@@ -51,12 +51,6 @@
 .map-container-full {
 	position: relative;
 	overflow: hidden;
-	background: linear-gradient(
-		135deg,
-		var(--primary-color-4) 0%,
-		var(--background-secondary) 50%,
-		var(--primary-color-3) 100%
-	);
 
 	@media (max-width: 768px) {
 		min-height: 60vh;

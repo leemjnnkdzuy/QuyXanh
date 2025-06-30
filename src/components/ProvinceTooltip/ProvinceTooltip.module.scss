@@ -1,0 +1,336 @@
+// Modern Tooltip Styles
+.modern-tooltip {
+	position: relative;
+	width: 280px;
+	padding: 0;
+	border-radius: 16px;
+	overflow: hidden;
+	background: transparent;
+}
+
+.tooltip-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.95) 0%,
+		rgba(248, 250, 252, 0.98) 100%
+	);
+	backdrop-filter: blur(20px) saturate(180%);
+	border: 1px solid rgba(71, 85, 105, 0.1);
+	border-radius: 16px;
+	z-index: -1;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient();
+		border-radius: 16px;
+	}
+}
+
+.tooltip-content {
+	padding: 20px;
+	position: relative;
+	z-index: 1;
+}
+
+.province-header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 16px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid rgba(71, 85, 105, 0.08);
+}
+
+.province-icon {
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(
+		135deg,
+		var(--primary-color-1),
+		var(--primary-color-2)
+	);
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(31, 120, 255, 0.2);
+	color: white;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+	&:hover {
+		transform: scale(1.05);
+		box-shadow: 0 4px 12px rgba(31, 120, 255, 0.3);
+	}
+
+	&.archipelago-icon {
+		background: linear-gradient(135deg, #ffd700, #ffa500);
+		box-shadow: 0 2px 8px rgba(255, 165, 0, 0.4);
+
+		&:hover {
+			box-shadow: 0 4px 12px rgba(255, 165, 0, 0.6);
+		}
+	}
+
+	svg {
+		width: 18px;
+		height: 18px;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+}
+
+.province-info {
+	flex: 1;
+}
+
+.province-name {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--text-color);
+	margin: 0 0 2px 0;
+	line-height: 1.2;
+	background: linear-gradient(
+		135deg,
+		var(--primary-color-1),
+		var(--primary-color-2)
+	);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.province-type {
+	font-size: 11px;
+	color: var(--text-secondary);
+	opacity: 0.8;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.stats-container {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.stat-item {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px;
+	border-radius: 12px;
+	background: rgba(248, 250, 252, 0.6);
+	border: 1px solid rgba(71, 85, 105, 0.05);
+	transition: all 0.3s ease;
+
+	&.primary-stat {
+		background: linear-gradient();
+		border-color: rgba(31, 120, 255, 0.15);
+	}
+
+	&.activity-stat {
+		background: linear-gradient();
+		border-color: rgba(45, 216, 129, 0.15);
+	}
+}
+
+.stat-icon {
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	color: var(--primary-color-1);
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+	&:hover {
+		transform: scale(1.1);
+		background: rgba(255, 255, 255, 0.95);
+		box-shadow: 0 2px 8px rgba(31, 120, 255, 0.2);
+	}
+
+	svg {
+		width: 14px;
+		height: 14px;
+		filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+}
+
+.stat-content {
+	flex: 1;
+	min-width: 0;
+}
+
+.stat-number {
+	font-size: 18px;
+	font-weight: 800;
+	color: var(--primary-color-1);
+	line-height: 1;
+	margin-bottom: 2px;
+}
+
+.stat-value {
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+	margin-bottom: 2px;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+
+	&.high {
+		color: #ef4444;
+	}
+
+	&.medium {
+		color: #f59e0b;
+	}
+
+	&.low {
+		color: #10b981;
+	}
+}
+
+.stat-label {
+	font-size: 10px;
+	color: var(--text-secondary);
+	opacity: 0.8;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+}
+
+.tooltip-footer {
+	padding-top: 8px;
+	border-top: 1px solid rgba(71, 85, 105, 0.08);
+	text-align: center;
+}
+
+.ranking-info {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ranking-text {
+	font-size: 11px;
+	color: var(--text-secondary);
+	opacity: 0.9;
+	font-weight: 500;
+	background: rgba(71, 85, 105, 0.05);
+	padding: 4px 8px;
+	border-radius: 6px;
+	border: 1px solid rgba(71, 85, 105, 0.08);
+}
+
+// Dark theme styles
+[data-theme="dark"] {
+	.tooltip-background {
+		background: linear-gradient(
+			135deg,
+			rgba(26, 29, 35, 0.95) 0%,
+			rgba(45, 49, 57, 0.98) 100%
+		);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.province-header {
+		border-bottom-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.province-name {
+		color: var(--text-color);
+	}
+
+	.stat-item {
+		background: rgba(45, 49, 57, 0.6);
+		border-color: rgba(255, 255, 255, 0.05);
+
+		&.primary-stat {
+			background: linear-gradient(
+				135deg,
+				rgba(31, 120, 255, 0.1) 0%,
+				rgba(16, 185, 129, 0.05) 100%
+			);
+			border-color: rgba(31, 120, 255, 0.2);
+		}
+
+		&.activity-stat {
+			background: linear-gradient(
+				135deg,
+				rgba(16, 185, 129, 0.1) 0%,
+				rgba(45, 216, 129, 0.05) 100%
+			);
+			border-color: rgba(16, 185, 129, 0.2);
+		}
+	}
+
+	.stat-icon {
+		background: rgba(26, 29, 35, 0.8);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+		&:hover {
+			background: rgba(26, 29, 35, 0.9);
+			box-shadow: 0 2px 8px rgba(31, 120, 255, 0.3);
+		}
+	}
+
+	.tooltip-footer {
+		border-top-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.ranking-text {
+		background: rgba(45, 49, 57, 0.8);
+		border-color: rgba(255, 255, 255, 0.1);
+		color: var(--text-secondary);
+	}
+}
+
+:global(.tippy-box[data-theme~="modern-vietnam-map"]) {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+	color: var(--text-color);
+	border-radius: 16px;
+	backdrop-filter: blur(20px);
+	padding: 0 !important;
+	max-width: 300px !important;
+	animation: modernTooltipSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transform-origin: bottom center;
+}
+
+:global(.tippy-box[data-theme~="modern-vietnam-map"] .tippy-arrow::before) {
+	border-top-color: rgba(255, 255, 255, 0.95);
+}
+
+@keyframes modernTooltipSlideIn {
+	from {
+		opacity: 0;
+		transform: scale(0.92) translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+[data-theme="dark"] {
+	:global(.tippy-box[data-theme~="modern-vietnam-map"] .tippy-arrow::before) {
+		border-top-color: rgba(26, 29, 35, 0.95);
+	}
+}
