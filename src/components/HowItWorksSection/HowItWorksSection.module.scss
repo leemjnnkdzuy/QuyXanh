@@ -1,0 +1,152 @@
+.how-it-works {
+	padding: 120px 0;
+	background: var(--background-secondary);
+
+	.steps {
+		display: flex;
+		flex-direction: column;
+		gap: 80px;
+
+		@media (max-width: 768px) {
+			gap: 60px;
+		}
+	}
+
+	.step {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: 40px;
+		align-items: center;
+		padding: 40px;
+		background: var(--background-color);
+		border-radius: 24px;
+		box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+		border: 1px solid var(--border-color);
+		transition: all 0.3s ease;
+
+		&:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
+		}
+
+		@media (max-width: 968px) {
+			grid-template-columns: 1fr;
+			text-align: center;
+			gap: 24px;
+		}
+
+		@media (max-width: 768px) {
+			padding: 32px 24px;
+		}
+
+		.step-number {
+			width: 80px;
+			height: 80px;
+			background: linear-gradient(
+				135deg,
+				var(--primary-color-1) 0%,
+				var(--primary-color-2) 100%
+			);
+			color: white;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 2.4rem;
+			font-weight: 900;
+			box-shadow: 0 8px 24px rgba(31, 120, 255, 0.3);
+
+			@media (max-width: 968px) {
+				margin: 0 auto;
+			}
+
+			@media (max-width: 480px) {
+				width: 60px;
+				height: 60px;
+				font-size: 2rem;
+			}
+		}
+
+		.step-content {
+			h3 {
+				font-size: 2.4rem;
+				font-weight: 700;
+				color: var(--text-color);
+				margin-bottom: 16px;
+				line-height: 1.3;
+
+				@media (max-width: 768px) {
+					font-size: 2rem;
+				}
+			}
+
+			p {
+				font-size: 1.6rem;
+				color: var(--text-secondary);
+				line-height: 1.6;
+				margin-bottom: 20px;
+			}
+
+			.step-link {
+				color: var(--primary-color-1);
+				font-weight: 600;
+				font-size: 1.5rem;
+				background: none;
+				border: none;
+				cursor: pointer;
+				text-decoration: underline;
+				transition: all 0.3s ease;
+
+				&:hover {
+					color: var(--primary-color-2);
+					text-decoration: none;
+				}
+			}
+		}
+
+		.step-image {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			@media (max-width: 968px) {
+				order: -1;
+			}
+
+			.step-icon {
+				font-size: 8rem;
+				color: var(--primary-color-2);
+				filter: drop-shadow(0 0 20px rgba(45, 216, 129, 0.2));
+
+				@media (max-width: 480px) {
+					font-size: 6rem;
+				}
+			}
+		}
+	}
+}
+
+.section-content {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 24px;
+}
+
+.section-title {
+	font-size: 4rem;
+	font-weight: 800;
+	color: var(--text-color);
+	text-align: center;
+	margin-bottom: 80px;
+	line-height: 1.2;
+
+	@media (max-width: 768px) {
+		font-size: 3rem;
+		margin-bottom: 60px;
+	}
+
+	@media (max-width: 480px) {
+		font-size: 2.5rem;
+		margin-bottom: 40px;
+	}
+}
