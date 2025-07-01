@@ -1,7 +1,7 @@
 .up-to-begin-toggle {
 	position: fixed;
-	bottom: 24px; // Cùng bottom với FloatingThemeToggle
-	right: 96px; // Đặt bên trái FloatingThemeToggle (24px + 60px + 12px khoảng cách)
+	bottom: 24px;
+	right: 96px;
 	width: 56px;
 	height: 56px;
 	background: var(--primary-color-1);
@@ -47,8 +47,8 @@
 	@media (max-width: 768px) {
 		width: 48px;
 		height: 48px;
-		right: 88px; // Cùng bottom với FloatingThemeToggle trên tablet (20px + 60px + 8px)
-		bottom: 20px; // Cùng bottom với FloatingThemeToggle trên tablet
+		right: 88px;
+		bottom: 20px;
 
 		.arrow-icon {
 			font-size: 2rem;
@@ -56,7 +56,7 @@
 	}
 
 	@media (max-width: 480px) {
-		right: 80px; // Cùng bottom với FloatingThemeToggle trên mobile (16px + 60px + 4px)
-		bottom: 16px; // Cùng bottom với FloatingThemeToggle trên mobile
+		right: 80px;
+		bottom: 16px;
 	}
 }

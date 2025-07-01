@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import classNames from "classnames/bind";
 import style from "./Home.module.scss";
-import {healthCheck} from "../../utils/request";
 
 import HomeHeader from "../../components/HomeHeader";
 import HomeFooter from "../../components/HomeFooter";
@@ -17,24 +16,9 @@ import UpToBeginToggle from "../../components/UpToBeginToggle";
 const cx = classNames.bind(style);
 
 function Home() {
-	const [healthStatus, setHealthStatus] = useState("checking");
 	const [hoveredProvince, setHoveredProvince] = useState(null);
 	const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-	useEffect(() => {
-		const checkHealth = async () => {
-			try {
-				const response = await healthCheck();
-				if (response.success) {
-					setHealthStatus("healthy");
-				} else {
-					setHealthStatus("unhealthy");
-				}
-			} catch (error) {
-				setHealthStatus("error");
-			}
-		};
-		checkHealth();
-	}, []);
+
 	useEffect(() => {
 		let ticking = false;
 		const updateHeaderVisibility = () => {
@@ -68,38 +52,12 @@ function Home() {
 	const handleProvinceHover = (provinceData) => {
 		setHoveredProvince(provinceData);
 	};
-	const getTreeColor = () => {
-		switch (healthStatus) {
-			case "healthy":
-				return "var(--primary-color-2)";
-			case "unhealthy":
-			case "error":
-				return "var(--primary-color-5)";
-			default:
-				return "var(--text-secondary)";
-		}
-	};
 
-	const getTreeShadow = () => {
-		switch (healthStatus) {
-			case "healthy":
-				return "drop-shadow(0 0 20px rgba(45, 216, 129, 0.3))";
-			case "unhealthy":
-			case "error":
-				return "drop-shadow(0 0 20px rgba(130, 51, 41, 0.3))";
-			default:
-				return "drop-shadow(0 0 20px rgba(113, 113, 122, 0.2))";
-		}
-	};
 	return (
 		<div className={cx("wrapper")}>
 			<HomeHeader isVisible={isHeaderVisible} />
 			<div className={cx("content")}>
-				<HeroSection
-					healthStatus={healthStatus}
-					getTreeColor={getTreeColor}
-					getTreeShadow={getTreeShadow}
-				/>
+				<HeroSection/>
 				<StatsSection />
 				<FeaturesSection />
 				<MapSection

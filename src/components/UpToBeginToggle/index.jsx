@@ -14,7 +14,6 @@ function UpToBeginToggle() {
 			const documentHeight = document.documentElement.scrollHeight;
 			const windowHeight = window.innerHeight;
 
-			// Hiển thị nút khi cuộn xuống gần cuối trang (80% chiều cao trang)
 			const scrollPercentage = (scrollTop + windowHeight) / documentHeight;
 			setIsVisible(scrollPercentage > 0.8);
 		};
@@ -24,6 +23,8 @@ function UpToBeginToggle() {
 	}, []);
 
 	const scrollToTop = () => {
+		window.dispatchEvent(new CustomEvent("scrollToTop"));
+
 		window.scrollTo({
 			top: 0,
 			behavior: "smooth",

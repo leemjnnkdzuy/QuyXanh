@@ -4,10 +4,52 @@ import style from "./HeroSection.module.scss";
 import Loading from "../Loading";
 import {FiArrowRight, FiHeart, FiUsers, FiTrendingUp} from "react-icons/fi";
 import {FaTree} from "react-icons/fa";
+import {useEffect, useState} from "react";
+import {healthCheck} from "../../utils/request";
 
 const cx = classNames.bind(style);
 
-function HeroSection({healthStatus, getTreeColor, getTreeShadow}) {
+function HeroSection() {
+	const [healthStatus, setHealthStatus] = useState("checking");
+
+	useEffect(() => {
+		const checkHealth = async () => {
+			try {
+				const response = await healthCheck();
+				if (response.success) {
+					setHealthStatus("healthy");
+				} else {
+					setHealthStatus("unhealthy");
+				}
+			} catch (error) {
+				setHealthStatus("error");
+			}
+		};
+		checkHealth();
+	}, []);
+	const getTreeColor = () => {
+		switch (healthStatus) {
+			case "healthy":
+				return "var(--primary-color-2)";
+			case "unhealthy":
+			case "error":
+				return "var(--primary-color-5)";
+			default:
+				return "var(--text-secondary)";
+		}
+	};
+
+	const getTreeShadow = () => {
+		switch (healthStatus) {
+			case "healthy":
+				return "drop-shadow(0 0 20px rgba(45, 216, 129, 0.3))";
+			case "unhealthy":
+			case "error":
+				return "drop-shadow(0 0 20px rgba(130, 51, 41, 0.3))";
+			default:
+				return "drop-shadow(0 0 20px rgba(113, 113, 122, 0.2))";
+		}
+	};
 	return (
 		<section className={cx("hero")}>
 			<div className={cx("hero-content")}>
