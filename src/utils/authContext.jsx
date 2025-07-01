@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import {login as loginApi, logout as logoutApi} from "./request";
-import Loading from "../components/Loading";
 
 const AuthContext = createContext(null);
 
@@ -120,10 +119,6 @@ export const AuthProvider = ({children}) => {
 		login,
 		logout: handleLogout,
 	};
-
-	if (loading) {
-		return <Loading />;
-	}
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

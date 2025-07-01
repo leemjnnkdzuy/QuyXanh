@@ -1,55 +1,12 @@
 import React from "react";
 import classNames from "classnames/bind";
 import style from "./HeroSection.module.scss";
-import Loading from "../Loading";
 import {FiArrowRight, FiHeart, FiUsers, FiTrendingUp} from "react-icons/fi";
 import {FaTree} from "react-icons/fa";
-import {useEffect, useState} from "react";
-import {healthCheck} from "../../utils/request";
 
 const cx = classNames.bind(style);
 
 function HeroSection() {
-	const [healthStatus, setHealthStatus] = useState("checking");
-
-	useEffect(() => {
-		const checkHealth = async () => {
-			try {
-				const response = await healthCheck();
-				if (response.success) {
-					setHealthStatus("healthy");
-				} else {
-					setHealthStatus("unhealthy");
-				}
-			} catch (error) {
-				setHealthStatus("error");
-			}
-		};
-		checkHealth();
-	}, []);
-	const getTreeColor = () => {
-		switch (healthStatus) {
-			case "healthy":
-				return "var(--primary-color-2)";
-			case "unhealthy":
-			case "error":
-				return "var(--primary-color-5)";
-			default:
-				return "var(--text-secondary)";
-		}
-	};
-
-	const getTreeShadow = () => {
-		switch (healthStatus) {
-			case "healthy":
-				return "drop-shadow(0 0 20px rgba(45, 216, 129, 0.3))";
-			case "unhealthy":
-			case "error":
-				return "drop-shadow(0 0 20px rgba(130, 51, 41, 0.3))";
-			default:
-				return "drop-shadow(0 0 20px rgba(113, 113, 122, 0.2))";
-		}
-	};
 	return (
 		<section className={cx("hero")}>
 			<div className={cx("hero-content")}>
@@ -83,17 +40,13 @@ function HeroSection() {
 				</div>
 				<div className={cx("hero-image")}>
 					<div className={cx("hero-visual")}>
-						{healthStatus === "checking" ? (
-							<Loading size='120px' />
-						) : (
-							<FaTree
-								className={cx("main-icon")}
-								style={{
-									color: getTreeColor(),
-									filter: getTreeShadow(),
-								}}
-							/>
-						)}
+						<FaTree
+							className={cx("main-icon")}
+							style={{
+								color: "var(--primary-color-2)",
+								filter: "drop-shadow(0 0 20px rgba(45, 216, 129, 0.3))",
+							}}
+						/>
 						<div className={cx("floating-cards")}>
 							<div className={cx("card", "card-1")}>
 								<FiHeart />
