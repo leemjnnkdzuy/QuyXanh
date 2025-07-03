@@ -1,4 +1,4 @@
-import React from "react";
+	import React from "react";
 import classNames from "classnames/bind";
 import style from "./StatsSection.module.scss";
 import {FiTrendingUp, FiUsers, FiMapPin, FiDollarSign} from "react-icons/fi";

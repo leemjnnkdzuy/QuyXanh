@@ -115,9 +115,6 @@ function FeaturesSection() {
 								</div>
 							</div>
 						</div>
-
-						<div className={cx("vertical-divider")}></div>
-
 						<div className={cx("cards-section")}>
 							<div className={cx("feature-grid")}>
 								<div className={cx("grid-row", "row-1")}>
