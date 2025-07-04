@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import style from "./HeroSection.module.scss";
 import {FiArrowRight, FiHeart, FiUsers, FiTrendingUp} from "react-icons/fi";
 import {FaTree} from "react-icons/fa";
@@ -7,12 +8,14 @@ import {FaTree} from "react-icons/fa";
 const cx = classNames.bind(style);
 
 function HeroSection() {
+	const {t} = useTranslation();
+
 	return (
 		<section className={cx("hero")}>
 			<div className={cx("hero-content")}>
 				<div className={cx("hero-text-wrapper")}>
 					<h1 className={cx("hero-title")}>
-						<span className={cx("highlight")}>#1</span> Nền tảng gây quỹ tại Việt Nam
+						<span className={cx("highlight")}>#1</span> {t("hero.title").replace("#1 ", "")}
 						<div className={cx("floating-dots")}>
 							<div className={cx("dot", "dot-1")}>
 								<div className={cx("dot-tail")}></div>
@@ -28,12 +31,10 @@ function HeroSection() {
 							</div>
 						</div>
 					</h1>
-					<h2 className={cx("hero-subtitle")}>
-						Những chiến dịch gây quỹ thành công bắt đầu từ đây
-					</h2>
+					<h2 className={cx("hero-subtitle")}>{t("hero.subtitle")}</h2>
 					<div className={cx("hero-cta-wrapper")}>
 						<button className={cx("hero-cta")}>
-							<span>Bắt đầu với QuyXanh</span>
+							<span>{t("hero.cta")}</span>
 							<FiArrowRight className={cx("cta-icon")} />
 						</button>
 					</div>
@@ -50,21 +51,19 @@ function HeroSection() {
 						<div className={cx("floating-cards")}>
 							<div className={cx("card", "card-1")}>
 								<FiHeart />
-								<span>Giúp đỡ cộng đồng</span>
+								<span>{t("hero.community")}</span>
 							</div>
 							<div className={cx("card", "card-2")}>
 								<FiUsers />
-								<span>Kết nối yêu thương</span>
+								<span>{t("hero.connect")}</span>
 							</div>
 							<div className={cx("card", "card-3")}>
 								<FiTrendingUp />
-								<span>Lan tỏa tích cực</span>
+								<span>{t("hero.spread")}</span>
 							</div>
 						</div>
 					</div>
-					<p className={cx("hero-description")}>
-						Hơn <strong>500 triệu VNĐ</strong> được quyên góp mỗi tuần trên QuyXanh.*
-					</p>
+					<p className={cx("hero-description")}>{t("hero.description")}</p>
 				</div>
 			</div>
 		</section>

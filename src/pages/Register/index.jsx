@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {FiArrowLeft} from "react-icons/fi";
 import {FaTree} from "react-icons/fa";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import {register as registerApi} from "../../utils/request";
 import styles from "./Register.module.scss";
 
@@ -10,6 +11,7 @@ const cx = classNames.bind(styles);
 
 function Register() {
 	const navigate = useNavigate();
+	const {t} = useTranslation();
 	const [formData, setFormData] = useState({
 		firstName: "",
 		lastName: "",
@@ -44,44 +46,42 @@ function Register() {
 		const newErrors = {};
 
 		if (!formData.firstName.trim()) {
-			newErrors.firstName = "Họ là bắt buộc";
+			newErrors.firstName = t("validation.firstNameRequired");
 		}
 		if (!formData.lastName.trim()) {
-			newErrors.lastName = "Tên là bắt buộc";
+			newErrors.lastName = t("validation.lastNameRequired");
 		}
 
 		if (!formData.username.trim()) {
-			newErrors.username = "Tên người dùng là bắt buộc";
+			newErrors.username = t("validation.usernameRequired");
 		} else if (formData.username.length < 3) {
-			newErrors.username = "Tên người dùng phải có ít nhất 3 ký tự";
+			newErrors.username = t("validation.usernameMinLength");
 		} else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-			newErrors.username =
-				"Tên người dùng chỉ được chứa chữ cái, số và dấu gạch dưới";
+			newErrors.username = t("validation.usernameFormat");
 		}
 
 		if (!formData.email) {
-			newErrors.email = "Email là bắt buộc";
+			newErrors.email = t("validation.emailRequired");
 		} else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-			newErrors.email = "Email không hợp lệ";
+			newErrors.email = t("validation.emailInvalid");
 		}
 
 		if (!formData.password) {
-			newErrors.password = "Mật khẩu là bắt buộc";
+			newErrors.password = t("validation.passwordRequired");
 		} else if (formData.password.length < 8) {
-			newErrors.password = "Mật khẩu phải có ít nhất 8 ký tự";
+			newErrors.password = t("validation.passwordMinLength8");
 		} else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-			newErrors.password =
-				"Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường và 1 số";
+			newErrors.password = t("validation.passwordComplexity");
 		}
 
 		if (!formData.confirmPassword) {
-			newErrors.confirmPassword = "Xác nhận mật khẩu là bắt buộc";
+			newErrors.confirmPassword = t("validation.confirmPasswordRequired");
 		} else if (formData.password !== formData.confirmPassword) {
-			newErrors.confirmPassword = "Mật khẩu xác nhận không khớp";
+			newErrors.confirmPassword = t("validation.passwordMismatch");
 		}
 
 		if (!formData.agreeToTerms) {
-			newErrors.agreeToTerms = "Bạn phải đồng ý với điều khoản sử dụng";
+			newErrors.agreeToTerms = t("validation.mustAgreeToTerms");
 		}
 
 		setErrors(newErrors);
@@ -100,18 +100,16 @@ function Register() {
 
 			if (response.success) {
 				setShowVerification(true);
-				setSuccessMessage(
-					"Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản."
-				);
+				setSuccessMessage(t("auth.successMessage", {email: formData.email}));
 			} else {
 				setErrors({
-					submit: response.message || "Đăng ký thất bại",
+					submit: response.message || t("messages.error.registrationFailed"),
 				});
 			}
 		} catch (error) {
 			console.error("Registration error:", error);
 			setErrors({
-				submit: "Có lỗi xảy ra, vui lòng thử lại",
+				submit: t("messages.error.genericError"),
 			});
 		} finally {
 			setIsLoading(false);
@@ -125,7 +123,7 @@ function Register() {
 				<button
 					className={cx("backToHome")}
 					onClick={() => navigate("/")}
-					title='Quay về trang chủ'
+					title={t("auth.backToHome")}
 				>
 					<FiArrowLeft className={cx("backIcon")} />
 					<FaTree className={cx("logoIcon")} />
@@ -133,10 +131,9 @@ function Register() {
 
 				<div className={cx("registerCard")}>
 					<div className={cx("registerHeader")}>
-						<h1 className={cx("title")}>Đăng ký thành công!</h1>
+						<h1 className={cx("title")}>{t("auth.successTitle")}</h1>
 						<p className={cx("subtitle")}>
-							Chúng tôi đã gửi mã xác thực đến email <strong>{formData.email}</strong>. Vui
-							lòng kiểm tra email và làm theo hướng dẫn để xác thực tài khoản.
+							{t("auth.successMessage", {email: formData.email})}
 						</p>
 					</div>
 					<div className={cx("verificationActions")}>
@@ -144,19 +141,19 @@ function Register() {
 							to={`/verify-email?email=${encodeURIComponent(formData.email)}`}
 							className={cx("submitButton")}
 						>
-							Xác thực email ngay
+							{t("auth.verifyEmailNow")}
 						</Link>
 						<Link to='/login' className={cx("loginLink")}>
-							Đến trang đăng nhập
+							{t("auth.goToLogin")}
 						</Link>
 						<p className={cx("resendText")}>
-							Không nhận được email? Kiểm tra thư mục spam hoặc{" "}
+							{t("resendNotReceived")}{" "}
 							<button
 								type='button'
 								className={cx("resendLink")}
 								onClick={() => setShowVerification(false)}
 							>
-								đăng ký lại
+								{t("auth.changeEmail")}
 							</button>
 						</p>
 					</div>
@@ -171,7 +168,7 @@ function Register() {
 			<button
 				className={cx("backToHome")}
 				onClick={() => navigate("/")}
-				title='Quay về trang chủ'
+				title={t("auth.backToHome")}
 			>
 				<FiArrowLeft className={cx("backIcon")} />
 				<FaTree className={cx("logoIcon")} />
@@ -179,17 +176,15 @@ function Register() {
 
 			<div className={cx("registerCard")}>
 				<div className={cx("registerHeader")}>
-					<h1 className={cx("title")}>Tạo tài khoản</h1>
-					<p className={cx("subtitle")}>
-						Đăng ký để bắt đầu hành trình của bạn với chúng tôi
-					</p>
+					<h1 className={cx("title")}>{t("auth.registerTitle")}</h1>
+					<p className={cx("subtitle")}>{t("auth.registerSubtitle")}</p>
 				</div>
 
 				<form className={cx("registerForm")} onSubmit={handleSubmit}>
 					<div className={cx("nameRow")}>
 						<div className={cx("inputGroup")}>
 							<label htmlFor='firstName' className={cx("label")}>
-								Họ
+								{t("auth.firstName")}
 							</label>
 							<input
 								type='text'
@@ -198,7 +193,7 @@ function Register() {
 								value={formData.firstName}
 								onChange={handleChange}
 								className={cx("input", {inputError: errors.firstName})}
-								placeholder='Nhập họ của bạn'
+								placeholder={t("placeholders.enterFirstName")}
 							/>
 							{errors.firstName && (
 								<span className={cx("errorMessage")}>{errors.firstName}</span>
@@ -207,7 +202,7 @@ function Register() {
 
 						<div className={cx("inputGroup")}>
 							<label htmlFor='lastName' className={cx("label")}>
-								Tên
+								{t("auth.lastName")}
 							</label>
 							<input
 								type='text'
@@ -216,7 +211,7 @@ function Register() {
 								value={formData.lastName}
 								onChange={handleChange}
 								className={cx("input", {inputError: errors.lastName})}
-								placeholder='Nhập tên của bạn'
+								placeholder={t("placeholders.enterLastName")}
 							/>
 							{errors.lastName && (
 								<span className={cx("errorMessage")}>{errors.lastName}</span>
@@ -226,7 +221,7 @@ function Register() {
 
 					<div className={cx("inputGroup")}>
 						<label htmlFor='username' className={cx("label")}>
-							Tên người dùng
+							{t("auth.username")}
 						</label>
 						<input
 							type='text'
@@ -235,7 +230,7 @@ function Register() {
 							value={formData.username}
 							onChange={handleChange}
 							className={cx("input", {inputError: errors.username})}
-							placeholder='Chọn tên người dùng duy nhất'
+							placeholder={t("placeholders.enterUsername")}
 						/>
 						{errors.username && (
 							<span className={cx("errorMessage")}>{errors.username}</span>
@@ -244,7 +239,7 @@ function Register() {
 
 					<div className={cx("inputGroup")}>
 						<label htmlFor='email' className={cx("label")}>
-							Email
+							{t("auth.email")}
 						</label>
 						<input
 							type='email'
@@ -253,14 +248,14 @@ function Register() {
 							value={formData.email}
 							onChange={handleChange}
 							className={cx("input", {inputError: errors.email})}
-							placeholder='Nhập email của bạn'
+							placeholder={t("placeholders.enterEmail")}
 						/>
 						{errors.email && <span className={cx("errorMessage")}>{errors.email}</span>}
 					</div>
 
 					<div className={cx("inputGroup")}>
 						<label htmlFor='phoneNumber' className={cx("label")}>
-							Số điện thoại (Không bắt buộc)
+							{t("auth.phone")}
 						</label>
 						<input
 							type='tel'
@@ -269,7 +264,7 @@ function Register() {
 							value={formData.phoneNumber}
 							onChange={handleChange}
 							className={cx("input", {inputError: errors.phoneNumber})}
-							placeholder='Nhập số điện thoại'
+							placeholder={t("placeholders.enterPhone")}
 						/>
 						{errors.phoneNumber && (
 							<span className={cx("errorMessage")}>{errors.phoneNumber}</span>
@@ -279,7 +274,7 @@ function Register() {
 					<div className={cx("passwordRow")}>
 						<div className={cx("inputGroup")}>
 							<label htmlFor='password' className={cx("label")}>
-								Mật khẩu
+								{t("auth.password")}
 							</label>
 							<input
 								type='password'
@@ -288,7 +283,7 @@ function Register() {
 								value={formData.password}
 								onChange={handleChange}
 								className={cx("input", {inputError: errors.password})}
-								placeholder='Tạo mật khẩu mạnh'
+								placeholder={t("placeholders.createStrongPassword")}
 							/>
 							{errors.password && (
 								<span className={cx("errorMessage")}>{errors.password}</span>
@@ -297,7 +292,7 @@ function Register() {
 
 						<div className={cx("inputGroup")}>
 							<label htmlFor='confirmPassword' className={cx("label")}>
-								Xác nhận mật khẩu
+								{t("auth.confirmPassword")}
 							</label>
 							<input
 								type='password'
@@ -306,7 +301,7 @@ function Register() {
 								value={formData.confirmPassword}
 								onChange={handleChange}
 								className={cx("input", {inputError: errors.confirmPassword})}
-								placeholder='Nhập lại mật khẩu'
+								placeholder={t("placeholders.reenterPassword")}
 							/>
 							{errors.confirmPassword && (
 								<span className={cx("errorMessage")}>{errors.confirmPassword}</span>
@@ -323,16 +318,7 @@ function Register() {
 								onChange={handleChange}
 								className={cx("checkbox")}
 							/>
-							<span className={cx("checkboxText")}>
-								Tôi đồng ý với{" "}
-								<button type='button' className={cx("termsLink")}>
-									Điều khoản sử dụng
-								</button>{" "}
-								và{" "}
-								<button type='button' className={cx("termsLink")}>
-									Chính sách bảo mật
-								</button>
-							</span>
+							<span className={cx("checkboxText")}>{t("auth.agreeToTerms")}</span>
 						</label>
 						{errors.agreeToTerms && (
 							<span className={cx("errorMessage")}>{errors.agreeToTerms}</span>
@@ -347,10 +333,10 @@ function Register() {
 						{isLoading ? (
 							<>
 								<span className={cx("spinner")}></span>
-								Đang tạo tài khoản...
+								{t("auth.creating")}
 							</>
 						) : (
-							"Tạo tài khoản"
+							t("auth.registerButton")
 						)}
 					</button>
 
@@ -361,9 +347,9 @@ function Register() {
 
 				<div className={cx("registerFooter")}>
 					<p className={cx("loginText")}>
-						Đã có tài khoản?{" "}
+						{t("auth.haveAccount")}{" "}
 						<Link to='/login' className={cx("loginLink")}>
-							Đăng nhập ngay
+							{t("auth.loginNow")}
 						</Link>
 					</p>
 				</div>

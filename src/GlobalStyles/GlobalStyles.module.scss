@@ -9,6 +9,33 @@
 	--header-height: 64px;
 	--default-layout-header-height: 85px;
 	--default-layout-header-width: 1600px;
+
+	// Global gradients and effects
+	--primary-gradient: linear-gradient(
+		135deg,
+		var(--text-color) 0%,
+		var(--primary-color-1) 50%,
+		var(--text-color) 100%
+	);
+	--card-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.12),
+		0 8px 16px rgba(0, 0, 0, 0.08);
+	--transition-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+	--primary-color-gradient: linear-gradient(
+		45deg,
+		var(--primary-color-1),
+		var(--primary-color-2)
+	);
+	--feature-bg-gradient: linear-gradient(
+		135deg,
+		rgba(31, 120, 255, 0.03) 0%,
+		rgba(45, 216, 129, 0.03) 100%
+	);
+	--icon-bg-gradient: linear-gradient(
+		135deg,
+		rgba(31, 120, 255, 0.1) 0%,
+		rgba(45, 216, 129, 0.1) 100%
+	);
+
 	//key colors
 	--primary-color-1: #4285f4;
 	--primary-color-2: #34a853;

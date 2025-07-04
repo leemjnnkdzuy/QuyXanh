@@ -1,34 +1,37 @@
-	import React from "react";
+import React from "react";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import style from "./StatsSection.module.scss";
 import {FiTrendingUp, FiUsers, FiMapPin, FiDollarSign} from "react-icons/fi";
 
 const cx = classNames.bind(style);
 
 function StatsSection() {
+	const {t} = useTranslation();
+
 	const stats = [
 		{
 			icon: FiDollarSign,
 			number: "500Tr+",
-			label: "VNĐ được quyên góp",
+			label: t("stats.donatedAmount"),
 			delay: "0s",
 		},
 		{
 			icon: FiTrendingUp,
 			number: "1K+",
-			label: "Chiến dịch thành công",
+			label: t("stats.successfulCampaigns"),
 			delay: "0.5s",
 		},
 		{
 			icon: FiUsers,
 			number: "100K+",
-			label: "Người ủng hộ",
+			label: t("stats.supporters"),
 			delay: "1s",
 		},
 		{
 			icon: FiMapPin,
 			number: "63",
-			label: "Tỉnh thành",
+			label: t("stats.provinces"),
 			delay: "1.5s",
 		},
 	];

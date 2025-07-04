@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {FiArrowLeft} from "react-icons/fi";
 import {FaTree} from "react-icons/fa";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import {useAuth} from "../../utils/authContext";
 import {getGoogleAuthUrl} from "../../utils/request";
 import styles from "./Login.module.scss";
@@ -12,6 +13,7 @@ const cx = classNames.bind(styles);
 function Login() {
 	const navigate = useNavigate();
 	const {login} = useAuth();
+	const {t} = useTranslation();
 	const [formData, setFormData] = useState({
 		emailOrUsername: "",
 		password: "",
@@ -39,13 +41,13 @@ function Login() {
 		const newErrors = {};
 
 		if (!formData.emailOrUsername) {
-			newErrors.emailOrUsername = "Email hoặc tên đăng nhập là bắt buộc";
+			newErrors.emailOrUsername = t("validation.emailOrUsernameRequired");
 		}
 
 		if (!formData.password) {
-			newErrors.password = "Mật khẩu là bắt buộc";
+			newErrors.password = t("validation.passwordRequired");
 		} else if (formData.password.length < 6) {
-			newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+			newErrors.password = t("validation.passwordMinLength");
 		}
 
 		setErrors(newErrors);
@@ -66,13 +68,13 @@ function Login() {
 				navigate("/");
 			} else {
 				setErrors({
-					submit: result.message || "Đăng nhập thất bại",
+					submit: result.message || t("messages.error.loginFailed"),
 				});
 			}
 		} catch (error) {
 			console.error("Login error:", error);
 			setErrors({
-				submit: "Có lỗi xảy ra, vui lòng thử lại",
+				submit: t("messages.error.genericError"),
 			});
 		} finally {
 			setIsLoading(false);
@@ -89,7 +91,7 @@ function Login() {
 			<button
 				className={cx("backToHome")}
 				onClick={() => navigate("/")}
-				title='Quay về trang chủ'
+				title={t("auth.backToHome")}
 			>
 				<FiArrowLeft className={cx("backIcon")} />
 				<FaTree className={cx("logoIcon")} />
@@ -97,17 +99,15 @@ function Login() {
 
 			<div className={cx("loginCard")}>
 				<div className={cx("loginHeader")}>
-					<h1 className={cx("title")}>Đăng nhập</h1>
-					<p className={cx("subtitle")}>
-						Chào mừng bạn trở lại! Vui lòng đăng nhập vào tài khoản của bạn.
-					</p>
+					<h1 className={cx("title")}>{t("auth.loginTitle")}</h1>
+					<p className={cx("subtitle")}>{t("auth.loginSubtitle")}</p>
 				</div>
 
 				<form className={cx("loginForm")} onSubmit={handleSubmit}>
 					{" "}
 					<div className={cx("inputGroup")}>
 						<label htmlFor='emailOrUsername' className={cx("label")}>
-							Email hoặc tên đăng nhập
+							{t("auth.emailOrUsername")}
 						</label>
 						<input
 							type='text'
@@ -116,7 +116,7 @@ function Login() {
 							value={formData.emailOrUsername}
 							onChange={handleChange}
 							className={cx("input", {inputError: errors.emailOrUsername})}
-							placeholder='Nhập email hoặc tên đăng nhập'
+							placeholder={t("placeholders.enterEmailOrUsername")}
 						/>
 						{errors.emailOrUsername && (
 							<span className={cx("errorMessage")}>{errors.emailOrUsername}</span>
@@ -124,7 +124,7 @@ function Login() {
 					</div>
 					<div className={cx("inputGroup")}>
 						<label htmlFor='password' className={cx("label")}>
-							Mật khẩu
+							{t("auth.password")}
 						</label>
 						<input
 							type='password'
@@ -133,7 +133,7 @@ function Login() {
 							value={formData.password}
 							onChange={handleChange}
 							className={cx("input", {inputError: errors.password})}
-							placeholder='Nhập mật khẩu của bạn'
+							placeholder={t("placeholders.enterPassword")}
 						/>
 						{errors.password && (
 							<span className={cx("errorMessage")}>{errors.password}</span>
@@ -148,10 +148,10 @@ function Login() {
 								onChange={handleChange}
 								className={cx("checkbox")}
 							/>
-							<span className={cx("checkboxText")}>Ghi nhớ đăng nhập</span>
+							<span className={cx("checkboxText")}>{t("auth.rememberMe")}</span>
 						</label>
 						<Link to='/forgot-password' className={cx("forgotLink")}>
-							Quên mật khẩu?
+							{t("auth.forgotPasswordButton")}
 						</Link>
 					</div>
 					{errors.submit && <div className={cx("submitError")}>{errors.submit}</div>}
@@ -163,14 +163,14 @@ function Login() {
 						{isLoading ? (
 							<>
 								<span className={cx("spinner")}></span>
-								Đang đăng nhập...
+								{t("auth.processing")}
 							</>
 						) : (
-							"Đăng nhập"
+							t("auth.loginButton")
 						)}
 					</button>
 					<div className={cx("divider")}>
-						<span>Hoặc</span>
+						<span>{t("auth.or")}</span>
 					</div>
 					<button
 						type='button'
@@ -196,15 +196,15 @@ function Login() {
 								d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'
 							/>
 						</svg>
-						Đăng nhập với Google
+						{t("auth.googleLogin")}
 					</button>
 				</form>
 
 				<div className={cx("loginFooter")}>
 					<p className={cx("signupText")}>
-						Chưa có tài khoản?{" "}
+						{t("auth.noAccount")}{" "}
 						<Link to='/register' className={cx("signupLink")}>
-							Đăng ký ngay
+							{t("auth.registerNow")}
 						</Link>
 					</p>
 				</div>

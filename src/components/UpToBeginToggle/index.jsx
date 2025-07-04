@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import style from "./UpToBeginToggle.module.scss";
 import {FiArrowUp} from "react-icons/fi";
 
@@ -7,6 +8,7 @@ const cx = classNames.bind(style);
 
 function UpToBeginToggle() {
 	const [isVisible, setIsVisible] = useState(false);
+	const {t} = useTranslation();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -35,7 +37,7 @@ function UpToBeginToggle() {
 		<button
 			className={cx("up-to-begin-toggle", {visible: isVisible})}
 			onClick={scrollToTop}
-			title='Về đầu trang'
+			title={t("tooltip.backToTop")}
 		>
 			<FiArrowUp className={cx("arrow-icon")} />
 		</button>

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import styles from "./HomeHeader.module.scss";
 import {useNavigate} from "react-router-dom";
 import Toggle from "../Toggle";
@@ -11,6 +12,7 @@ const cx = classNames.bind(styles);
 
 function HomeHeader({isVisible = true}) {
 	const navigate = useNavigate();
+	const {t} = useTranslation();
 	const {isAuthenticated, user, logout} = useAuth();
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -101,17 +103,17 @@ function HomeHeader({isVisible = true}) {
 					<ul className={cx("nav-list")}>
 						<li>
 							<button onClick={() => navigate("/features")} className={cx("nav-item")}>
-								Chiến dịch
+								{t("header.campaigns")}
 							</button>
 						</li>
 						<li>
 							<button onClick={() => navigate("/about")} className={cx("nav-item")}>
-								Giới thiệu
+								{t("header.about")}
 							</button>
 						</li>
 						<li>
 							<button onClick={() => navigate("/contact")} className={cx("nav-item")}>
-								Liên hệ
+								{t("header.contact")}
 							</button>
 						</li>
 					</ul>
@@ -128,13 +130,17 @@ function HomeHeader({isVisible = true}) {
 								<FiUser className={cx("icon")} />
 								<span className={cx("user-name")}>{user?.fullName}</span>
 							</button>
-							<button className={cx("logout-btn")} onClick={logout} title='Đăng xuất'>
+							<button
+								className={cx("logout-btn")}
+								onClick={logout}
+								title={t("tooltip.logout")}
+							>
 								<FiLogOut className={cx("icon")} />
 							</button>
 						</div>
 					) : (
 						<button className={cx("login-btn")} onClick={handleAuthAction}>
-							<span>Bắt đầu</span>
+							<span>{t("header.login")}</span>
 							<FiArrowRight className={cx("icon")} />
 						</button>
 					)}
@@ -155,7 +161,7 @@ function HomeHeader({isVisible = true}) {
 								}}
 								className={cx("mobile-nav-item")}
 							>
-								Chiến dịch
+								{t("header.campaigns")}
 							</button>
 						</li>
 						<li>
@@ -166,7 +172,7 @@ function HomeHeader({isVisible = true}) {
 								}}
 								className={cx("mobile-nav-item")}
 							>
-								Giới thiệu
+								{t("header.about")}
 							</button>
 						</li>
 						<li>
@@ -177,7 +183,7 @@ function HomeHeader({isVisible = true}) {
 								}}
 								className={cx("mobile-nav-item")}
 							>
-								Liên hệ
+								{t("header.contact")}
 							</button>
 						</li>
 						<li>
@@ -190,7 +196,7 @@ function HomeHeader({isVisible = true}) {
 									className={cx("mobile-nav-item", "dashboard-btn")}
 								>
 									<FiUser className={cx("icon")} />
-									Dashboard
+									{t("header.dashboard")}
 								</button>
 							) : (
 								<button
@@ -200,7 +206,7 @@ function HomeHeader({isVisible = true}) {
 									}}
 									className={cx("mobile-nav-item", "login-btn-mobile")}
 								>
-									<span>Bắt đầu</span>
+									<span>{t("header.login")}</span>
 									<FiArrowRight className={cx("icon")} />
 								</button>
 							)}

@@ -1,5 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 import classNames from "classnames/bind";
 import styles from "./NotFound.module.scss";
 import {useAuth} from "../../utils/authContext";
@@ -10,6 +11,7 @@ const cx = classNames.bind(styles);
 
 function NotFound() {
 	const navigate = useNavigate();
+	const {t} = useTranslation();
 	const {isAuthenticated} = useAuth();
 
 	const handleBackHome = () => {
@@ -37,21 +39,18 @@ function NotFound() {
 				</div>
 
 				<div className={cx("message")}>
-					<h1 className={cx("title")}>Trang không tồn tại</h1>
-					<p className={cx("subtitle")}>
-						Có vẻ như bạn đã lạc vào một khu rừng chưa được khám phá. Trang bạn đang tìm
-						kiếm không tồn tại hoặc đã được di chuyển.
-					</p>
+					<h1 className={cx("title")}>{t("notfound.title")}</h1>
+					<p className={cx("subtitle")}>{t("notfound.subtitle")}</p>
 				</div>
 
 				<div className={cx("actions")}>
 					<button className={cx("back-button")} onClick={handleGoBack} type='button'>
 						<FiArrowLeft className={cx("icon")} />
-						<span>Quay lại</span>
+						<span>{t("notfound.backButton")}</span>
 					</button>
 					<button className={cx("home-button")} onClick={handleBackHome} type='button'>
 						<FiHome className={cx("icon")} />
-						<span>Về trang chủ</span>
+						<span>{t("notfound.homeButton")}</span>
 					</button>
 				</div>
 			</div>
