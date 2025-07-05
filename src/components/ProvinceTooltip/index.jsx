@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import style from "./ProvinceTooltip.module.scss";
 import {
 	MdLocationOn,
@@ -13,6 +14,8 @@ import {
 const cx = classNames.bind(style);
 
 const ProvinceTooltip = ({provinceData}) => {
+	const {t} = useTranslation();
+
 	const activityLevel =
 		provinceData.campaigns > 150
 			? "high"
@@ -22,10 +25,10 @@ const ProvinceTooltip = ({provinceData}) => {
 
 	const activityText =
 		activityLevel === "high"
-			? "Rất cao"
+			? t("map.tooltip.activityHigh", "Rất cao")
 			: activityLevel === "medium"
-			? "Trung bình"
-			: "Thấp";
+			? t("map.tooltip.activityMedium", "Trung bình")
+			: t("map.tooltip.activityLow", "Thấp");
 
 	const ActivityIcon =
 		activityLevel === "high"
@@ -35,7 +38,7 @@ const ProvinceTooltip = ({provinceData}) => {
 			: MdShowChart;
 
 	const isArchipelago = provinceData.type === "archipelago";
-	const displayType = isArchipelago ? "Quần đảo" : "Tỉnh/Thành phố";
+	const displayType = isArchipelago ? t("map.archipelago") : t("map.province");
 
 	return (
 		<div className={cx("modern-tooltip")}>
@@ -58,7 +61,7 @@ const ProvinceTooltip = ({provinceData}) => {
 						</div>
 						<div className={cx("stat-content")}>
 							<div className={cx("stat-number")}>{provinceData.campaigns}</div>
-							<div className={cx("stat-label")}>Chiến dịch</div>
+							<div className={cx("stat-label")}>{t("map.campaigns")}</div>
 						</div>
 					</div>
 					<div className={cx("stat-item", "activity-stat")}>
@@ -67,7 +70,7 @@ const ProvinceTooltip = ({provinceData}) => {
 						</div>
 						<div className={cx("stat-content")}>
 							<div className={cx("stat-value", activityLevel)}>{activityText}</div>
-							<div className={cx("stat-label")}>Hoạt động</div>
+							<div className={cx("stat-label")}>{t("map.activity")}</div>
 						</div>
 					</div>
 				</div>
@@ -75,7 +78,9 @@ const ProvinceTooltip = ({provinceData}) => {
 				<div className={cx("tooltip-footer")}>
 					<div className={cx("ranking-info")}>
 						<span className={cx("ranking-text")}>
-							Top {Math.ceil((1 - provinceData.campaigns / 400) * 63)} trên 63 tỉnh
+							{t("map.topRanking", {
+								rank: Math.ceil((1 - provinceData.campaigns / 400) * 63),
+							})}
 						</span>
 					</div>
 				</div>

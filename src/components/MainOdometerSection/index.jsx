@@ -1,6 +1,9 @@
 import React, {useEffect, useState, useCallback} from "react";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import style from "./MainOdometerSection.module.scss";
+import {useHomeData} from "../../utils/useHomeData";
+import {createCurrencyFormatter} from "../../utils/formatterContext";
 
 const cx = classNames.bind(style);
 
@@ -121,18 +124,31 @@ const MainOdometer = ({targetValue, isVisible}) => {
 };
 
 function MainOdometerSection({isVisible}) {
+	const {t} = useTranslation();
+	const {homeData} = useHomeData();
+
+	const targetValue = homeData?.odometer?.totalAmount || 125750000000;
+
+	const formatCurrency = createCurrencyFormatter(t);
+
+	const createOdometerNote = (amount) => {
+		const formattedAmount = formatCurrency(amount);
+		return t("odometer.totalAmountPattern", {amount: formattedAmount});
+	};
+
+	const odometerNote = homeData?.odometer?.totalAmount
+		? createOdometerNote(homeData.odometer.totalAmount)
+		: t("odometer.note");
+
 	return (
 		<div className={cx("main-odometer-section", {animate: isVisible})}>
 			<div className={cx("odometer-header")}>
-				<h2 className={cx("odometer-title")}>Tổng số tiền đã quyên góp</h2>
-				<p className={cx("odometer-subtitle")}>Trên nền tảng QuyXanh</p>
+				<h2 className={cx("odometer-title")}>{t("odometer.title")}</h2>
+				<p className={cx("odometer-subtitle")}>{t("odometer.subtitle")}</p>
 			</div>
-			<MainOdometer targetValue={125750000000} isVisible={isVisible} />
+			<MainOdometer targetValue={targetValue} isVisible={isVisible} />
 			<div className={cx("odometer-footer")}>
-				<p className={cx("odometer-note")}>
-					Cảm ơn sự đóng góp của hơn 100,000 nhà hảo tâm đã giúp thực hiện 15,000+ chiến
-					dịch thành công
-				</p>
+				<p className={cx("odometer-note")}>{odometerNote}</p>
 			</div>
 		</div>
 	);

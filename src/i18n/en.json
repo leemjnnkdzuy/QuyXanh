@@ -20,7 +20,8 @@
 		"community": "Help the community",
 		"connect": "Connect with love",
 		"spread": "Spread positivity",
-		"description": "Over 500 million VND donated weekly on QuyXanh.*"
+		"description": "Over 500 million VND donated weekly on QuyXanh.*",
+		"weeklyDonationPattern": "Over {{amount}} VND donated weekly on QuyXanh.*"
 	},
 	"features": {
 		"title": "Explore the Fundraising Journey",
@@ -42,11 +43,22 @@
 		"environmentDesc": "Protect nature and sustainable development",
 		"campaigns": "campaigns"
 	},
+	"currency": {
+		"billion": "B",
+		"million": "M",
+		"thousand": "K"
+	},
 	"stats": {
 		"donatedAmount": "VND donated",
 		"successfulCampaigns": "Successful campaigns",
 		"supporters": "Supporters",
 		"provinces": "Provinces"
+	},
+	"odometer": {
+		"title": "Total Amount Donated",
+		"subtitle": "On QuyXanh Platform",
+		"note": "Thank you to the contributions of over 100,000 generous hearts who have helped achieve 15,000+ successful campaigns",
+		"totalAmountPattern": "Over {{amount}} VND donated by the QuyXanh community."
 	},
 	"howItWorks": {
 		"title": "How it works",
@@ -280,6 +292,34 @@
 		},
 		"language": {
 			"selectLanguage": "Select Language"
+		}
+	},
+	"map": {
+		"loading": "Loading Vietnam map...",
+		"loadError": "Unable to load map. Please try again later.",
+		"archipelago": "Archipelago",
+		"province": "Province/City",
+		"campaigns": "Campaigns",
+		"activity": "Activity",
+		"topRanking": "Top {{rank}} out of 63 provinces",
+		"unknownProvince": "Unknown province",
+		"title": "Nationwide Fundraising Campaigns",
+		"description": "Discover fundraising campaigns from all 63 provinces and cities in Vietnam. Hover over the map to see province information.",
+		"islands": {
+			"hoangSa": "Hoang Sa Archipelago",
+			"truongSa": "Truong Sa Archipelago"
+		},
+		"tooltip": {
+			"activityHigh": "Very High",
+			"activityMedium": "Medium",
+			"activityLow": "Low"
+		},
+		"stats": {
+			"provinces": "Provinces",
+			"selectedProvince": "Selected Province",
+			"campaigns": "Campaigns",
+			"campaignsHere": "Campaigns Here",
+			"participants": "Participants"
 		}
 	}
 }

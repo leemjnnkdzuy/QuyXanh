@@ -4,6 +4,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import style from "./VietnamMap.module.scss";
 import Loading from "../Loading";
 import ProvinceTooltip from "../ProvinceTooltip";
@@ -76,24 +77,29 @@ const provincesData = {
 	"vn-300": {name: "Thái Nguyên", campaigns: 45},
 };
 
-const islandsData = {
-	"hoang-sa": {
-		name: "Quần đảo Hoàng Sa",
-		campaigns: 12,
-		coordinates: [112.3, 17.5],
-		type: "archipelago",
-	},
-	"truong-sa": {
-		name: "Quần đảo Trường Sa",
-		campaigns: 8,
-		coordinates: [114.2, 13],
-		type: "archipelago",
-	},
-};
-
 const VietnamMap = ({onProvinceHover}) => {
+	const {t} = useTranslation();
 	const [mapData, setMapData] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+
+	// Internationalized islands data
+	const getIslandsData = useCallback(
+		() => ({
+			"hoang-sa": {
+				name: t("map.islands.hoangSa", "Quần đảo Hoàng Sa"),
+				campaigns: 12,
+				coordinates: [112.3, 17.5],
+				type: "archipelago",
+			},
+			"truong-sa": {
+				name: t("map.islands.truongSa", "Quần đảo Trường Sa"),
+				campaigns: 8,
+				coordinates: [114.2, 13],
+				type: "archipelago",
+			},
+		}),
+		[t]
+	);
 	useEffect(() => {
 		const loadMapData = async () => {
 			try {
@@ -116,7 +122,8 @@ const VietnamMap = ({onProvinceHover}) => {
 		(geo) => {
 			const provinceKey = geo.properties["hc-key"];
 			const provinceData = provincesData[provinceKey] || {
-				name: geo.properties.name || geo.properties["name-vi"] || "Tỉnh không xác định",
+				name:
+					geo.properties.name || geo.properties["name-vi"] || t("map.unknownProvince"),
 				campaigns: Math.floor(Math.random() * 50) + 10,
 			};
 
@@ -124,7 +131,7 @@ const VietnamMap = ({onProvinceHover}) => {
 				onProvinceHover(provinceData);
 			}
 		},
-		[onProvinceHover]
+		[onProvinceHover, t]
 	);
 
 	const handleProvinceLeave = useCallback(() => {
@@ -150,7 +157,6 @@ const VietnamMap = ({onProvinceHover}) => {
 		return (
 			<div className={cx("map-loading")}>
 				<Loading size='80px' />
-				<p>Đang tải bản đồ Việt Nam...</p>
 			</div>
 		);
 	}
@@ -158,7 +164,7 @@ const VietnamMap = ({onProvinceHover}) => {
 	if (!mapData) {
 		return (
 			<div className={cx("map-loading")}>
-				<p>Không thể tải bản đồ. Vui lòng thử lại sau.</p>
+				<p>{t("map.loadError")}</p>
 			</div>
 		);
 	}
@@ -183,7 +189,8 @@ const VietnamMap = ({onProvinceHover}) => {
 								geographies.map((geo) => {
 									const provinceKey = geo.properties["hc-key"];
 									const provinceData = provincesData[provinceKey] || {
-										name: geo.properties.name || geo.properties["name-vi"] || "Tỉnh không xác định",
+										name:
+											geo.properties.name || geo.properties["name-vi"] || t("map.unknownProvince"),
 										campaigns: Math.floor(Math.random() * 50) + 10,
 									};
 
@@ -237,7 +244,7 @@ const VietnamMap = ({onProvinceHover}) => {
 								})
 							}
 						</Geographies>{" "}
-						{Object.entries(islandsData).map(([key, island]) => {
+						{Object.entries(getIslandsData()).map(([key, island]) => {
 							const [lon, lat] = island.coordinates;
 							const bounds = {
 								minLon: 102.0,

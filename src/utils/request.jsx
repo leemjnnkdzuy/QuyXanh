@@ -1,4 +1,5 @@
 import axios from "axios";
+import {homeDataBackup} from "./homeDataBackup";
 
 const BASE_API_URL = "http://localhost:3001";
 
@@ -188,3 +189,24 @@ export const fetchVietnamMapData = () =>
 			method: "GET",
 		}
 	);
+
+export const getHomeData = async () => {
+	try {
+		const response = await makeRequest("/api/public/home-data", {
+			method: "GET",
+		});
+
+		if (response.success && response.data) {
+			return response;
+		} else {
+			throw new Error("API returned invalid data");
+		}
+	} catch (error) {
+		return {
+			success: true,
+			data: homeDataBackup,
+			isBackup: true,
+			message: `Using backup data due to: ${error.message}`,
+		};
+	}
+};

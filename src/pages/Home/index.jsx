@@ -57,7 +57,7 @@ function Home() {
 		<div className={cx("wrapper")}>
 			<HomeHeader isVisible={isHeaderVisible} />
 			<div className={cx("content")}>
-				<HeroSection/>
+				<HeroSection />
 				<StatsSection />
 				<FeaturesSection />
 				<MapSection

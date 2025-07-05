@@ -4,11 +4,26 @@ import {useTranslation} from "react-i18next";
 import style from "./HeroSection.module.scss";
 import {FiArrowRight, FiHeart, FiUsers, FiTrendingUp} from "react-icons/fi";
 import {FaTree} from "react-icons/fa";
+import {useHomeData} from "../../utils/useHomeData";
+import {createCurrencyFormatter} from "../../utils/formatterContext";
 
 const cx = classNames.bind(style);
 
 function HeroSection() {
 	const {t} = useTranslation();
+	const {homeData} = useHomeData();
+
+	// Sử dụng currency formatter với đa ngôn ngữ
+	const formatCurrency = createCurrencyFormatter(t);
+
+	const createHeroDescription = (weeklyAmount) => {
+		const formattedAmount = formatCurrency(weeklyAmount);
+		return t("hero.weeklyDonationPattern", {amount: formattedAmount});
+	};
+
+	const heroDescription = homeData?.hero?.weeklyDonation
+		? createHeroDescription(homeData.hero.weeklyDonation)
+		: t("hero.description");
 
 	return (
 		<section className={cx("hero")}>
@@ -63,7 +78,7 @@ function HeroSection() {
 							</div>
 						</div>
 					</div>
-					<p className={cx("hero-description")}>{t("hero.description")}</p>
+					<p className={cx("hero-description")}>{heroDescription}</p>
 				</div>
 			</div>
 		</section>

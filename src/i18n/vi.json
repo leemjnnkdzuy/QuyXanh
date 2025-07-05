@@ -20,7 +20,8 @@
 		"community": "Giúp đỡ cộng đồng",
 		"connect": "Kết nối yêu thương",
 		"spread": "Lan tỏa tích cực",
-		"description": "Hơn 500 triệu VNĐ được quyên góp mỗi tuần trên QuyXanh.*"
+		"description": "Hơn 500 triệu VNĐ được quyên góp mỗi tuần trên QuyXanh.*",
+		"weeklyDonationPattern": "Hơn {{amount}} VNĐ được quyên góp mỗi tuần trên QuyXanh.*"
 	},
 	"features": {
 		"title": "Khám Phá Hành Trình Gây Quỹ",
@@ -42,11 +43,22 @@
 		"environmentDesc": "Bảo vệ thiên nhiên và phát triển bền vững",
 		"campaigns": "chiến dịch"
 	},
+	"currency": {
+		"billion": "Tỷ",
+		"million": "Tr",
+		"thousand": "K"
+	},
 	"stats": {
 		"donatedAmount": "VNĐ được quyên góp",
 		"successfulCampaigns": "Chiến dịch thành công",
 		"supporters": "Người ủng hộ",
 		"provinces": "Tỉnh thành"
+	},
+	"odometer": {
+		"title": "Tổng số tiền đã quyên góp",
+		"subtitle": "Trên nền tảng QuyXanh",
+		"note": "Cảm ơn sự đóng góp của hơn 100,000 nhà hảo tâm đã giúp thực hiện 15,000+ chiến dịch thành công",
+		"totalAmountPattern": "Hơn {{amount}} VNĐ đã được quyên góp từ cộng đồng QuyXanh."
 	},
 	"howItWorks": {
 		"title": "Gây quỹ trên QuyXanh dễ dàng, mạnh mẽ và đáng tin cậy",
@@ -174,8 +186,26 @@
 		"province": "Tỉnh/Thành phố",
 		"campaigns": "Chiến dịch",
 		"activity": "Hoạt động",
-		"topRanking": "Top {rank} trên 63 tỉnh",
-		"unknownProvince": "Tỉnh không xác định"
+		"topRanking": "Top {{rank}} trên 63 tỉnh",
+		"unknownProvince": "Tỉnh không xác định",
+		"title": "Chiến dịch gây quỹ trên toàn quốc",
+		"description": "Khám phá các chiến dịch gây quỹ từ khắp 63 tỉnh thành Việt Nam. Hãy hover chuột lên bản đồ để xem thông tin các tỉnh thành.",
+		"islands": {
+			"hoangSa": "Quần đảo Hoàng Sa",
+			"truongSa": "Quần đảo Trường Sa"
+		},
+		"tooltip": {
+			"activityHigh": "Rất cao",
+			"activityMedium": "Trung bình",
+			"activityLow": "Thấp"
+		},
+		"stats": {
+			"provinces": "Tỉnh thành",
+			"selectedProvince": "Tỉnh được chọn",
+			"campaigns": "Chiến dịch",
+			"campaignsHere": "Chiến dịch tại đây",
+			"participants": "Người tham gia"
+		}
 	},
 	"tooltip": {
 		"backToTop": "Về đầu trang",

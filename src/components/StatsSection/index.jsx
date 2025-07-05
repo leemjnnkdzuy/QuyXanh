@@ -3,38 +3,79 @@ import classNames from "classnames/bind";
 import {useTranslation} from "react-i18next";
 import style from "./StatsSection.module.scss";
 import {FiTrendingUp, FiUsers, FiMapPin, FiDollarSign} from "react-icons/fi";
+import {useHomeData} from "../../utils/useHomeData";
+import {createCurrencyFormatter} from "../../utils/formatterContext";
 
 const cx = classNames.bind(style);
 
 function StatsSection() {
 	const {t} = useTranslation();
+	const {homeData, loading} = useHomeData();
 
-	const stats = [
-		{
-			icon: FiDollarSign,
-			number: "500Tr+",
-			label: t("stats.donatedAmount"),
-			delay: "0s",
-		},
-		{
-			icon: FiTrendingUp,
-			number: "1K+",
-			label: t("stats.successfulCampaigns"),
-			delay: "0.5s",
-		},
-		{
-			icon: FiUsers,
-			number: "100K+",
-			label: t("stats.supporters"),
-			delay: "1s",
-		},
-		{
-			icon: FiMapPin,
-			number: "63",
-			label: t("stats.provinces"),
-			delay: "1.5s",
-		},
-	];
+	const formatStats = createCurrencyFormatter(t);
+
+	const getStatsData = () => {
+		if (!homeData || loading) {
+			return [
+				{
+					icon: FiDollarSign,
+					number: "...",
+					label: t("stats.donatedAmount"),
+					delay: "0s",
+				},
+				{
+					icon: FiTrendingUp,
+					number: "...",
+					label: t("stats.successfulCampaigns"),
+					delay: "0.5s",
+				},
+				{
+					icon: FiUsers,
+					number: "...",
+					label: t("stats.supporters"),
+					delay: "1s",
+				},
+				{
+					icon: FiMapPin,
+					number: "...",
+					label: t("stats.provinces"),
+					delay: "1.5s",
+				},
+			];
+		}
+
+		const stats = homeData.stats;
+		const odometer = homeData.odometer;
+
+		return [
+			{
+				icon: FiDollarSign,
+				number: formatStats(odometer?.totalAmount || 0),
+				label: t("stats.donatedAmount"),
+				delay: "0s",
+			},
+			{
+				icon: FiTrendingUp,
+				number: formatStats(stats?.successfulCampaigns || 0),
+				label: t("stats.successfulCampaigns"),
+				delay: "0.5s",
+			},
+			{
+				icon: FiUsers,
+				number: formatStats(stats?.supporters || 0),
+				label: t("stats.supporters"),
+				delay: "1s",
+			},
+			{
+				icon: FiMapPin,
+				number: formatStats(stats?.provinces || 0),
+				label: t("stats.provinces"),
+				delay: "1.5s",
+			},
+		];
+	};
+
+	const stats = getStatsData();
 
 	const duplicatedStats = [...stats, ...stats, ...stats];
 
