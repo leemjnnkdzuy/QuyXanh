@@ -64,8 +64,6 @@ function TrustSection() {
 		let progress = (scrollStart - currentScroll) / scrollRange;
 		progress = Math.max(0, Math.min(1, progress));
 
-		console.log("Scroll Progress:", progress);
-
 		setScrollProgress(progress);
 
 		let newPhase;
@@ -78,7 +76,6 @@ function TrustSection() {
 		}
 
 		if (newPhase !== currentPhase) {
-			console.log("Phase changed:", newPhase);
 			setCurrentPhase(newPhase);
 		}
 
@@ -91,7 +88,6 @@ function TrustSection() {
 			(entries) => {
 				entries.forEach((entry) => {
 					setIsVisible(entry.isIntersecting);
-					console.log("Intersection:", entry.isIntersecting);
 				});
 			},
 			{
@@ -121,7 +117,6 @@ function TrustSection() {
 	}, [handleScroll]);
 
 	const phaseProgresses = useMemo(() => {
-		console.log("Current scroll progress:", scrollProgress);
 
 		const headerProgress = Math.min(1, Math.max(0, scrollProgress / 0.25));
 
@@ -166,34 +161,6 @@ function TrustSection() {
 						style={{width: `${scrollProgress * 100}%`}}
 					></div>
 				</div>
-
-				{process.env.NODE_ENV === "development" && (
-					<div
-						style={{
-							position: "fixed",
-							top: "20px",
-							right: "20px",
-							background: "rgba(0,0,0,0.8)",
-							color: "white",
-							padding: "15px",
-							borderRadius: "8px",
-							fontFamily: "monospace",
-							fontSize: "12px",
-							zIndex: 9999,
-							minWidth: "200px",
-						}}
-					>
-						<div>Scroll Progress: {(scrollProgress * 100).toFixed(1)}%</div>
-						<div>Current Phase: {currentPhase}</div>
-						<div>Is Visible: {isVisible ? "Yes" : "No"}</div>
-						<div>Is Sticky: {isSticky ? "Yes" : "No"}</div>
-						<div>Header Progress: {(phaseProgresses.headerProgress * 100).toFixed(1)}%</div>
-						<div>
-							Features Progress: {(phaseProgresses.featuresProgress * 100).toFixed(1)}%
-						</div>
-						<div>CTA Progress: {(phaseProgresses.ctaProgress * 100).toFixed(1)}%</div>
-					</div>
-				)}
 
 				<div
 					className={cx("trust-content-wrapper", {active: currentPhase === "header"})}
