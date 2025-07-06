@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import classNames from "classnames/bind";
 import style from "./Home.module.scss";
 
@@ -12,12 +12,15 @@ import MapSection from "../../components/MapSection";
 import HowItWorksSection from "../../components/HowItWorksSection";
 import TrustSection from "../../components/TrustSection";
 import UpToBeginToggle from "../../components/UpToBeginToggle";
+import MainOdometerSection from "../../components/MainOdometerSection";
 
 const cx = classNames.bind(style);
 
 function Home() {
 	const [hoveredProvince, setHoveredProvince] = useState(null);
 	const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+	const [isOdometerVisible, setIsOdometerVisible] = useState(false);
+	const sectionRef = useRef(null);
 
 	useEffect(() => {
 		let ticking = false;
@@ -49,6 +52,28 @@ function Home() {
 		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
+	useEffect(() => {
+		const currentSection = sectionRef.current;
+
+		if (!currentSection) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				setIsOdometerVisible(entry.isIntersecting);
+			},
+			{
+				threshold: 0.1,
+				rootMargin: "-50px 0px",
+			}
+		);
+
+		observer.observe(currentSection);
+
+		return () => {
+			observer.unobserve(currentSection);
+		};
+	}, []);
+
 	const handleProvinceHover = (provinceData) => {
 		setHoveredProvince(provinceData);
 	};
@@ -60,6 +85,7 @@ function Home() {
 				<HeroSection />
 				<StatsSection />
 				<FeaturesSection />
+				<MainOdometerSection isVisible={isOdometerVisible} sectionRef={sectionRef} />
 				<MapSection
 					hoveredProvince={hoveredProvince}
 					onProvinceHover={handleProvinceHover}

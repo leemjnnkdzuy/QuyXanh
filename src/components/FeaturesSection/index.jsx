@@ -5,7 +5,6 @@ import style from "./FeaturesSection.module.scss";
 import {FiBookOpen} from "react-icons/fi";
 import {FaHandHoldingHeart, FaLeaf, FaDumbbell} from "react-icons/fa";
 import {MdHealthAndSafety, MdCorporateFare} from "react-icons/md";
-import MainOdometerSection from "../MainOdometerSection";
 
 const cx = classNames.bind(style);
 
@@ -197,7 +196,6 @@ function FeaturesSection() {
 						</div>
 					</div>
 				</div>
-				<MainOdometerSection isVisible={isVisible} />
 			</div>
 		</section>
 	);

@@ -123,7 +123,7 @@ const MainOdometer = ({targetValue, isVisible}) => {
 	);
 };
 
-function MainOdometerSection({isVisible}) {
+function MainOdometerSection({isVisible, sectionRef}) {
 	const {t} = useTranslation();
 	const {homeData} = useHomeData();
 
@@ -141,7 +141,10 @@ function MainOdometerSection({isVisible}) {
 		: t("odometer.note");
 
 	return (
-		<div className={cx("main-odometer-section", {animate: isVisible})}>
+		<div
+			ref={sectionRef}
+			className={cx("main-odometer-section", {animate: isVisible})}
+		>
 			<div className={cx("odometer-header")}>
 				<h2 className={cx("odometer-title")}>{t("odometer.title")}</h2>
 				<p className={cx("odometer-subtitle")}>{t("odometer.subtitle")}</p>
