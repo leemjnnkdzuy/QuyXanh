@@ -8,10 +8,11 @@
 
 .scroll-story-container {
 	position: relative;
-	height: 400vh; // Tăng từ 300vh lên 400vh để cuộn lâu hơn
+	height: 420vh;
+	width: 100%;
 
 	@media (max-width: 768px) {
-		height: 350vh; // Tăng cho mobile
+		height: 250vh;
 	}
 }
 
@@ -26,6 +27,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	will-change: transform, opacity;
+	transform-style: preserve-3d;
+	perspective: 1000px;
 
 	[data-theme="light"] & {
 		background: linear-gradient(
@@ -49,15 +53,19 @@
 		z-index: 1;
 	}
 
-	// Thêm CSS animation dựa trên scroll progress
 	&[style*="--scroll-progress"] {
 		.parallax-bg {
-			transform: translateY(calc(var(--scroll-progress, 0) * -20px));
+			transform: translateY(calc(var(--scroll-progress, 0) * -30px));
 		}
 
 		.floating-particles .particle {
-			transform: translateY(calc(var(--scroll-progress, 0) * -30px))
-				rotate(calc(var(--scroll-progress, 0) * 360deg));
+			transform: translateY(calc(var(--scroll-progress, 0) * -50px))
+				rotate(calc(var(--scroll-progress, 0) * 180deg));
+		}
+
+		.bg-shape {
+			opacity: calc(1 - (var(--scroll-progress, 0) * 0.2));
+			transform: scale(calc(1 + (var(--scroll-progress, 0) * 0.05)));
 		}
 	}
 
@@ -66,7 +74,6 @@
 	}
 }
 
-// Tối ưu hóa các content wrapper với hiệu ứng mượt hơn
 .trust-content-wrapper,
 .features-content-wrapper,
 .cta-content-wrapper {
@@ -81,14 +88,22 @@
 	will-change: transform, opacity;
 	backface-visibility: hidden;
 	transform-style: preserve-3d;
-	transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); // Thêm transition mượt
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
 	&.active {
 		pointer-events: auto;
+		z-index: 20;
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		visibility: visible;
 	}
 
 	&:not(.active) {
 		pointer-events: none;
+		z-index: 10;
+		opacity: 0;
+		transform: translateY(30px) scale(0.95);
+		visibility: hidden;
 	}
 }
 
@@ -110,7 +125,6 @@
 	}
 }
 
-// Tối ưu hóa scroll progress bar
 .scroll-progress-bar {
 	position: fixed;
 	top: 0;
@@ -225,13 +239,11 @@
 	opacity: 0.2;
 	animation: floatParticle 20s infinite ease-in-out;
 
-	// Light mode - more subtle particles
 	[data-theme="light"] & {
 		opacity: 0.1;
 		color: var(--primary-color-3);
 	}
 
-	// Dark mode - more visible particles
 	[data-theme="dark"] & {
 		opacity: 0.2;
 		color: var(--primary-color-2);
@@ -291,7 +303,6 @@
 		transform: translateY(0);
 	}
 
-	// Hiệu ứng dựa trên phase progress
 	.trust-content-wrapper[style*="--phase-progress"] & {
 		opacity: calc(var(--phase-progress, 0) * 1);
 		transform: translateY(calc((1 - var(--phase-progress, 0)) * 50px));
@@ -314,14 +325,12 @@
 	box-shadow: 0 8px 32px var(--primary-color-alpha-20);
 	transition: all 0.3s ease;
 
-	// Light mode specific styles
 	[data-theme="light"] & {
 		background: rgba(45, 216, 129, 0.08);
 		border: 2px solid rgba(45, 216, 129, 0.2);
 		box-shadow: 0 4px 20px rgba(45, 216, 129, 0.1);
 	}
 
-	// Dark mode specific styles
 	[data-theme="dark"] & {
 		background: rgba(45, 216, 129, 0.15);
 		border: 2px solid rgba(45, 216, 129, 0.3);
@@ -407,7 +416,6 @@
 		gap: 30px;
 	}
 
-	// Hiệu ứng phase-based cho grid
 	.features-content-wrapper.active & {
 		.feature-card {
 			animation: slideInStaggered 0.8s ease-out forwards;
@@ -433,14 +441,12 @@
 	opacity: 0;
 	transform: translateY(30px) scale(0.9);
 
-	// Phase-based animation
 	.features-content-wrapper.active & {
 		opacity: 1;
 		transform: translateY(0) scale(1);
 		transition-delay: calc(var(--card-index) * 0.1s);
 	}
 
-	// Light mode specific styles
 	[data-theme="light"] & {
 		background: rgba(255, 255, 255, 0.95);
 		border: 2px solid var(--border-light);
@@ -453,7 +459,6 @@
 		}
 	}
 
-	// Dark mode specific styles
 	[data-theme="dark"] & {
 		background: rgba(255, 255, 255, 0.05);
 		border: 2px solid rgba(255, 255, 255, 0.1);
@@ -629,7 +634,6 @@
 	}
 }
 
-// CTA Content với Zoom Effect
 .cta-content {
 	text-align: center;
 	color: white;
@@ -831,7 +835,6 @@
 	}
 }
 
-// Optimized Animations
 @keyframes slideInFromBottom {
 	from {
 		opacity: 0;
@@ -970,7 +973,6 @@
 	}
 }
 
-/* Scroll Lock Indicator */
 .scroll-lock-indicator {
 	position: fixed;
 	bottom: 30px;
@@ -1119,7 +1121,6 @@
 	}
 }
 
-/* Phase Sticky Indicator */
 .phase-sticky-indicator {
 	position: fixed;
 	top: 50%;
@@ -1233,23 +1234,23 @@
 	}
 }
 
-@keyframes pulseProgress {
-	0%,
-	100% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0.7;
-	}
+.trust-section * {
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes slideInScale {
-	from {
-		transform: translate(-50%, -50%) scale(0.8);
-		opacity: 0;
-	}
-	to {
-		transform: translate(-50%, -50%) scale(1);
-		opacity: 1;
-	}
+.trust-section {
+	contain: layout style paint;
+	z-index: 1;
+	transform: translateZ(0);
+	-webkit-transform: translateZ(0);
+}
+
+.parallax-bg,
+.floating-particles,
+.bg-shape {
+	transform: translate3d(0, 0, 0);
+	-webkit-transform: translate3d(0, 0, 0);
 }
