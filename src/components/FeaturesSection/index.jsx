@@ -26,8 +26,8 @@ function FeaturesSection() {
 				}
 			},
 			{
-				threshold: 0.1,
-				rootMargin: "-100px 0px",
+				threshold: window.innerWidth <= 768 ? 0.05 : 0.1,
+				rootMargin: window.innerWidth <= 768 ? "-50px 0px" : "-100px 0px",
 			}
 		);
 

@@ -307,5 +307,40 @@
 		"language": {
 			"selectLanguage": "Chọn ngôn ngữ"
 		}
+	},
+	"completedCampaigns": {
+		"title": "Những chiến dịch đã hoàn thành",
+		"subtitle": "Cùng nhìn lại những thành công và tác động tích cực mà chúng ta đã tạo ra",
+		"question": "Bạn có muốn khám phá những câu chuyện cảm động đằng sau mỗi chiến dịch?",
+		"description": "Mỗi chiến dịch đều chứa đựng những nỗ lực không ngừng nghỉ và tình yêu thương lan tỏa đến cộng đồng.",
+		"exploreButton": "Khám phá cùng chúng tôi",
+		"backButton": "Quay lại",
+		"campaigns": [
+			{
+				"title": "Thắp sáng tương lai",
+				"description": "Hỗ trợ hơn 7.000 trẻ em đường phố và nạn nhân buôn người trở về cuộc sống an toàn.",
+				"details": "Chương trình chú trọng cứu hộ khẩn cấp, giáo dục và dạy nghề, giúp trẻ tái hòa nhập cộng đồng."
+			},
+			{
+				"title": "Trả lại nụ cười",
+				"description": "Chiến dịch 2024: 39 ca phẫu thuật chỉ trong 5 ngày, đồng thời chuyển giao thiết bị & đào tạo điều dưỡng địa phương",
+				"details": "Mỗi ca mổ trọn gói ~6 triệu đ, mang lại khả năng ăn – nói – thở bình thường cho trẻ."
+			},
+			{
+				"title": "Một giọt máu, triệu tấm lòng",
+				"description": "Đợt hiến máu tháng 4‑2025 thu hút >200 người, cung cấp 870 đơn vị máu cho các bệnh viện khan hiếm",
+				"details": "TP.HCM hiện dẫn đầu cả nước, chiếm gần 20% lượng máu hiến tình nguyện hằng năm."
+			},
+			{
+				"title": "Chạy Vì Trái Tim 2024",
+				"description": "Sự kiện 2024 quy tụ >5.000 người và quyên góp 6,08 tỷ đ cho trẻ mắc tim bẩm sinh",
+				"details": "Từ 2013‑nay, chương trình đã tài trợ phẫu thuật tim cho 1.549 em nhỏ."
+			},
+			{
+				"title": "Kề vai sát cánh sau bão lũ",
+				"description": "Lũ lịch sử khiến >170 người thiệt mạng; IFRC và đối tác đã hỗ trợ thực phẩm, nước sạch, tiền mặt cho hàng chục nghìn hộ dân",
+				"details": "Mỗi suất cứu trợ lương thực 500.000 đ giúp gia đình 4 người trong 1 tuần."
+			}
+		]
 	}
 }

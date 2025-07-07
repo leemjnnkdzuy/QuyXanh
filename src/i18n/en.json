@@ -253,6 +253,41 @@
 		"registrationResults": "Registration Results",
 		"exemptionPolicy": "Exemption Policy"
 	},
+	"completedCampaigns": {
+		"title": "Completed Campaigns",
+		"subtitle": "Let's look back at the successes and positive impacts we've created together",
+		"question": "Would you like to explore the touching stories behind each campaign?",
+		"description": "Each campaign contains tireless efforts and love that spreads to the community.",
+		"exploreButton": "Explore with us",
+		"backButton": "Back",
+		"campaigns": [
+			{
+				"title": "Light up the future",
+				"description": "Support over 7,000 street children and trafficking victims return to safe lives.",
+				"details": "The program focuses on emergency rescue, education and vocational training, helping children reintegrate into the community."
+			},
+			{
+				"title": "Return smiles",
+				"description": "2024 Campaign: 39 surgeries in just 5 days, while transferring equipment & training local nurses",
+				"details": "Each complete surgery package ~6 million VND, bringing the ability to eat - speak - breathe normally for children."
+			},
+			{
+				"title": "One drop of blood, millions of hearts",
+				"description": "April 2025 blood donation drive attracted >200 people, providing 870 units of blood to shortage hospitals",
+				"details": "Ho Chi Minh City currently leads the country, accounting for nearly 20% of voluntary blood donations annually."
+			},
+			{
+				"title": "Run for Hearts 2024",
+				"description": "2024 event brought together >5,000 people and raised 6.08 billion VND for children with congenital heart disease",
+				"details": "From 2013 to present, the program has sponsored heart surgery for 1,549 children."
+			},
+			{
+				"title": "Stand together after floods",
+				"description": "Historic floods killed >170 people; IFRC and partners provided food, clean water, cash to tens of thousands of households",
+				"details": "Each food relief package of 500,000 VND helps a family of 4 for 1 week."
+			}
+		]
+	},
 	"footer": {
 		"description": "Vietnam's leading online fundraising platform. Help you achieve your dreams and goals through the power of community.",
 		"copyright": "All rights reserved.",

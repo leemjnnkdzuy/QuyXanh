@@ -13,6 +13,7 @@ import HowItWorksSection from "../../components/HowItWorksSection";
 import TrustSection from "../../components/TrustSection";
 import UpToBeginToggle from "../../components/UpToBeginToggle";
 import MainOdometerSection from "../../components/MainOdometerSection";
+import CompletedCampaignsSection from "../../components/CompletedCampaignsSection";
 
 const cx = classNames.bind(style);
 
@@ -85,6 +86,7 @@ function Home() {
 				<HeroSection />
 				<StatsSection />
 				<FeaturesSection />
+				<CompletedCampaignsSection />
 				<MainOdometerSection isVisible={isOdometerVisible} sectionRef={sectionRef} />
 				<MapSection
 					hoveredProvince={hoveredProvince}

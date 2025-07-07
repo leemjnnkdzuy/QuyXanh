@@ -16,11 +16,11 @@ const OdometerDigit = ({targetDigit, startSpin, delay = 0}) => {
 			setTimeout(() => {
 				setIsSpinning(true);
 
-				const totalSpins = 1 + Math.random() * 1;
+				const totalSpins = 0.5 + Math.random() * 0.5;
 				const targetPosition = parseInt(targetDigit) + totalSpins * 10;
 
 				let currentPos = 0;
-				const increment = 0.2;
+				const increment = 0.3;
 
 				const smoothSpin = () => {
 					if (currentPos < targetPosition) {
@@ -87,7 +87,7 @@ const MainOdometer = ({targetValue, isVisible}) => {
 
 	useEffect(() => {
 		if (isVisible && digits.length > 0) {
-			const initialDelay = Math.random() * 500;
+			const initialDelay = Math.random() * 200;
 			setTimeout(() => {
 				setShouldStartSpin(true);
 			}, initialDelay);
@@ -106,7 +106,7 @@ const MainOdometer = ({targetValue, isVisible}) => {
 						);
 					}
 
-					const digitDelay = Math.random() * 800;
+					const digitDelay = Math.random() * 300;
 
 					return (
 						<OdometerDigit
