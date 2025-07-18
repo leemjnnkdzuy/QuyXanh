@@ -81,7 +81,7 @@ function HomeFooter() {
 								<FaInstagram />
 							</a>
 							<a
-								href='https://youtube.com'
+								href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 								target='_blank'
 								rel='noopener noreferrer'
 								className={cx("social-link")}
