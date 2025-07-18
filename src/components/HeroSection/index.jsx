@@ -13,7 +13,6 @@ function HeroSection() {
 	const {t} = useTranslation();
 	const {homeData} = useHomeData();
 
-	// Sử dụng currency formatter với đa ngôn ngữ
 	const formatCurrency = createCurrencyFormatter(t);
 
 	const createHeroDescription = (weeklyAmount) => {

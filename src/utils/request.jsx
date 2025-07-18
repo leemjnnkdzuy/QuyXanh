@@ -139,6 +139,18 @@ export const verifyEmail = (email, code) =>
 		body: JSON.stringify({email, code}),
 	});
 
+export const verifyRegistrationPin = (email, code) =>
+	makeRequest("/api/users/verify-registration-pin", {
+		method: "POST",
+		body: JSON.stringify({email, code}),
+	});
+
+export const resendVerification = (email) =>
+	makeRequest("/api/users/resend-verification", {
+		method: "POST",
+		body: JSON.stringify({email}),
+	});
+
 export const login = (emailOrUsername, password) =>
 	makeRequest("/api/users/login", {
 		method: "POST",
@@ -155,15 +167,18 @@ export const forgotPassword = (email) =>
 	});
 
 export const verifyResetCode = (email, code) =>
-	makeRequest("/api/users/verify-reset-code", {
+	makeRequest("/api/users/verify-reset-pin", {
 		method: "POST",
 		body: JSON.stringify({email, code}),
 	});
 
-export const resetPassword = (email, code, newPassword) =>
+export const resetPassword = (newPassword, resetToken) =>
 	makeRequest("/api/users/reset-password", {
 		method: "POST",
-		body: JSON.stringify({email, code, newPassword}),
+		body: JSON.stringify({newPassword}),
+		headers: {
+			Authorization: `Bearer ${resetToken}`,
+		},
 	});
 
 export const changePassword = (currentPassword, newPassword) =>

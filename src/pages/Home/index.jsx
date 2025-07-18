@@ -14,6 +14,7 @@ import TrustSection from "../../components/TrustSection";
 import UpToBeginToggle from "../../components/UpToBeginToggle";
 import MainOdometerSection from "../../components/MainOdometerSection";
 import CompletedCampaignsSection from "../../components/CompletedCampaignsSection";
+import PopupAIChatBot from "../../components/PopupAIChatBot";
 
 const cx = classNames.bind(style);
 
@@ -98,6 +99,7 @@ function Home() {
 			<HomeFooter />
 			<FloatingThemeToggle isHeaderVisible={isHeaderVisible} />
 			<UpToBeginToggle />
+			<PopupAIChatBot />
 		</div>
 	);
 }

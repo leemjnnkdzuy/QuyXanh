@@ -367,13 +367,16 @@
 	flex: 0.7;
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-end;
 	position: relative;
 	overflow: visible;
 	z-index: 2;
 	opacity: 0;
 	transform: translateX(40px);
 	transition: all 0.6s var(--transition-bezier);
+	padding-top: 80px;
+	padding-bottom: 80px;
+	padding-right: 80px;
 
 	.wrapper.visible & {
 		opacity: 1;
@@ -392,16 +395,13 @@
 		}
 	}
 
-	padding: 80px;
-	margin: -80px;
-
 	@media (max-width: 768px) {
 		padding: 10px;
-		margin: -10px;
 		flex: 1;
 		min-height: 300px;
 		overflow: hidden;
 		max-width: 100%;
+		justify-content: center;
 	}
 }
 

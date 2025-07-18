@@ -127,7 +127,18 @@
 		"creating": "Đang tạo tài khoản...",
 		"resetting": "Đang đặt lại mật khẩu...",
 		"changing": "Đang thay đổi...",
-		"sending": "Đang gửi lại..."
+		"sending": "Đang gửi lại...",
+		"resending": "Đang gửi lại...",
+		"verifyEmail": "Xác thực Email của bạn",
+		"verificationCodeSent": "Mã xác thực đã được gửi đến email của bạn",
+		"verificationCodeSentEmail": "Chúng tôi đã gửi mã xác thực đến {email}",
+		"verifyCode": "Xác thực mã",
+		"verificationSuccess": "Email đã được xác thực thành công!",
+		"verificationCodeResent": "Mã xác thực đã được gửi lại",
+		"welcomeTitle": "Chào mừng!",
+		"registrationSuccess": "Tài khoản của bạn đã được tạo thành công",
+		"continueToDashboard": "Tiếp tục đến Bảng điều khiển",
+		"backToRegister": "Quay lại Đăng ký"
 	},
 	"validation": {
 		"emailOrUsernameRequired": "Email hoặc tên đăng nhập là bắt buộc",
@@ -148,7 +159,13 @@
 		"lastNameRequired": "Tên là bắt buộc",
 		"usernameRequired": "Tên người dùng là bắt buộc",
 		"emailRequired": "Email là bắt buộc",
-		"confirmPasswordRequired": "Xác nhận mật khẩu là bắt buộc"
+		"confirmPasswordRequired": "Xác nhận mật khẩu là bắt buộc",
+		"phoneNumberRequired": "Số điện thoại là bắt buộc",
+		"phoneNumberInvalid": "Định dạng số điện thoại không hợp lệ",
+		"verificationCodeRequired": "Mã xác thực là bắt buộc",
+		"verificationCodeInvalid": "Mã xác thực không hợp lệ",
+		"emailAlreadyExists": "Email này đã được đăng ký",
+		"usernameAlreadyExists": "Tên người dùng này đã được sử dụng"
 	},
 	"messages": {
 		"success": {
@@ -176,7 +193,13 @@
 			"invalidCode": "Mã xác thực không đúng",
 			"resetFailed": "Đặt lại mật khẩu thất bại",
 			"changeFailed": "Đổi mật khẩu thất bại",
-			"loginFailed": "Đăng nhập thất bại"
+			"loginFailed": "Đăng nhập thất bại",
+			"registrationFailed": "Đăng ký thất bại",
+			"genericError": "Có lỗi xảy ra, vui lòng thử lại",
+			"resendFailed": "Gửi lại mã xác thực thất bại",
+			"emailAlreadyExists": "Email này đã được đăng ký và xác thực",
+			"usernameAlreadyExists": "Tên người dùng này đã được sử dụng",
+			"emailSendFailed": "Không thể gửi email xác thực. Vui lòng thử lại sau."
 		}
 	},
 	"map": {

@@ -1,34 +1,110 @@
-import React, {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import {FiArrowLeft} from "react-icons/fi";
+import React, {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {FiArrowLeft, FiLock} from "react-icons/fi";
 import {FaTree} from "react-icons/fa";
 import classNames from "classnames/bind";
+import {useAuth} from "../../utils/authContext";
+import {useTheme} from "../../utils/themeContext";
 import {
 	forgotPassword,
 	verifyResetCode,
 	resetPassword,
 } from "../../utils/request";
 import PopupNotification from "../../components/PopupNotification";
+import SpinnerLoading from "../../components/SpinnerLoading";
 import styles from "./FogetPassword.module.scss";
 
 const cx = classNames.bind(styles);
 
 function ForgotPassword() {
 	const navigate = useNavigate();
-	const [step, setStep] = useState("email"); // "email", "code", "password", "success"
+	const {isAuthenticated} = useAuth();
+	const {isDarkMode} = useTheme();
+	const [step, setStep] = useState("email");
 	const [formData, setFormData] = useState({
 		email: "",
-		code: "",
+		code: ["", "", "", "", "", ""],
 		newPassword: "",
 		confirmPassword: "",
 	});
+	const [resetToken, setResetToken] = useState("");
 	const [errors, setErrors] = useState({});
 	const [isLoading, setIsLoading] = useState(false);
+	const [isTransitioning, setIsTransitioning] = useState(false);
 	const [notification, setNotification] = useState({
 		show: false,
 		message: "",
 		type: "error",
 	});
+
+	// Redirect to home if already authenticated
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate("/home");
+		}
+	}, [isAuthenticated, navigate]);
+
+	const getStepNumber = (stepName) => {
+		const steps = {email: 1, code: 2, password: 3, success: 4};
+		return steps[stepName] || 1;
+	};
+
+	const currentStepNumber = getStepNumber(step);
+
+	const changeStep = (newStep) => {
+		setIsTransitioning(true);
+		setTimeout(() => {
+			setStep(newStep);
+			setIsTransitioning(false);
+		}, 300);
+	};
+
+	const renderProgressBar = () => {
+		if (step === "success") return null;
+
+		return (
+			<div className={cx("progressBar")}>
+				<div
+					className={cx("progressStep", {
+						active: currentStepNumber === 1,
+						completed: currentStepNumber > 1,
+					})}
+				>
+					1
+				</div>
+				<div
+					className={cx("progressLine", {
+						completed: currentStepNumber > 1,
+						inactive: currentStepNumber <= 1,
+					})}
+				></div>
+				<div
+					className={cx("progressStep", {
+						active: currentStepNumber === 2,
+						completed: currentStepNumber > 2,
+						inactive: currentStepNumber < 2,
+					})}
+				>
+					2
+				</div>
+				<div
+					className={cx("progressLine", {
+						completed: currentStepNumber > 2,
+						inactive: currentStepNumber <= 2,
+					})}
+				></div>
+				<div
+					className={cx("progressStep", {
+						active: currentStepNumber === 3,
+						completed: currentStepNumber > 3,
+						inactive: currentStepNumber < 3,
+					})}
+				>
+					3
+				</div>
+			</div>
+		);
+	};
 
 	const showNotification = (message, type = "error") => {
 		setNotification({
@@ -60,6 +136,53 @@ function ForgotPassword() {
 		}
 	};
 
+	const handleCodeChange = (index, value) => {
+		if (!/^\d*$/.test(value) || value.length > 1) return;
+
+		const newCode = [...formData.code];
+		newCode[index] = value;
+
+		setFormData((prev) => ({
+			...prev,
+			code: newCode,
+		}));
+
+		if (errors.code) {
+			setErrors((prev) => ({
+				...prev,
+				code: "",
+			}));
+		}
+
+		if (value && index < 5) {
+			const nextInput = document.querySelector(`#code-${index + 1}`);
+			if (nextInput) nextInput.focus();
+		}
+	};
+
+	const handleCodeKeyDown = (index, e) => {
+		if (e.key === "Backspace" && !formData.code[index] && index > 0) {
+			const prevInput = document.querySelector(`#code-${index - 1}`);
+			if (prevInput) prevInput.focus();
+		}
+
+		if (e.key === "v" && (e.ctrlKey || e.metaKey)) {
+			e.preventDefault();
+			navigator.clipboard.readText().then((text) => {
+				const digits = text.replace(/\D/g, "").slice(0, 6);
+				if (digits.length === 6) {
+					const newCode = digits.split("");
+					setFormData((prev) => ({
+						...prev,
+						code: newCode,
+					}));
+					const lastInput = document.querySelector(`#code-5`);
+					if (lastInput) lastInput.focus();
+				}
+			});
+		}
+	};
+
 	const validateEmail = () => {
 		const newErrors = {};
 		if (!formData.email) {
@@ -73,9 +196,10 @@ function ForgotPassword() {
 
 	const validateCode = () => {
 		const newErrors = {};
-		if (!formData.code) {
+		const codeString = formData.code.join("");
+		if (!codeString || codeString.length === 0) {
 			newErrors.code = "Mã xác thực là bắt buộc";
-		} else if (formData.code.length !== 6) {
+		} else if (codeString.length !== 6) {
 			newErrors.code = "Mã xác thực phải có 6 chữ số";
 		}
 		setErrors(newErrors);
@@ -111,18 +235,27 @@ function ForgotPassword() {
 
 		try {
 			const response = await forgotPassword(formData.email);
+			console.log("Forgot password response:", response);
 
 			if (response.success && response.userExists && response.emailSent) {
-				// Email tồn tại và gửi thành công
-				setStep("code");
-			} else if (response.userExists === false) {
-				// Email không tồn tại
+				showNotification("Mã xác thực đã được gửi đến email của bạn", "success");
+				changeStep("code");
+			} else if (
+				response.success &&
+				response.data &&
+				response.data.userExists &&
+				response.data.emailSent
+			) {
+				showNotification("Mã xác thực đã được gửi đến email của bạn", "success");
+				changeStep("code");
+			} else if (
+				response.userExists === false ||
+				(response.data && response.data.userExists === false)
+			) {
 				showNotification("Email không tồn tại trong hệ thống", "error");
 			} else if (response.userExists && !response.emailSent) {
-				// Email tồn tại nhưng không gửi được
 				showNotification("Có lỗi khi gửi email, vui lòng thử lại", "error");
 			} else {
-				// Trường hợp khác
 				showNotification(response.message || "Gửi email thất bại", "error");
 			}
 		} catch (error) {
@@ -140,11 +273,18 @@ function ForgotPassword() {
 		setErrors({});
 
 		try {
-			const response = await verifyResetCode(formData.email, formData.code);
+			const response = await verifyResetCode(formData.email, formData.code.join(""));
+			console.log("Verify reset code response:", response);
+
 			if (response.success) {
-				setStep("password");
+				setResetToken(response.data?.resetToken || response.resetToken || "");
+				showNotification("Mã xác thực đúng! Hãy nhập mật khẩu mới", "success");
+				changeStep("password");
 			} else {
-				showNotification(response.message || "Mã xác thực không đúng", "error");
+				showNotification(
+					response.message || "Mã xác thực không đúng hoặc đã hết hạn",
+					"error"
+				);
 			}
 		} catch (error) {
 			console.error("Verify code error:", error);
@@ -161,18 +301,26 @@ function ForgotPassword() {
 		setErrors({});
 
 		try {
-			const response = await resetPassword(
-				formData.email,
-				formData.code,
-				formData.newPassword
-			);
+			const response = await resetPassword(formData.newPassword, resetToken);
+			console.log("Reset password response:", response);
+
 			if (response.success) {
-				setStep("success");
+				changeStep("success");
+				showNotification("Đặt lại mật khẩu thành công!", "success");
 			} else {
 				showNotification(response.message || "Đặt lại mật khẩu thất bại", "error");
+				if (response.message && response.message.includes("hết hạn")) {
+					setStep("email");
+					setFormData({
+						email: "",
+						code: ["", "", "", "", "", ""],
+						newPassword: "",
+						confirmPassword: "",
+					});
+					setResetToken("");
+				}
 			}
 		} catch (error) {
-			console.error("Reset password error:", error);
 			showNotification("Có lỗi xảy ra, vui lòng thử lại", "error");
 		} finally {
 			setIsLoading(false);
@@ -184,20 +332,15 @@ function ForgotPassword() {
 			const response = await forgotPassword(formData.email);
 
 			if (response.success && response.userExists && response.emailSent) {
-				// Email tồn tại và gửi thành công
 				showNotification("Mã xác thực đã được gửi lại", "success");
 			} else if (response.userExists === false) {
-				// Email không tồn tại
 				showNotification("Email không tồn tại trong hệ thống", "error");
 			} else if (response.userExists && !response.emailSent) {
-				// Email tồn tại nhưng không gửi được
 				showNotification("Có lỗi khi gửi email, vui lòng thử lại", "error");
 			} else {
-				// Trường hợp khác
 				showNotification(response.message || "Gửi lại email thất bại", "error");
 			}
 		} catch (error) {
-			console.error("Resend error:", error);
 			showNotification("Có lỗi xảy ra, vui lòng thử lại", "error");
 		} finally {
 			setIsLoading(false);
@@ -205,20 +348,26 @@ function ForgotPassword() {
 	};
 
 	const handleBackToEmail = () => {
-		setStep("email");
-		setFormData((prev) => ({...prev, code: ""}));
+		changeStep("email");
+		setFormData((prev) => ({...prev, code: ["", "", "", "", "", ""]}));
+		setResetToken("");
 		setErrors({});
 	};
 
 	const handleBackToCode = () => {
-		setStep("code");
+		changeStep("code");
 		setFormData((prev) => ({...prev, newPassword: "", confirmPassword: ""}));
+		setResetToken("");
 		setErrors({});
 	};
-	// Success step
+	let renderContent;
+
 	if (step === "success") {
-		return (
-			<div className={cx("forgotContainer")}>
+		renderContent = (
+			<div
+				className={cx("forgotContainer")}
+				data-theme={isDarkMode ? "dark" : "light"}
+			>
 				<button
 					className={cx("backToHome")}
 					onClick={() => navigate("/")}
@@ -237,7 +386,7 @@ function ForgotPassword() {
 							fill='none'
 							xmlns='http://www.w3.org/2000/svg'
 						>
-							<circle cx='12' cy='12' r='10' fill='#2dd881' />
+							<circle cx='12' cy='12' r='10' fill='#4ade80' />
 							<path
 								d='M9 12l2 2 4-4'
 								stroke='white'
@@ -257,28 +406,19 @@ function ForgotPassword() {
 					</div>
 
 					<div className={cx("successActions")}>
-						<Link to='/login' className={cx("submitButton")}>
+						<button onClick={() => navigate("/login")} className={cx("submitButton")}>
 							Đăng nhập ngay
-						</Link>
+						</button>
 					</div>
 				</div>
-
-				{notification.show && (
-					<PopupNotification
-						message={notification.message}
-						type={notification.type}
-						onClose={hideNotification}
-						duration={4000}
-					/>
-				)}
 			</div>
 		);
-	}
-
-	// Password step
-	if (step === "password") {
-		return (
-			<div className={cx("forgotContainer")}>
+	} else if (step === "password") {
+		renderContent = (
+			<div
+				className={cx("forgotContainer")}
+				data-theme={isDarkMode ? "dark" : "light"}
+			>
 				<button
 					className={cx("backToHome")}
 					onClick={() => navigate("/")}
@@ -288,21 +428,11 @@ function ForgotPassword() {
 					<FaTree className={cx("logoIcon")} />
 				</button>
 
-				<div className={cx("forgotCard")}>
+				<div className={cx("forgotCard", {stepTransition: isTransitioning})}>
+					{renderProgressBar()}
 					<div className={cx("forgotHeader")}>
 						<div className={cx("iconContainer")}>
-							<svg
-								width='48'
-								height='48'
-								viewBox='0 0 24 24'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'
-							>
-								<path
-									d='M12 1a3 3 0 0 0-3 3v8a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2V4a3 3 0 0 0-3-3zM10 4a2 2 0 1 1 4 0v8h-4V4z'
-									fill='var(--primary-color-1)'
-								/>
-							</svg>
+							<FiLock size={48} color='#667eea' />
 						</div>
 						<h1 className={cx("title")}>Đặt mật khẩu mới</h1>
 						<p className={cx("subtitle")}>Nhập mật khẩu mới cho tài khoản của bạn</p>
@@ -355,7 +485,7 @@ function ForgotPassword() {
 						>
 							{isLoading ? (
 								<>
-									<span className={cx("spinner")}></span>
+									<SpinnerLoading size='20px' />
 									Đang đặt lại mật khẩu...
 								</>
 							) : (
@@ -384,23 +514,14 @@ function ForgotPassword() {
 						</button>
 					</div>
 				</div>
-
-				{notification.show && (
-					<PopupNotification
-						message={notification.message}
-						type={notification.type}
-						onClose={hideNotification}
-						duration={4000}
-					/>
-				)}
 			</div>
 		);
-	}
-
-	// Code verification step
-	if (step === "code") {
-		return (
-			<div className={cx("forgotContainer")}>
+	} else if (step === "code") {
+		renderContent = (
+			<div
+				className={cx("forgotContainer")}
+				data-theme={isDarkMode ? "dark" : "light"}
+			>
 				<button
 					className={cx("backToHome")}
 					onClick={() => navigate("/")}
@@ -410,7 +531,8 @@ function ForgotPassword() {
 					<FaTree className={cx("logoIcon")} />
 				</button>
 
-				<div className={cx("forgotCard")}>
+				<div className={cx("forgotCard", {stepTransition: isTransitioning})}>
+					{renderProgressBar()}
 					<div className={cx("forgotHeader")}>
 						<div className={cx("iconContainer")}>
 							<svg
@@ -422,7 +544,7 @@ function ForgotPassword() {
 							>
 								<path
 									d='M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V17C3 18.1 3.9 19 5 19H11C11.6 19 12 18.6 12 18S11.6 17 11 17H5V3H14V8C14 8.6 14.4 9 15 9H21ZM19 11.5C19 10.7 18.3 10 17.5 10S16 10.7 16 11.5V12H15.5C14.7 12 14 12.7 14 13.5V18.5C14 19.3 14.7 20 15.5 20H19.5C20.3 20 21 19.3 21 18.5V13.5C21 12.7 20.3 12 19.5 12H19V11.5Z'
-									fill='var(--primary-color-1)'
+									fill='#667eea'
 								/>
 							</svg>
 						</div>
@@ -435,20 +557,22 @@ function ForgotPassword() {
 
 					<form className={cx("forgotForm")} onSubmit={handleCodeSubmit}>
 						<div className={cx("inputGroup")}>
-							<label htmlFor='code' className={cx("label")}>
-								Mã xác thực
-							</label>
-							<input
-								type='text'
-								id='code'
-								name='code'
-								value={formData.code}
-								onChange={handleChange}
-								className={cx("input", "codeInput", {inputError: errors.code})}
-								placeholder='Nhập mã 6 chữ số'
-								maxLength={6}
-								autoFocus
-							/>{" "}
+							<label className={cx("label")}>Mã xác thực</label>
+							<div className={cx("codeInputContainer")}>
+								{formData.code.map((digit, index) => (
+									<input
+										key={index}
+										id={`code-${index}`}
+										type='text'
+										value={digit}
+										onChange={(e) => handleCodeChange(index, e.target.value)}
+										onKeyDown={(e) => handleCodeKeyDown(index, e)}
+										className={cx("codeDigitInput", {inputError: errors.code})}
+										maxLength={1}
+										autoFocus={index === 0}
+									/>
+								))}
+							</div>
 							{errors.code && <span className={cx("errorMessage")}>{errors.code}</span>}
 						</div>
 
@@ -459,7 +583,7 @@ function ForgotPassword() {
 						>
 							{isLoading ? (
 								<>
-									<span className={cx("spinner")}></span>
+									<SpinnerLoading size='20px' />
 									Đang xác thực...
 								</>
 							) : (
@@ -502,120 +626,118 @@ function ForgotPassword() {
 						</div>
 					</div>
 				</div>
+			</div>
+		);
+	} else {
+		renderContent = (
+			<div
+				className={cx("forgotContainer")}
+				data-theme={isDarkMode ? "dark" : "light"}
+			>
+				<button
+					className={cx("backToHome")}
+					onClick={() => navigate("/")}
+					title='Quay về trang chủ'
+				>
+					<FiArrowLeft className={cx("backIcon")} />
+					<FaTree className={cx("logoIcon")} />
+				</button>{" "}
+				<div className={cx("forgotCard", {stepTransition: isTransitioning})}>
+					{renderProgressBar()}
+					<div className={cx("forgotHeader")}>
+						<div className={cx("iconContainer")}>
+							<svg
+								width='48'
+								height='48'
+								viewBox='0 0 24 24'
+								fill='none'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path
+									d='M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V17C3 18.1 3.9 19 5 19H11C11.6 19 12 18.6 12 18S11.6 17 11 17H5V3H14V8C14 8.6 14.4 9 15 9H21ZM19 11.5C19 10.7 18.3 10 17.5 10S16 10.7 16 11.5V12H15.5C14.7 12 14 12.7 14 13.5V18.5C14 19.3 14.7 20 15.5 20H19.5C20.3 20 21 19.3 21 18.5V13.5C21 12.7 20.3 12 19.5 12H19V11.5Z'
+									fill='#667eea'
+								/>
+							</svg>
+						</div>
+						<h1 className={cx("title")}>Quên mật khẩu?</h1>
+						<p className={cx("subtitle")}>
+							Không sao! Nhập email của bạn và chúng tôi sẽ gửi mã xác thực để đặt lại mật
+							khẩu.
+						</p>
+					</div>
 
-				{notification.show && (
-					<PopupNotification
-						message={notification.message}
-						type={notification.type}
-						onClose={hideNotification}
-						duration={4000}
-					/>
-				)}
+					<form className={cx("forgotForm")} onSubmit={handleEmailSubmit}>
+						<div className={cx("inputGroup")}>
+							<label htmlFor='email' className={cx("label")}>
+								Địa chỉ Email
+							</label>
+							<input
+								type='email'
+								id='email'
+								name='email'
+								value={formData.email}
+								onChange={handleChange}
+								className={cx("input", {inputError: errors.email})}
+								placeholder='Nhập email đã đăng ký'
+								autoFocus
+							/>
+							{errors.email && <span className={cx("errorMessage")}>{errors.email}</span>}
+						</div>
+
+						{errors.submit && <div className={cx("submitError")}>{errors.submit}</div>}
+
+						<button
+							type='submit'
+							className={cx("submitButton", {loading: isLoading})}
+							disabled={isLoading}
+						>
+							{isLoading ? (
+								<>
+									<SpinnerLoading size='20px' />
+									Đang gửi mã...
+								</>
+							) : (
+								"Gửi mã xác thực"
+							)}
+						</button>
+					</form>
+
+					<div className={cx("forgotFooter")}>
+						<button onClick={() => navigate("/login")} className={cx("backLink")}>
+							<svg
+								width='16'
+								height='16'
+								viewBox='0 0 24 24'
+								fill='none'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path
+									d='M19 12H5M12 19L5 12L12 5'
+									stroke='currentColor'
+									strokeWidth='2'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+								/>
+							</svg>
+							Quay lại đăng nhập
+						</button>{" "}
+						<div className={cx("helpText")}>
+							<p>
+								Cần trợ giúp?{" "}
+								<a href='mailto:support@example.com' className={cx("contactLink")}>
+									Liên hệ hỗ trợ
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}
 
-	// Email step (default)
 	return (
-		<div className={cx("forgotContainer")}>
-			<button
-				className={cx("backToHome")}
-				onClick={() => navigate("/")}
-				title='Quay về trang chủ'
-			>
-				<FiArrowLeft className={cx("backIcon")} />
-				<FaTree className={cx("logoIcon")} />
-			</button>
-
-			<div className={cx("forgotCard")}>
-				<div className={cx("forgotHeader")}>
-					<div className={cx("iconContainer")}>
-						<svg
-							width='48'
-							height='48'
-							viewBox='0 0 24 24'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-						>
-							<path
-								d='M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.9 1 3 1.9 3 3V17C3 18.1 3.9 19 5 19H11C11.6 19 12 18.6 12 18S11.6 17 11 17H5V3H14V8C14 8.6 14.4 9 15 9H21ZM19 11.5C19 10.7 18.3 10 17.5 10S16 10.7 16 11.5V12H15.5C14.7 12 14 12.7 14 13.5V18.5C14 19.3 14.7 20 15.5 20H19.5C20.3 20 21 19.3 21 18.5V13.5C21 12.7 20.3 12 19.5 12H19V11.5Z'
-								fill='var(--primary-color-1)'
-							/>
-						</svg>
-					</div>
-					<h1 className={cx("title")}>Quên mật khẩu?</h1>
-					<p className={cx("subtitle")}>
-						Không sao! Nhập email của bạn và chúng tôi sẽ gửi mã xác thực để đặt lại mật
-						khẩu.
-					</p>
-				</div>
-
-				<form className={cx("forgotForm")} onSubmit={handleEmailSubmit}>
-					<div className={cx("inputGroup")}>
-						<label htmlFor='email' className={cx("label")}>
-							Địa chỉ Email
-						</label>
-						<input
-							type='email'
-							id='email'
-							name='email'
-							value={formData.email}
-							onChange={handleChange}
-							className={cx("input", {inputError: errors.email})}
-							placeholder='Nhập email đã đăng ký'
-							autoFocus
-						/>
-						{errors.email && <span className={cx("errorMessage")}>{errors.email}</span>}
-					</div>
-
-					{errors.submit && <div className={cx("submitError")}>{errors.submit}</div>}
-
-					<button
-						type='submit'
-						className={cx("submitButton", {loading: isLoading})}
-						disabled={isLoading}
-					>
-						{isLoading ? (
-							<>
-								<span className={cx("spinner")}></span>
-								Đang gửi mã...
-							</>
-						) : (
-							"Gửi mã xác thực"
-						)}
-					</button>
-				</form>
-
-				<div className={cx("forgotFooter")}>
-					<Link to='/login' className={cx("backLink")}>
-						<svg
-							width='16'
-							height='16'
-							viewBox='0 0 24 24'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-						>
-							<path
-								d='M19 12H5M12 19L5 12L12 5'
-								stroke='currentColor'
-								strokeWidth='2'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-							/>
-						</svg>
-						Quay lại đăng nhập
-					</Link>{" "}
-					<div className={cx("helpText")}>
-						<p>
-							Cần trợ giúp?{" "}
-							<a href='mailto:support@example.com' className={cx("contactLink")}>
-								Liên hệ hỗ trợ
-							</a>
-						</p>
-					</div>
-				</div>
-			</div>
-
+		<>
+			{renderContent}
 			{notification.show && (
 				<PopupNotification
 					message={notification.message}
@@ -624,7 +746,7 @@ function ForgotPassword() {
 					duration={4000}
 				/>
 			)}
-		</div>
+		</>
 	);
 }
 

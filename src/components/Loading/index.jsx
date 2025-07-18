@@ -14,9 +14,8 @@ function Loading({size, showIcon = true}) {
 		style.height = size;
 		style.minHeight = size;
 
-		// Calculate icon size based on container size
 		const sizeValue = parseInt(size);
-		const iconSize = Math.max(16, sizeValue * 0.35); // 35% of container, minimum 16px
+		const iconSize = Math.max(16, sizeValue * 0.35);
 		iconStyle.fontSize = `${iconSize}px`;
 	}
 

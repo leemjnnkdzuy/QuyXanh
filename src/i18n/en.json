@@ -127,7 +127,18 @@
 		"creating": "Creating account...",
 		"resetting": "Resetting password...",
 		"changing": "Changing...",
-		"sending": "Resending..."
+		"sending": "Resending...",
+		"resending": "Resending...",
+		"verifyEmail": "Verify Your Email",
+		"verificationCodeSent": "Verification code has been sent to your email",
+		"verificationCodeSentEmail": "We've sent a verification code to {email}",
+		"verifyCode": "Verify Code",
+		"verificationSuccess": "Email verified successfully!",
+		"verificationCodeResent": "Verification code has been resent",
+		"welcomeTitle": "Welcome!",
+		"registrationSuccess": "Your account has been created successfully",
+		"continueToDashboard": "Continue to Dashboard",
+		"backToRegister": "Back to Registration"
 	},
 	"validation": {
 		"emailOrUsernameRequired": "Email or username is required",
@@ -148,7 +159,13 @@
 		"lastNameRequired": "Last name is required",
 		"usernameRequired": "Username is required",
 		"emailRequired": "Email is required",
-		"confirmPasswordRequired": "Confirm password is required"
+		"confirmPasswordRequired": "Confirm password is required",
+		"phoneNumberRequired": "Phone number is required",
+		"phoneNumberInvalid": "Phone number format is invalid",
+		"verificationCodeRequired": "Verification code is required",
+		"verificationCodeInvalid": "Invalid verification code",
+		"emailAlreadyExists": "This email is already registered",
+		"usernameAlreadyExists": "This username is already taken"
 	},
 	"messages": {
 		"success": {
@@ -175,7 +192,11 @@
 			"codeExpired": "Verification code has expired",
 			"emailNotFound": "Email not found",
 			"accountNotActivated": "Account not activated",
-			"tooManyAttempts": "Too many attempts, please try again later"
+			"tooManyAttempts": "Too many attempts, please try again later",
+			"resendFailed": "Failed to resend verification code",
+			"emailAlreadyExists": "This email is already registered and verified",
+			"usernameAlreadyExists": "This username is already taken",
+			"emailSendFailed": "Failed to send verification email. Please try again later."
 		}
 	},
 	"popup": {

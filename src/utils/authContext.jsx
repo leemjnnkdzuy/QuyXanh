@@ -44,10 +44,10 @@ export const AuthProvider = ({children}) => {
 						setIsAuthenticated(true);
 						setToken(storedToken);
 						setUser({
-							id: tokenData.Id,
-							fullName: tokenData.Name,
-							role: tokenData.Role,
-							graduateLevel: tokenData.GraduateLevel,
+							id: tokenData.id,
+							fullName: tokenData.fullName || tokenData.name,
+							role: tokenData.role,
+							email: tokenData.email,
 						});
 						if (!document.cookie.includes("YIF+pxrGp0isUkYUsAWxn3rQH6pBrNY_")) {
 							const expiryDate = new Date(tokenData.exp * 1000);
@@ -82,21 +82,33 @@ export const AuthProvider = ({children}) => {
 	const login = async (emailOrUsername, password) => {
 		try {
 			const response = await loginApi(emailOrUsername, password);
-			if (response.success && response.data.Token) {
-				const tokenData = JSON.parse(atob(response.data.Token.split(".")[1]));
+			
+			if (response.success && response.data?.data?.accessToken) {
+				const token = response.data.data.accessToken;
+				const userData = response.data.data.user;
+
+				console.log("Token:", token);
+				console.log("User data:", userData);
+
+				const tokenData = JSON.parse(atob(token.split(".")[1]));
 				const expiryDate = new Date(tokenData.exp * 1000);
 
-				localStorage.setItem("authToken", response.data.Token);
+				localStorage.setItem("authToken", token);
 				document.cookie = `YIF+pxrGp0isUkYUsAWxn3rQH6pBrNY_=true; expires=${expiryDate.toUTCString()}; path=/`;
 
-				setToken(response.data.Token);
+				setToken(token);
 				setIsAuthenticated(true);
 				setUser({
-					id: response.data.Id,
-					fullName: response.data.FullName,
-					role: response.data.Role,
-					graduateLevel: response.data.GraduateLevel,
+					id: userData._id,
+					fullName: userData.fullName,
+					email: userData.email,
+					username: userData.username,
+					role: userData.role,
+					avatar: userData.avatar,
+					phoneNumber: userData.phoneNumber,
+					isVerified: userData.isVerified,
 				});
+
 				return {success: true};
 			}
 			return {

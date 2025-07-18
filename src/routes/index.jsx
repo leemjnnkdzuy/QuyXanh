@@ -7,9 +7,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ForgotPassword from "../pages/FogotPassword";
-import EmailVerification from "../pages/EmailVerification";
-import ResetPassword from "../pages/ResetPassword";
-import ChangePassword from "../pages/ChangePassword";
+import Features from "../pages/Features";
 
 const publicRoutes = [
 	{
@@ -38,23 +36,12 @@ const publicRoutes = [
 		layout: NoSidebarLayout,
 	},
 	{
-		path: "/verify-email",
-		component: EmailVerification,
-		layout: NoSidebarLayout,
-	},
-	{
-		path: "/reset-password",
-		component: ResetPassword,
+		path: "/features",
+		component: Features,
 		layout: NoSidebarLayout,
 	},
 ];
 
-const privateRoutes = [
-	{
-		path: "/change-password",
-		component: ChangePassword,
-		layout: NoSidebarLayout,
-	},
-];
+const privateRoutes = [];
 
 export {publicRoutes, privateRoutes};

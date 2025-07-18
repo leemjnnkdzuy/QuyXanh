@@ -1,0 +1,44 @@
+.loading {
+	position: relative;
+	min-height: 30px;
+	color: transparent;
+	pointer-events: none;
+
+	&::after {
+		content: "";
+		position: absolute;
+		width: inherit;
+		height: inherit;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		border: 3px solid var(--text-color);
+		border-radius: 50%;
+		border-top-color: transparent;
+		border-left-color: transparent;
+		animation: spin 0.8s ease infinite;
+	}
+
+	&[style*="width"] {
+		min-height: unset;
+
+		&::after {
+			border-width: 1px;
+		}
+	}
+
+	&.small::after {
+		width: 20px;
+		height: 20px;
+		border-width: 2px;
+	}
+}
+
+@keyframes spin {
+	from {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
