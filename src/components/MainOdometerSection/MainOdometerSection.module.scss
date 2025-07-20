@@ -48,15 +48,41 @@
 	}
 
 	@media (max-width: 768px) {
-		padding: 60px 24px;
-		min-height: 80vh;
+		padding: 60px 20px;
+		min-height: 85vh;
 		background-size: 120% 120%;
+	}
+
+	@media (max-width: 640px) {
+		padding: 50px 18px;
+		min-height: 80vh;
+		background: linear-gradient(
+			135deg,
+			rgba(31, 120, 255, 0.08) 0%,
+			rgba(45, 216, 129, 0.06) 25%,
+			rgba(255, 255, 255, 0.03) 50%,
+			rgba(139, 69, 255, 0.06) 75%,
+			rgba(31, 120, 255, 0.08) 100%
+		);
 	}
 
 	@media (max-width: 480px) {
 		padding: 40px 16px;
-		min-height: 70vh;
+		min-height: 75vh;
+		background: linear-gradient(
+			135deg,
+			rgba(31, 120, 255, 0.1) 0%,
+			rgba(45, 216, 129, 0.08) 25%,
+			rgba(255, 255, 255, 0.04) 50%,
+			rgba(139, 69, 255, 0.08) 75%,
+			rgba(31, 120, 255, 0.1) 100%
+		);
 		background-size: 100% 100%;
+	}
+
+	@media (max-width: 360px) {
+		padding: 30px 12px;
+		min-height: 70vh;
 	}
 
 	.odometer-header {
@@ -66,10 +92,18 @@
 		transition: all 0.8s ease-out;
 
 		@media (max-width: 768px) {
+			margin-bottom: 35px;
+		}
+
+		@media (max-width: 640px) {
 			margin-bottom: 30px;
 		}
 
 		@media (max-width: 480px) {
+			margin-bottom: 25px;
+		}
+
+		@media (max-width: 360px) {
 			margin-bottom: 20px;
 		}
 
@@ -81,17 +115,25 @@
 			line-height: 1.1;
 
 			@media (max-width: 768px) {
-				font-size: 2.4rem;
-				margin-bottom: 10px;
+				font-size: 2.6rem;
+				margin-bottom: 12px;
+				line-height: 1.2;
 			}
 
 			@media (max-width: 640px) {
-				font-size: 2rem;
+				font-size: 2.2rem;
+				margin-bottom: 10px;
 			}
 
 			@media (max-width: 480px) {
-				font-size: 1.8rem;
+				font-size: 2rem;
 				margin-bottom: 8px;
+				line-height: 1.3;
+			}
+
+			@media (max-width: 360px) {
+				font-size: 1.8rem;
+				margin-bottom: 6px;
 			}
 		}
 
@@ -101,16 +143,23 @@
 			font-weight: 500;
 
 			@media (max-width: 768px) {
-				font-size: 1.2rem;
+				font-size: 1.3rem;
+				line-height: 1.4;
 			}
 
 			@media (max-width: 640px) {
-				font-size: 1.1rem;
+				font-size: 1.2rem;
+				line-height: 1.5;
 			}
 
 			@media (max-width: 480px) {
+				font-size: 1.1rem;
+				line-height: 1.5;
+			}
+
+			@media (max-width: 360px) {
 				font-size: 1rem;
-				line-height: 1.4;
+				line-height: 1.6;
 			}
 		}
 	}
@@ -125,13 +174,25 @@
 		transition: all 1s ease-out 0.3s;
 
 		@media (max-width: 768px) {
-			gap: 15px;
+			gap: 16px;
+			margin: 25px 0;
+			flex-direction: row;
+			align-items: center;
+		}
+
+		@media (max-width: 640px) {
+			gap: 14px;
 			margin: 20px 0;
-			flex-direction: column;
 		}
 
 		@media (max-width: 480px) {
 			gap: 12px;
+			margin: 18px 0;
+			flex-direction: column;
+		}
+
+		@media (max-width: 360px) {
+			gap: 10px;
 			margin: 15px 0;
 		}
 
@@ -142,15 +203,21 @@
 			text-shadow: 0 0 10px rgba(31, 120, 255, 0.2);
 
 			@media (max-width: 768px) {
-				font-size: 3rem;
-				order: 1;
+				font-size: 3.5rem;
+				order: 0;
 			}
 
 			@media (max-width: 640px) {
-				font-size: 2.5rem;
+				font-size: 3rem;
 			}
 
 			@media (max-width: 480px) {
+				font-size: 2.5rem;
+				order: 1;
+				margin-top: 8px;
+			}
+
+			@media (max-width: 360px) {
 				font-size: 2.2rem;
 			}
 		}
@@ -170,22 +237,33 @@
 			z-index: 10;
 
 			@media (max-width: 768px) {
-				padding: 15px 20px;
-				gap: 4px;
+				padding: 18px 22px;
+				gap: 5px;
 				order: 0;
 				background: rgba(255, 255, 255, 0.08);
 				border-radius: 18px;
 				backdrop-filter: blur(15px);
+				box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15),
+					inset 0 1px 0 rgba(255, 255, 255, 0.12);
 			}
 
 			@media (max-width: 640px) {
-				padding: 12px 16px;
-				gap: 3px;
+				padding: 16px 20px;
+				gap: 4px;
+				border-radius: 16px;
 			}
 
 			@media (max-width: 480px) {
-				padding: 10px 14px;
+				padding: 14px 18px;
+				gap: 3px;
+				border-radius: 14px;
+				background: rgba(255, 255, 255, 0.1);
+			}
+
+			@media (max-width: 360px) {
+				padding: 12px 16px;
 				gap: 2px;
+				border-radius: 12px;
 			}
 
 			.separator {
@@ -195,16 +273,23 @@
 				margin: 0 2px;
 
 				@media (max-width: 768px) {
-					font-size: 2.8rem;
+					font-size: 3rem;
+					margin: 0 1.5px;
 				}
 
 				@media (max-width: 640px) {
-					font-size: 2.2rem;
+					font-size: 2.6rem;
+					margin: 0 1px;
 				}
 
 				@media (max-width: 480px) {
-					font-size: 2rem;
+					font-size: 2.2rem;
 					margin: 0 1px;
+				}
+
+				@media (max-width: 360px) {
+					font-size: 2rem;
+					margin: 0 0.5px;
 				}
 			}
 
@@ -227,8 +312,8 @@
 				transition: all 0.3s ease;
 
 				@media (max-width: 768px) {
-					width: 45px;
-					height: 60px;
+					width: 48px;
+					height: 64px;
 					border-radius: 10px;
 					background: linear-gradient(
 						145deg,
@@ -242,15 +327,34 @@
 				}
 
 				@media (max-width: 640px) {
-					width: 38px;
-					height: 52px;
+					width: 42px;
+					height: 56px;
 					border-radius: 8px;
+					background: linear-gradient(
+						145deg,
+						rgba(255, 255, 255, 0.14) 0%,
+						rgba(31, 120, 255, 0.2) 50%,
+						rgba(139, 69, 255, 0.14) 100%
+					);
 				}
 
 				@media (max-width: 480px) {
-					width: 35px;
-					height: 48px;
+					width: 38px;
+					height: 52px;
 					border-radius: 8px;
+					background: linear-gradient(
+						145deg,
+						rgba(255, 255, 255, 0.16) 0%,
+						rgba(31, 120, 255, 0.22) 50%,
+						rgba(139, 69, 255, 0.16) 100%
+					);
+					border: 2px solid rgba(31, 120, 255, 0.4);
+				}
+
+				@media (max-width: 360px) {
+					width: 34px;
+					height: 46px;
+					border-radius: 6px;
 				}
 
 				.digit-stack {
@@ -273,14 +377,19 @@
 						transition: transform 0.12s ease-out;
 
 						@media (max-width: 768px) {
-							font-size: 2.8rem;
+							font-size: 3rem;
 						}
 
 						@media (max-width: 640px) {
-							font-size: 2.2rem;
+							font-size: 2.6rem;
 						}
 
 						@media (max-width: 480px) {
+							font-size: 2.3rem;
+							font-weight: 800;
+						}
+
+						@media (max-width: 360px) {
 							font-size: 2rem;
 						}
 					}
@@ -309,10 +418,18 @@
 		transition: all 0.8s ease-out 0.6s;
 
 		@media (max-width: 768px) {
+			margin-top: 35px;
+		}
+
+		@media (max-width: 640px) {
 			margin-top: 30px;
 		}
 
 		@media (max-width: 480px) {
+			margin-top: 25px;
+		}
+
+		@media (max-width: 360px) {
 			margin-top: 20px;
 		}
 
@@ -324,18 +441,27 @@
 			line-height: 1.6;
 
 			@media (max-width: 768px) {
-				font-size: 1rem;
+				font-size: 1.05rem;
 				max-width: 90%;
 				margin: 0 auto;
+				line-height: 1.5;
 			}
 
 			@media (max-width: 640px) {
-				font-size: 0.95rem;
+				font-size: 1rem;
+				max-width: 95%;
+				line-height: 1.6;
 			}
 
 			@media (max-width: 480px) {
+				font-size: 0.95rem;
+				line-height: 1.6;
+				max-width: 100%;
+			}
+
+			@media (max-width: 360px) {
 				font-size: 0.9rem;
-				line-height: 1.5;
+				line-height: 1.7;
 			}
 		}
 	}
@@ -387,6 +513,90 @@
 					transform: scale(0.98);
 				}
 			}
+		}
+	}
+}
+
+// Additional mobile optimizations
+@media (max-width: 640px) {
+	.main-odometer-section {
+		// Ensure smooth scroll performance on mobile
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+
+		&::before {
+			// Reduce background complexity on smaller screens
+			background: radial-gradient(
+					circle at 25% 25%,
+					rgba(31, 120, 255, 0.06) 0%,
+					transparent 50%
+				),
+				radial-gradient(circle at 75% 75%, rgba(45, 216, 129, 0.04) 0%, transparent 50%);
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.main-odometer-section {
+		// Touch-friendly optimizations
+		touch-action: manipulation;
+
+		.main-odometer {
+			.main-odometer-display {
+				// Better touch feedback
+				&:active {
+					transform: scale(0.97);
+					background: rgba(255, 255, 255, 0.12);
+				}
+			}
+		}
+	}
+}
+
+// Optimize for very small screens
+@media (max-width: 360px) {
+	.main-odometer-section {
+		.main-odometer {
+			.main-odometer-display {
+				// Reduce backdrop blur for performance on low-end devices
+				backdrop-filter: blur(8px);
+			}
+		}
+	}
+}
+
+// Optimize for landscape mobile
+@media (max-width: 768px) and (orientation: landscape) {
+	.main-odometer-section {
+		min-height: 100vh;
+		padding: 30px 20px;
+
+		.odometer-header {
+			margin-bottom: 20px;
+
+			.odometer-title {
+				font-size: 2.2rem;
+			}
+
+			.odometer-subtitle {
+				font-size: 1.1rem;
+			}
+		}
+
+		.main-odometer {
+			margin: 15px 0;
+
+			.currency-symbol {
+				font-size: 2.8rem;
+			}
+
+			.main-odometer-display {
+				padding: 12px 16px;
+			}
+		}
+
+		.odometer-footer {
+			margin-top: 20px;
 		}
 	}
 }

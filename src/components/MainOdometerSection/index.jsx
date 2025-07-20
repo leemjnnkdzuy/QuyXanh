@@ -10,33 +10,57 @@ const cx = classNames.bind(style);
 const OdometerDigit = ({targetDigit, startSpin, delay = 0}) => {
 	const [position, setPosition] = useState(0);
 	const [isSpinning, setIsSpinning] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
+
+	useEffect(() => {
+		const checkIsMobile = () => {
+			setIsMobile(window.innerWidth <= 768);
+		};
+
+		checkIsMobile();
+		window.addEventListener("resize", checkIsMobile);
+
+		return () => window.removeEventListener("resize", checkIsMobile);
+	}, []);
 
 	useEffect(() => {
 		if (startSpin && targetDigit !== null) {
 			setTimeout(() => {
 				setIsSpinning(true);
 
-				const totalSpins = 0.5 + Math.random() * 0.5;
+				const totalSpins = isMobile
+					? 0.3 + Math.random() * 0.3 
+					: 0.5 + Math.random() * 0.5; 
+
 				const targetPosition = parseInt(targetDigit) + totalSpins * 10;
 
 				let currentPos = 0;
-				const increment = 0.3;
+				const increment = isMobile ? 0.4 : 0.3; 
 
 				const smoothSpin = () => {
 					if (currentPos < targetPosition) {
 						currentPos += increment;
 						setPosition(currentPos % 10);
-						requestAnimationFrame(smoothSpin);
+
+						if (isMobile) {
+							setTimeout(smoothSpin, 16);
+						} else {
+							requestAnimationFrame(smoothSpin);
+						}
 					} else {
 						setPosition(parseInt(targetDigit));
 						setIsSpinning(false);
 					}
 				};
 
-				requestAnimationFrame(smoothSpin);
+				if (isMobile) {
+					setTimeout(smoothSpin, 16);
+				} else {
+					requestAnimationFrame(smoothSpin);
+				}
 			}, delay);
 		}
-	}, [startSpin, targetDigit, delay]);
+	}, [startSpin, targetDigit, delay, isMobile]);
 
 	const renderDigitStack = () => {
 		const digits = [];
@@ -66,6 +90,18 @@ const OdometerDigit = ({targetDigit, startSpin, delay = 0}) => {
 const MainOdometer = ({targetValue, isVisible}) => {
 	const [digits, setDigits] = useState([]);
 	const [shouldStartSpin, setShouldStartSpin] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
+
+	useEffect(() => {
+		const checkIsMobile = () => {
+			setIsMobile(window.innerWidth <= 768);
+		};
+
+		checkIsMobile();
+		window.addEventListener("resize", checkIsMobile);
+
+		return () => window.removeEventListener("resize", checkIsMobile);
+	}, []);
 
 	const formatCurrency = (num) => {
 		return new Intl.NumberFormat("vi-VN").format(num);
@@ -87,12 +123,12 @@ const MainOdometer = ({targetValue, isVisible}) => {
 
 	useEffect(() => {
 		if (isVisible && digits.length > 0) {
-			const initialDelay = Math.random() * 200;
+			const initialDelay = isMobile ? Math.random() * 100 : Math.random() * 200;
 			setTimeout(() => {
 				setShouldStartSpin(true);
 			}, initialDelay);
 		}
-	}, [isVisible, digits.length]);
+	}, [isVisible, digits.length, isMobile]);
 
 	return (
 		<div className={cx("main-odometer")}>
@@ -106,7 +142,7 @@ const MainOdometer = ({targetValue, isVisible}) => {
 						);
 					}
 
-					const digitDelay = Math.random() * 300;
+					const digitDelay = isMobile ? Math.random() * 150 : Math.random() * 300;
 
 					return (
 						<OdometerDigit

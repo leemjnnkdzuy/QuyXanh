@@ -14,7 +14,12 @@ function CompletedCampaignsSection() {
 	const [isExploring, setIsExploring] = useState(false);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [isVisible, setIsVisible] = useState(false);
+	const [touchStart, setTouchStart] = useState(null);
+	const [touchEnd, setTouchEnd] = useState(null);
 	const sectionRef = useRef(null);
+
+	// Minimum swipe distance (in px) required to register as a swipe
+	const minSwipeDistance = 50;
 
 	const campaignsData = t("completedCampaigns.campaigns", {
 		returnObjects: true,
@@ -80,6 +85,32 @@ function CompletedCampaignsSection() {
 		setCurrentIndex(index);
 	};
 
+	// Touch event handlers for swipe functionality
+	const onTouchStart = (e) => {
+		if (!isExploring) return;
+		setTouchEnd(null);
+		setTouchStart(e.targetTouches[0].clientX);
+	};
+
+	const onTouchMove = (e) => {
+		if (!isExploring) return;
+		setTouchEnd(e.targetTouches[0].clientX);
+	};
+
+	const onTouchEnd = () => {
+		if (!isExploring || !touchStart || !touchEnd) return;
+
+		const distance = touchStart - touchEnd;
+		const isLeftSwipe = distance > minSwipeDistance;
+		const isRightSwipe = distance < -minSwipeDistance;
+
+		if (isLeftSwipe) {
+			handleNext();
+		} else if (isRightSwipe) {
+			handlePrev();
+		}
+	};
+
 	return (
 		<section ref={sectionRef} className={cx("wrapper", {visible: isVisible})}>
 			<div className={cx("container")}>
@@ -122,7 +153,12 @@ function CompletedCampaignsSection() {
 					</div>
 
 					<div className={cx("right-panel")}>
-						<div className={cx("cards-preview")}>
+						<div
+							className={cx("cards-preview")}
+							onTouchStart={onTouchStart}
+							onTouchMove={onTouchMove}
+							onTouchEnd={onTouchEnd}
+						>
 							{campaignsData.map((campaign, index) => (
 								<div
 									key={campaign.id}
