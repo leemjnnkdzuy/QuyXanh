@@ -365,5 +365,41 @@
 				"details": "Mỗi suất cứu trợ lương thực 500.000 đ giúp gia đình 4 người trong 1 tuần."
 			}
 		]
+	},
+	"chatbot": {
+		"title": "AI Assistant",
+		"status": {
+			"connected": "Đã kết nối",
+			"connecting": "Đang kết nối..."
+		},
+		"placeholder": "Nhập tin nhắn... ({{current}}/{{max}})",
+		"welcome": "Xin chào {{name}}! Tôi là AI Assistant. Tôi có thể giúp gì cho bạn?",
+		"typing": "AI đang trả lời...",
+		"login": {
+			"title": "Đăng nhập để sử dụng AI Chatbot",
+			"description": "Vui lòng đăng nhập để có thể trò chuyện với AI chatbot và lưu lại lịch sử chat của bạn.",
+			"button": "Đăng nhập ngay"
+		},
+		"actions": {
+			"clear": "Xóa lịch sử chat",
+			"export": "Xuất lịch sử chat",
+			"send": "Gửi tin nhắn",
+			"toggle": "Bật/Tắt AI Chatbot"
+		},
+		"notifications": {
+			"connected": "Đã kết nối thành công!",
+			"disconnected": "Mất kết nối chat",
+			"connectionError": "Không thể kết nối đến server",
+			"chatError": "Có lỗi xảy ra khi kết nối chat",
+			"messageTooLong": "Tin nhắn quá dài. Tối đa {{max}} ký tự.",
+			"sendError": "Xin lỗi, có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại.",
+			"clearConfirm": "Bạn có chắc chắn muốn xóa toàn bộ lịch sử chat?",
+			"clearSuccess": "Đã xóa lịch sử chat",
+			"exportSuccess": "Đã xuất lịch sử chat"
+		},
+		"label": {
+			"title": "QuyXanhChatBot",
+			"subtitle": "power by deepseek"
+		}
 	}
 }

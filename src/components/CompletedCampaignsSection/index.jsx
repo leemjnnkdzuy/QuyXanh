@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import classNames from "classnames/bind";
 import style from "./CompletedCampaignsSection.module.scss";
 import assets from "../../assets";
-import {MdArrowBack, MdChevronLeft, MdChevronRight} from "react-icons/md";
+import {MdArrowBack, MdChevronLeft, MdChevronRight, MdClose} from "react-icons/md";
 import {HiOutlineSparkles} from "react-icons/hi2";
 import {IoMdArrowRoundForward} from "react-icons/io";
 import {useTranslation} from "react-i18next";
@@ -16,9 +16,12 @@ function CompletedCampaignsSection() {
 	const [isVisible, setIsVisible] = useState(false);
 	const [touchStart, setTouchStart] = useState(null);
 	const [touchEnd, setTouchEnd] = useState(null);
+	const [showFullImage, setShowFullImage] = useState(false);
+	const [selectedImage, setSelectedImage] = useState(null);
+	const [morphOrigin, setMorphOrigin] = useState({x: 0, y: 0, width: 0, height: 0});
 	const sectionRef = useRef(null);
+	const imageRefs = useRef([]);
 
-	// Minimum swipe distance (in px) required to register as a swipe
 	const minSwipeDistance = 50;
 
 	const campaignsData = t("completedCampaigns.campaigns", {
@@ -35,7 +38,13 @@ function CompletedCampaignsSection() {
 		...campaign,
 	}));
 
-	// Intersection Observer để detect khi section vào viewport
+	const handleCloseFullImage = useCallback(() => {
+		setShowFullImage(false);
+		setTimeout(() => {
+			setSelectedImage(null);
+		}, 400);
+	}, []);
+
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -44,8 +53,8 @@ function CompletedCampaignsSection() {
 				}
 			},
 			{
-				threshold: 0.05, // Trigger khi chỉ 5% section visible
-				rootMargin: "0px 0px 0px 0px", // Không có margin
+				threshold: 0.05,
+				rootMargin: "0px 0px 0px 0px",
 			}
 		);
 
@@ -60,6 +69,24 @@ function CompletedCampaignsSection() {
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		const handleKeyDown = (e) => {
+			if (e.key === 'Escape' && showFullImage) {
+				handleCloseFullImage();
+			}
+		};
+
+		if (showFullImage) {
+			document.addEventListener('keydown', handleKeyDown);
+			document.body.style.overflow = 'hidden';
+		}
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+			document.body.style.overflow = 'unset';
+		};
+	}, [showFullImage, handleCloseFullImage]);
 
 	const handleExplore = () => {
 		console.log("Explore button clicked!");
@@ -85,7 +112,6 @@ function CompletedCampaignsSection() {
 		setCurrentIndex(index);
 	};
 
-	// Touch event handlers for swipe functionality
 	const onTouchStart = (e) => {
 		if (!isExploring) return;
 		setTouchEnd(null);
@@ -108,6 +134,30 @@ function CompletedCampaignsSection() {
 			handleNext();
 		} else if (isRightSwipe) {
 			handlePrev();
+		}
+	};
+
+	const handleImageClick = (campaign, index) => {
+		if (!isExploring || index !== currentIndex) return;
+		
+		const imageElement = imageRefs.current[index];
+		if (imageElement) {
+			const rect = imageElement.getBoundingClientRect();
+			setMorphOrigin({
+				x: rect.left,
+				y: rect.top,
+				width: rect.width,
+				height: rect.height
+			});
+		}
+		
+		setSelectedImage(campaign);
+		setShowFullImage(true);
+	};
+
+	const handleOverlayClick = (e) => {
+		if (e.target === e.currentTarget) {
+			handleCloseFullImage();
 		}
 	};
 
@@ -169,11 +219,15 @@ function CompletedCampaignsSection() {
 										zIndex: isExploring && index === currentIndex ? 10 : index + 1,
 										opacity: isExploring ? (index === currentIndex ? 1 : 0.3) : 0.7,
 									}}
+									onClick={() => handleImageClick(campaign, index)}
 								>
 									<img
+										ref={(el) => (imageRefs.current[index] = el)}
 										src={campaign.image}
 										alt={campaign.title}
-										className={cx("preview-image")}
+										className={cx("preview-image", {
+											clickable: isExploring && index === currentIndex
+										})}
 									/>
 								</div>
 							))}
@@ -218,6 +272,45 @@ function CompletedCampaignsSection() {
 					</div>
 				</div>
 			</div>
+
+			{selectedImage && (
+				<div 
+					className={cx("image-overlay", {
+						show: showFullImage,
+						hide: !showFullImage
+					})}
+					onClick={handleOverlayClick}
+				>
+					<div className={cx("overlay-backdrop")} />
+					<div 
+						className={cx("full-image-container", {
+							morphing: showFullImage
+						})}
+						style={{
+							'--morph-x': `${morphOrigin.x}px`,
+							'--morph-y': `${morphOrigin.y}px`,
+							'--morph-width': `${morphOrigin.width}px`,
+							'--morph-height': `${morphOrigin.height}px`,
+						}}
+					>
+						<button 
+							className={cx("close-button")}
+							onClick={handleCloseFullImage}
+						>
+							<MdClose />
+						</button>
+						<img 
+							src={selectedImage.image}
+							alt={selectedImage.title}
+							className={cx("full-image")}
+						/>
+						<div className={cx("image-info")}>
+							<h3 className={cx("image-title")}>{selectedImage.title}</h3>
+							<p className={cx("image-description")}>{selectedImage.description}</p>
+						</div>
+					</div>
+				</div>
+			)}
 		</section>
 	);
 }

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef, useCallback} from "react";
 import classNames from "classnames/bind";
+import {useTranslation} from "react-i18next";
 import style from "./PopupAIChatBot.module.scss";
 import {useAuth} from "../../utils/authContext";
 import SpinnerLoading from "../SpinnerLoading";
@@ -14,6 +15,7 @@ import aiChatBotSocket, {
 const cx = classNames.bind(style);
 
 function PopupAIChatBot() {
+	const {t} = useTranslation();
 	const [isOpen, setIsOpen] = useState(false);
 	const [messages, setMessages] = useState([]);
 	const [inputMessage, setInputMessage] = useState("");
@@ -65,48 +67,57 @@ function PopupAIChatBot() {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [showLabel]);
 
-	const handleSocketMessage = useCallback((data) => {
-		switch (data.type) {
-			case "message":
-				setMessages((prev) => [...prev, data.message]);
-				setIsTyping(false);
-				break;
-			case "typing":
-				setIsTyping(data.isTyping);
-				break;
-			case "history":
-				setMessages(data.messages || []);
-				break;
-			case "error":
-				console.error("Chat error:", data.error);
-				showNotification(data.error || "Có lỗi xảy ra khi kết nối chat", "error");
-				setIsTyping(false);
-				break;
-			default:
-				break;
-		}
-	}, []);
+	const handleSocketMessage = useCallback(
+		(data) => {
+			switch (data.type) {
+				case "message":
+					setMessages((prev) => [...prev, data.message]);
+					setIsTyping(false);
+					break;
+				case "typing":
+					setIsTyping(data.isTyping);
+					break;
+				case "history":
+					setMessages(data.messages || []);
+					break;
+				case "error":
+					console.error("Chat error:", data.error);
+					showNotification(data.error || t("chatbot.notifications.chatError"), "error");
+					setIsTyping(false);
+					break;
+				default:
+					break;
+			}
+		},
+		[t]
+	);
 
-	const handleSocketConnection = useCallback((data) => {
-		switch (data.type) {
-			case "connected":
-				setIsConnected(true);
-				showNotification("Đã kết nối thành công!", "success");
-				break;
-			case "disconnected":
-				setIsConnected(false);
-				setIsTyping(false);
-				showNotification("Mất kết nối chat", "warning");
-				break;
-			case "error":
-				console.error("Connection error:", data.error);
-				showNotification(data.error || "Không thể kết nối đến server", "error");
-				setIsConnected(false);
-				break;
-			default:
-				break;
-		}
-	}, []);
+	const handleSocketConnection = useCallback(
+		(data) => {
+			switch (data.type) {
+				case "connected":
+					setIsConnected(true);
+					showNotification(t("chatbot.notifications.connected"), "success");
+					break;
+				case "disconnected":
+					setIsConnected(false);
+					setIsTyping(false);
+					showNotification(t("chatbot.notifications.disconnected"), "warning");
+					break;
+				case "error":
+					console.error("Connection error:", data.error);
+					showNotification(
+						data.error || t("chatbot.notifications.connectionError"),
+						"error"
+					);
+					setIsConnected(false);
+					break;
+				default:
+					break;
+			}
+		},
+		[t]
+	);
 
 	useEffect(() => {
 		if (isAuthenticated && user && token && isOpen) {
@@ -141,7 +152,7 @@ function PopupAIChatBot() {
 
 		if (inputMessage.length > MAX_MESSAGE_LENGTH) {
 			showNotification(
-				`Tin nhắn quá dài. Tối đa ${MAX_MESSAGE_LENGTH} ký tự.`,
+				t("chatbot.notifications.messageTooLong", {max: MAX_MESSAGE_LENGTH}),
 				"warning"
 			);
 			return;
@@ -171,7 +182,7 @@ function PopupAIChatBot() {
 				...prev,
 				{
 					id: Date.now() + 1,
-					text: "Xin lỗi, có lỗi xảy ra khi gửi tin nhắn. Vui lòng thử lại.",
+					text: t("chatbot.notifications.sendError"),
 					sender: "bot",
 					timestamp: new Date().toISOString(),
 					formattedTime: formatMessageTime(new Date().toISOString()),
@@ -181,7 +192,7 @@ function PopupAIChatBot() {
 		}
 
 		setIsLoading(false);
-	}, [inputMessage, isConnected, isLoading, user]);
+	}, [inputMessage, isConnected, isLoading, user, t]);
 
 	const handleKeyPress = (e) => {
 		if (e.key === "Enter" && !e.shiftKey) {
@@ -208,10 +219,10 @@ function PopupAIChatBot() {
 	};
 
 	const handleClearHistory = () => {
-		if (window.confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử chat?")) {
+		if (window.confirm(t("chatbot.notifications.clearConfirm"))) {
 			aiChatBotSocket.clearChatHistory();
 			setMessages([]);
-			showNotification("Đã xóa lịch sử chat", "success");
+			showNotification(t("chatbot.notifications.clearSuccess"), "success");
 		}
 	};
 
@@ -226,7 +237,7 @@ function PopupAIChatBot() {
 		a.download = `chat-history-${new Date().toISOString().split("T")[0]}.json`;
 		a.click();
 		URL.revokeObjectURL(url);
-		showNotification("Đã xuất lịch sử chat", "success");
+		showNotification(t("chatbot.notifications.exportSuccess"), "success");
 	};
 
 	const toggleChat = () => {
@@ -273,16 +284,13 @@ function PopupAIChatBot() {
 					/>
 				</svg>
 			</div>
-			<h3>Đăng nhập để sử dụng AI Chatbot</h3>
-			<p>
-				Vui lòng đăng nhập để có thể trò chuyện với AI chatbot và lưu lại lịch sử chat
-				của bạn.
-			</p>
+			<h3>{t("chatbot.login.title")}</h3>
+			<p>{t("chatbot.login.description")}</p>
 			<button
 				className={cx("login-button")}
 				onClick={() => (window.location.href = "/login")}
 			>
-				Đăng nhập ngay
+				{t("chatbot.login.button")}
 			</button>
 		</div>
 	);
@@ -306,14 +314,14 @@ function PopupAIChatBot() {
 						</svg>
 					</div>
 					<div>
-						<h4>AI Assistant</h4>
+						<h4>{t("chatbot.title")}</h4>
 						<span className={cx("status", {connected: isConnected})}>
 							{isConnected ? (
-								"Đã kết nối"
+								t("chatbot.status.connected")
 							) : (
 								<div style={{display: "flex", alignItems: "center", gap: "6px"}}>
 									<SpinnerLoading size='10px' />
-									<span>Đang kết nối...</span>
+									<span>{t("chatbot.status.connecting")}</span>
 								</div>
 							)}
 						</span>
@@ -323,7 +331,7 @@ function PopupAIChatBot() {
 					<button
 						className={cx("action-button")}
 						onClick={handleClearHistory}
-						title='Xóa lịch sử chat'
+						title={t("chatbot.actions.clear")}
 					>
 						<svg
 							width='16'
@@ -351,7 +359,7 @@ function PopupAIChatBot() {
 					<button
 						className={cx("action-button")}
 						onClick={handleExportConversation}
-						title='Xuất lịch sử chat'
+						title={t("chatbot.actions.export")}
 					>
 						<svg
 							width='16'
@@ -405,9 +413,7 @@ function PopupAIChatBot() {
 			<div className={cx("messages-container")}>
 				{messages.length === 0 ? (
 					<div className={cx("welcome-message")}>
-						<p>
-							Xin chào {user?.fullName}! Tôi là AI Assistant. Tôi có thể giúp gì cho bạn?
-						</p>
+						<p>{t("chatbot.welcome", {name: user?.fullName})}</p>
 					</div>
 				) : (
 					messages.map((message) => (
@@ -427,8 +433,10 @@ function PopupAIChatBot() {
 						<div className={cx("message-content")}>
 							<div className={cx("typing-indicator")}>
 								<SpinnerLoading size='20px' />
-								<span style={{marginLeft: "8px", fontSize: "14px", color: "#718096"}}>
-									AI đang trả lời...
+								<span
+									style={{marginLeft: "8px", fontSize: "14px", color: "var(--text-secondary)"}}
+								>
+									{t("chatbot.typing")}
 								</span>
 							</div>
 						</div>
@@ -444,7 +452,10 @@ function PopupAIChatBot() {
 					value={inputMessage}
 					onChange={handleInputChange}
 					onKeyPress={handleKeyPress}
-					placeholder={`Nhập tin nhắn... (${inputMessage.length}/${MAX_MESSAGE_LENGTH})`}
+					placeholder={t("chatbot.placeholder", {
+						current: inputMessage.length,
+						max: MAX_MESSAGE_LENGTH,
+					})}
 					className={cx("message-input")}
 					rows='1'
 					disabled={!isConnected || isLoading}
@@ -483,7 +494,7 @@ function PopupAIChatBot() {
 			<button
 				className={cx("chat-toggle", {active: isOpen})}
 				onClick={toggleChat}
-				aria-label='Toggle AI Chatbot'
+				aria-label={t("chatbot.actions.toggle")}
 			>
 				<svg
 					width='24'
@@ -504,8 +515,8 @@ function PopupAIChatBot() {
 
 			{showLabel && !isOpen && (
 				<div className={cx("chat-label", {"fade-out": isLabelFadingOut})}>
-					<div className={cx("label-text")}>QuyXanhChatBot</div>
-					<div className={cx("label-subtext")}>power by deepseek</div>
+					<div className={cx("label-text")}>{t("chatbot.label.title")}</div>
+					<div className={cx("label-subtext")}>{t("chatbot.label.subtitle")}</div>
 				</div>
 			)}
 

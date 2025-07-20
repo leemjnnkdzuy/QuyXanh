@@ -377,5 +377,41 @@
 			"campaignsHere": "Campaigns Here",
 			"participants": "Participants"
 		}
+	},
+	"chatbot": {
+		"title": "AI Assistant",
+		"status": {
+			"connected": "Connected",
+			"connecting": "Connecting..."
+		},
+		"placeholder": "Type your message... ({{current}}/{{max}})",
+		"welcome": "Hello {{name}}! I'm AI Assistant. How can I help you?",
+		"typing": "AI is typing...",
+		"login": {
+			"title": "Login to use AI Chatbot",
+			"description": "Please log in to chat with AI chatbot and save your chat history.",
+			"button": "Login now"
+		},
+		"actions": {
+			"clear": "Clear chat history",
+			"export": "Export chat history",
+			"send": "Send message",
+			"toggle": "Toggle AI Chatbot"
+		},
+		"notifications": {
+			"connected": "Successfully connected!",
+			"disconnected": "Lost chat connection",
+			"connectionError": "Cannot connect to server",
+			"chatError": "An error occurred while connecting to chat",
+			"messageTooLong": "Message too long. Maximum {{max}} characters.",
+			"sendError": "Sorry, an error occurred while sending message. Please try again.",
+			"clearConfirm": "Are you sure you want to delete all chat history?",
+			"clearSuccess": "Chat history cleared",
+			"exportSuccess": "Chat history exported"
+		},
+		"label": {
+			"title": "QuyXanhChatBot",
+			"subtitle": "powered by deepseek"
+		}
 	}
 }
